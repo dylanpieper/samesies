@@ -1,25 +1,37 @@
-#' Numeric Similarity Class
-#' @description S7 class for storing and analyzing numeric similarity scores.
+#' Create a Similar Number Object for Comparing Numeric Data Similarity
 #'
-#' @slot scores List of similarity scores for each comparison method
-#' @slot summary List of summary statistics for each comparison method
-#' @slot methods Character vector of comparison methods used
-#' @slot list_names Character vector of input list names
-#' @slot raw_values List of original input values
+#' @description
+#' `similar_number` is an S7 class that inherits from `similar` for comparing numeric data similarity.
+#' It extends the parent class with an additional "raw_values" property and number-specific validation.
 #'
-#' @name similar_number
+#' @param scores List of similarity scores for each method and comparison
+#' @param summary List of summary statistics for each method and comparison
+#' @param methods Character vector of similarity methods used
+#' @param list_names Character vector of input list names
+#' @param raw_values List of the original numeric values being compared
+#'
+#' @returns An S7 class object of type "similar_number" containing:
+#'   - scores: Numeric similarity scores by method and comparison
+#'   - summary: Summary statistics by method and comparison
+#'   - methods: Methods used for comparison
+#'   - list_names: Names of compared lists
+#'   - raw_values: Original numeric values
+#'
+#' @examples
+#' \dontrun{
+#' list1 <- list(1, 2, 3)
+#' list2 <- list(1.1, 2.1, 3.2)
+#' result <- same_number(list1, list2)
+#' }
 #' @export
 similar_number <- S7::new_class("similar_number",
+  parent = similar,
   properties = list(
-    scores = S7::class_list,
-    summary = S7::class_list,
-    methods = S7::class_character,
-    list_names = S7::class_character,
     raw_values = S7::class_list
   ),
   validator = function(self) {
     valid_methods <- c(
-      "exact", "percent_diff", "normalized", "fuzzy", "rank"
+      "exact", "percent_diff", "normalized", "fuzzy"
     )
 
     if (!all(self@methods %in% valid_methods)) {
@@ -29,22 +41,148 @@ similar_number <- S7::new_class("similar_number",
       ))
     }
 
-    if (!purrr::every(self@scores, ~ purrr::every(.x, is.numeric))) {
-      return("All scores must be numeric")
-    }
-
-    if (!purrr::every(self@scores, ~ purrr::every(.x, ~ all(.x >= 0 & .x <= 1, na.rm = TRUE)))) {
-      return("All scores must be between 0 and 1")
-    }
-
     NULL
   }
 )
 
+#' @export
+summary.same_number <- function(object, ...) {
+  overall_avgs <- average_similarity(object)
+  pair_avgs <- pair_averages(object)
+
+  result <- list(
+    methods = object$methods,
+    list_names = object$list_names,
+    overall_averages = overall_avgs,
+    pair_averages = pair_avgs
+  )
+
+  class(result) <- "summary.same_number"
+  return(result)
+}
+
+#' Print Method for same_number Objects
+#'
+#' @param x A same_number object
+#' @param ... Additional arguments (not used)
+#'
+#' @return Invisibly returns the input object
+#'
+#' @export
+print.same_number <- function(x, ...) {
+  cli::cli_h1("same_number: Numeric Data Similarity Analysis")
+  cli::cli_text("Methods used: {.val {paste(x$methods, collapse = ', ')}}")
+  cli::cli_text("Lists compared: {.val {paste(x$list_names, collapse = ', ')}}")
+
+  overall_avgs <- average_similarity(x)
+
+  cli::cli_h2("Overall Method Averages")
+  cli::cli_bullets(purrr::map_chr(names(overall_avgs), function(method) {
+    paste0("* ", method, ": {.val ", round(overall_avgs[method], 3), "}")
+  }))
+
+  purrr::walk(x$methods, function(method) {
+    cli::cli_h2("Method: {.field {method}}")
+
+    purrr::walk(names(x$summary[[method]]), function(pair_name) {
+      cli::cli_h3("Comparison: {.val {pair_name}}")
+
+      cli::cli_h3("Summary Statistics")
+      summary_stats <- x$summary[[method]][[pair_name]]
+
+      cli::cli_bullets(c(
+        "*" = "Mean: {.val {round(summary_stats$mean, 3)}}",
+        "*" = "Median: {.val {round(summary_stats$median, 3)}}",
+        "*" = "SD: {.val {round(summary_stats$sd, 3)}}",
+        "*" = "Range: [{.val {round(summary_stats$min, 3)}} - {.val {round(summary_stats$max, 3)}}]"
+      ))
+    })
+  })
+
+  invisible(x)
+}
+
+#' @export
+print.summary.same_number <- function(x, ...) {
+  cli::cli_h1("Summary: Numeric Data Similarity Analysis")
+
+  cli::cli_h2("Methods Used")
+  cli::cli_text("{.val {paste(x$methods, collapse = ', ')}}")
+
+  cli::cli_h2("Lists Compared")
+  cli::cli_text("{.val {paste(x$list_names, collapse = ', ')}}")
+
+  cli::cli_h2("Overall Method Averages")
+  cli::cli_bullets(purrr::map_chr(names(x$overall_averages), function(method) {
+    paste0("* ", method, ": {.val ", round(x$overall_averages[method], 3), "}")
+  }))
+
+  cli::cli_h2("Pair Averages")
+  print(x$pair_averages, row.names = FALSE)
+
+  invisible(x)
+}
+
+#' Plot Method for same_number Objects
+#'
+#' @param x A same_number object
+#' @param y Not used (for S3 generic compatibility)
+#' @param type Plot type: "combined" (default), "boxplot", "point", "histogram"
+#' @param palette Color palette to use for the plot (default: "Set2")
+#' @param ... Additional arguments (not used)
+#'
+#' @return A ggplot2 visualization of similarity scores
+#'
+#' @export
+plot.same_number <- function(x, y, type = "combined", palette = "Set2", ...) {
+  # Prepare common data frame for plotting
+  plot_data <- purrr::map_df(x$methods, function(method) {
+    purrr::map_df(names(x$data[[method]]), function(pair_name) {
+      data.frame(
+        method = method,
+        pair = pair_name,
+        score = unlist(x$data[[method]][[pair_name]])
+      )
+    })
+  })
+
+  # Create base plot
+  base_plot <- ggplot2::ggplot(plot_data, ggplot2::aes(x = method, y = score)) +
+    ggplot2::theme_minimal() +
+    ggplot2::labs(x = "Method", y = "Similarity Score") +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+      panel.grid.major.x = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank()
+    )
+
+  # Return the appropriate plot type
+  switch(type,
+    "combined" = base_plot +
+      ggplot2::geom_violin(ggplot2::aes(fill = method), alpha = 0.4) +
+      ggplot2::geom_boxplot(width = 0.2, alpha = 0.7, outlier.shape = NA) +
+      ggplot2::geom_jitter(width = 0.1, alpha = 0.4) +
+      ggplot2::scale_fill_brewer(palette = palette) +
+      ggplot2::theme(legend.position = "none"),
+    "boxplot" = base_plot +
+      ggplot2::geom_boxplot(ggplot2::aes(fill = method)) +
+      ggplot2::scale_fill_brewer(palette = palette) +
+      ggplot2::theme(legend.position = "none"),
+    "point" = base_plot +
+      ggplot2::geom_jitter(ggplot2::aes(color = pair), width = 0.2, alpha = 0.7) +
+      ggplot2::stat_summary(fun = mean, geom = "point", size = 3, color = "black"),
+    "violin" = base_plot +
+      ggplot2::geom_violin(ggplot2::aes(fill = method)) +
+      ggplot2::scale_fill_brewer(palette = palette) +
+      ggplot2::theme(legend.position = "none"),
+    cli::cli_abort("Invalid plot type. Choose 'combined', 'boxplot', 'point', or 'violin'")
+  )
+}
+
 #' Calculate Numeric Similarity
 #' @param num1 First numeric value to compare
 #' @param num2 Second numeric value to compare
-#' @param method Method to use for similarity calculation. One of: "exact", "percent_diff", "normalized", "fuzzy", "rank"
+#' @param method Method to use for similarity calculation. One of: "exact", "percent_diff", "normalized", "fuzzy"
 #' @param epsilon Threshold for fuzzy matching. Only used when method is "fuzzy"
 #' @param max_diff Maximum difference for normalization. Only used when method is "normalized"
 #' @return Numeric similarity score between 0 and 1
@@ -92,15 +230,6 @@ calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_
         diff <- abs(num1 - num2) - epsilon
         return(max(0, 1 - diff))
       }
-    },
-    "rank" = {
-      if (sign(num1) == sign(num2)) {
-        ratio <- min(abs(num1), abs(num2)) / max(abs(num1), abs(num2))
-        if (is.nan(ratio)) ratio <- 1
-        return(ratio)
-      } else {
-        return(0)
-      }
     }
   )
 }
@@ -108,7 +237,7 @@ calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_
 #' Calculate Similarity Scores Between Two Numeric Lists
 #' @param list1 First list of numeric values
 #' @param list2 Second list of numeric values
-#' @param method Method to use for similarity calculation. One of: "exact", "percent_diff", "normalized", "fuzzy", "rank"
+#' @param method Method to use for similarity calculation. One of: "exact", "percent_diff", "normalized", "fuzzy"
 #' @param epsilon Threshold for fuzzy matching. Only used when method is "fuzzy"
 #' @param max_diff Maximum difference for normalization. Only used when method is "normalized"
 #' @return Vector of numeric similarity scores between 0 and 1
@@ -231,12 +360,8 @@ validate_number_inputs <- function(...) {
 #' @param epsilon Threshold for fuzzy matching. NULL for auto-calculation
 #' @param max_diff Maximum difference for normalization. NULL for auto-calculation
 #'
-#' @return An S7 'similar_number' object containing:
-#' - scores: List of similarity scores for each method and pair
-#' - summary: List of summary statistics
-#' - methods: Methods used
-#' - list_names: Input list names
-#' - raw_values: Original input values
+#' @return An S3 object of class "same_number" that contains an S7 'similar_number' object
+#' and provides methods for average_similarity(), pair_averages(), plot(), print(), and summary().
 #'
 #' @examples
 #' nums1 <- list(1, 2, 3)
@@ -247,7 +372,7 @@ validate_number_inputs <- function(...) {
 #' @export
 same_number <- function(..., method = c("percent_diff", "fuzzy"), epsilon = NULL, max_diff = NULL) {
   valid_methods <- c(
-    "exact", "percent_diff", "normalized", "fuzzy", "rank"
+    "exact", "percent_diff", "normalized", "fuzzy"
   )
 
   inputs <- list(...)
@@ -343,11 +468,115 @@ same_number <- function(..., method = c("percent_diff", "fuzzy"), epsilon = NULL
 
   names(summaries) <- method
 
-  similar_number(
+  # Create the S7 object
+  s7_obj <- similar_number(
     scores = scores,
     summary = summaries,
     methods = method,
     list_names = list_names,
     raw_values = flattened_inputs
   )
+
+  # Create the S3 object
+  result <- list(
+    data = scores,
+    summary = summaries,
+    methods = method,
+    list_names = list_names,
+    s7_obj = s7_obj
+  )
+
+  class(result) <- c("same_number", "same_similarity")
+  return(result)
+}
+
+#' Print Method for summary.similar_number Objects
+#'
+#' @param x A summary.similar_number object
+#' @param ... Additional arguments (not used)
+#'
+#' @return Invisibly returns the input object
+#'
+#' Calculate Average Similarity Scores for same_number Objects
+#'
+#' @param x A same_number object
+#' @param ... Additional arguments passed to specific methods
+#'
+#' @return A named numeric vector of mean similarity scores for each method
+#'
+#' @description
+#' Calculates and returns the average similarity score for each method used in the comparison.
+#'
+#' @export
+average_similarity.same_number <- function(x, ...) {
+  mean_scores_by_method(x$data)
+}
+
+#' Calculate Average Similarity Scores By Pairs for same_number Objects
+#'
+#' @param x A same_number object
+#' @param method Optional character vector of methods to include. If NULL, uses all methods.
+#' @param ... Additional arguments passed to specific methods
+#'
+#' @return A data frame containing:
+#'   \item{method}{The similarity method used}
+#'   \item{pair}{The pair of lists compared}
+#'   \item{avg_score}{Mean similarity score for the pair}
+#'
+#' @description
+#' Calculates and returns the average similarity scores for each pair of lists
+#' compared, broken down by method.
+#'
+#' @export
+pair_averages.same_number <- function(x, method = NULL, ...) {
+  # Get methods to use
+  methods_list <- x$methods
+  if (!is.null(method)) {
+    if (!all(method %in% methods_list)) {
+      cli::cli_abort("Specified method(s) not found in the similarity object")
+    }
+    methods_to_use <- method
+  } else {
+    methods_to_use <- methods_list
+  }
+
+  result <- purrr::map_df(methods_to_use, function(m) {
+    method_scores <- x$data[[m]]
+
+    purrr::map_df(names(method_scores), function(pair_name) {
+      data.frame(
+        method = m,
+        pair = pair_name,
+        avg_score = mean(unlist(method_scores[[pair_name]]), na.rm = TRUE),
+        stringsAsFactors = FALSE
+      )
+    })
+  })
+
+  result <- result[order(result$method, -result$avg_score), ]
+  result$avg_score <- round(result$avg_score, 3)
+
+  rownames(result) <- NULL
+  return(result)
+}
+
+#' @export
+print.summary.similar_number <- function(x, ...) {
+  cli::cli_h1("Summary: Numeric Data Similarity Analysis")
+
+  cli::cli_h2("Methods Used")
+  cli::cli_text("{.val {paste(x$methods, collapse = ', ')}}")
+
+  cli::cli_h2("Lists Compared")
+  cli::cli_text("{.val {paste(x$list_names, collapse = ', ')}}")
+
+  cli::cli_h2("Overall Method Averages")
+  cli::cli_bullets(purrr::map_chr(names(x$overall_averages), function(method) {
+    paste0("* ", method, ": {.val ", round(x$overall_averages[method], 3), "}")
+  }))
+
+  cli::cli_h2("Pair Averages")
+  print(x$pair_averages, row.names = FALSE)
+
+  invisible(x)
 }

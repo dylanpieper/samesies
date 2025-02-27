@@ -1,5 +1,9 @@
 #' Create a Similar Text Object for Comparing Text Similarity
 #'
+#' @description
+#' `similar_text` is an S7 class that inherits from `similar` for comparing text similarity.
+#' It extends the parent class with text-specific validation of allowed methods.
+#'
 #' @param scores List of similarity scores for each method and comparison
 #' @param summary List of summary statistics for each method and comparison
 #' @param methods Character vector of similarity methods used
@@ -17,13 +21,9 @@
 #' list2 <- list("helo", "word")
 #' result <- same_text(list1, list2, method = "jw")
 #' }
+#' @export
 similar_text <- S7::new_class("similar_text",
-  properties = list(
-    scores = S7::class_list,
-    summary = S7::class_list,
-    methods = S7::class_character,
-    list_names = S7::class_character
-  ),
+  parent = similar,
   validator = function(self) {
     valid_methods <- c(
       "osa", "lv", "dl", "hamming", "lcs", "qgram",
@@ -37,17 +37,113 @@ similar_text <- S7::new_class("similar_text",
       ))
     }
 
-    if (!purrr::every(self@scores, ~ purrr::every(.x, is.numeric))) {
-      return("All scores must be numeric")
-    }
-
-    if (!purrr::every(self@scores, ~ purrr::every(.x, ~ all(.x >= 0 & .x <= 1, na.rm = TRUE)))) {
-      return("All scores must be between 0 and 1")
-    }
-
     NULL
   }
 )
+
+# Register method implementations
+S7::method(average_similarity, similar_text) <- average_similarity.similar
+S7::method(pair_averages, similar_text) <- pair_averages.similar
+S7::method(plot, similar_text) <- function(x, type = "combined", palette = "Set2", ...) {
+  # Prepare data frame for plotting - explicit preparation to handle potential issues
+  plot_data <- purrr::map_df(x@methods, function(method) {
+    purrr::map_df(names(x@scores[[method]]), function(pair_name) {
+      scores_vector <- unlist(x@scores[[method]][[pair_name]])
+      if(!is.numeric(scores_vector)) {
+        cli::cli_warn("Non-numeric scores found in {method} for {pair_name}. Converting to numeric.")
+        scores_vector <- as.numeric(scores_vector)
+      }
+      
+      data.frame(
+        method = method,
+        pair = pair_name,
+        score = scores_vector
+      )
+    })
+  })
+  
+  # Create base plot with explicit data
+  base_plot <- ggplot2::ggplot(plot_data, ggplot2::aes(x = method, y = score)) +
+    ggplot2::theme_minimal() +
+    ggplot2::labs(x = "Method", y = "Similarity Score") +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+      panel.grid.major.x = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank()
+    )
+  
+  switch(type,
+    "combined" = base_plot +
+      ggplot2::geom_violin(ggplot2::aes(fill = method), alpha = 0.4) +
+      ggplot2::geom_boxplot(width = 0.2, alpha = 0.7, outlier.shape = NA) +
+      ggplot2::geom_jitter(width = 0.1, alpha = 0.4) +
+      ggplot2::scale_fill_brewer(palette = palette) +
+      ggplot2::theme(legend.position = "none"),
+    "boxplot" = base_plot +
+      ggplot2::geom_boxplot(ggplot2::aes(fill = method)) +
+      ggplot2::scale_fill_brewer(palette = palette) +
+      ggplot2::theme(legend.position = "none"),
+    "point" = base_plot +
+      ggplot2::geom_jitter(ggplot2::aes(color = pair), width = 0.2, alpha = 0.7) +
+      ggplot2::stat_summary(fun = mean, geom = "point", size = 3, color = "black"),
+    "violin" = base_plot +
+      ggplot2::geom_violin(ggplot2::aes(fill = method)) +
+      ggplot2::scale_fill_brewer(palette = palette) +
+      ggplot2::theme(legend.position = "none"),
+    cli::cli_abort("Invalid plot type. Choose 'combined', 'boxplot', 'point', or 'violin'")
+  )
+}
+
+S7::method(print, similar_text) <- function(x, ...) {
+  cli::cli_h1("Text Similarity Analysis")
+  cli::cli_text("Methods used: {.val {paste(x@methods, collapse = ', ')}}")
+  cli::cli_text("Lists compared: {.val {paste(x@list_names, collapse = ', ')}}")
+
+  overall_avgs <- average_similarity(x)
+
+  cli::cli_h2("Overall Method Averages")
+  cli::cli_bullets(purrr::map_chr(names(overall_avgs), function(method) {
+    paste0("* ", method, ": {.val ", round(overall_avgs[method], 3), "}")
+  }))
+
+  purrr::walk(x@methods, function(method) {
+    cli::cli_h2("Method: {.field {method}}")
+
+    purrr::walk(names(x@summary[[method]]), function(pair_name) {
+      cli::cli_h3("Comparison: {.val {pair_name}}")
+
+      cli::cli_h3("Summary Statistics")
+      summary_stats <- x@summary[[method]][[pair_name]]
+
+      cli::cli_bullets(c(
+        "*" = "Mean: {.val {round(summary_stats$mean, 3)}}",
+        "*" = "Median: {.val {round(summary_stats$median, 3)}}",
+        "*" = "SD: {.val {round(summary_stats$sd, 3)}}",
+        "*" = "IQR: {.val {round(summary_stats$iqr, 3)}}",
+        "*" = "Range: [{.val {round(summary_stats$min, 3)}} - {.val {round(summary_stats$max, 3)}}]"
+      ))
+    })
+  })
+
+  invisible(x)
+}
+
+S7::method(summary, similar_text) <- function(object, ...) {
+  overall_avgs <- average_similarity(object)
+  pair_avgs <- pair_averages(object)
+
+  result <- list(
+    methods = object@methods,
+    list_names = object@list_names,
+    overall_averages = overall_avgs,
+    pair_averages = pair_avgs
+  )
+
+  class(result) <- "summary.similar_text"
+  return(result)
+}
+
+# The plot.similar_text method is now defined directly with S7::method(plot, similar_text) above
 
 #' Calculate String Similarity Score
 #'
@@ -327,4 +423,32 @@ same_text <- function(..., method = "jw", q = 1, p = NULL, bt = 0,
     methods = method,
     list_names = list_names
   )
+}
+
+#' Print Method for summary.similar_text Objects
+#'
+#' @param x A summary.similar_text object
+#' @param ... Additional arguments (not used)
+#'
+#' @return Invisibly returns the input object
+#'
+#' @export
+print.summary.similar_text <- function(x, ...) {
+  cli::cli_h1("Summary: Text Similarity Analysis")
+
+  cli::cli_h2("Methods Used")
+  cli::cli_text("{.val {paste(x$methods, collapse = ', ')}}")
+
+  cli::cli_h2("Lists Compared")
+  cli::cli_text("{.val {paste(x$list_names, collapse = ', ')}}")
+
+  cli::cli_h2("Overall Method Averages")
+  cli::cli_bullets(purrr::map_chr(names(x$overall_averages), function(method) {
+    paste0("* ", method, ": {.val ", round(x$overall_averages[method], 3), "}")
+  }))
+
+  cli::cli_h2("Pair Averages")
+  print(x$pair_averages, row.names = FALSE)
+
+  invisible(x)
 }
