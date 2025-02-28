@@ -1,6 +1,6 @@
 # samesies <img src="man/figures/samesies-hex.png" align="right" width="140"/>
 
-Samesies is a reliability tool for comparing the similarity of texts, factors, or numbers across two or more lists. The motivating use case is to evaluate the reliability of LLM responses across models, providers, or prompts.
+Samesies is a reliability tool for comparing the similarity of texts, factors, or numbers across two or more lists. The motivating use case is to evaluate the reliability of Large Language Model (LLM) responses across models, providers, or prompts.
 
 ## Installation
 
@@ -27,7 +27,7 @@ r2 <- list("R is a full-stack programming language",
 tex <- same_text(r1, r2)
 ```
 
-Methods available via [stringdist](https://github.com/markvanderloo/stringdist) (e.g., `method = "cosine"`):
+Methods available via [stringdist](https://github.com/markvanderloo/stringdist) (e.g., `method = "osa"`):
 
 -   Transformational Algorithms
 
