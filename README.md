@@ -27,13 +27,7 @@ r2 <- list("R is a full-stack programming language",
 tex <- same_text(r1, r2)
 ```
 
-By default, all methods will be used. Opt-in to specific methods.
-
-```         
-tex <- same_text(r1, r2, method = "cosine")
-```
-
-Methods available via [stringdist](https://github.com/markvanderloo/stringdist):
+Methods available via [stringdist](https://github.com/markvanderloo/stringdist) (e.g., `method = "cosine"`):
 
 -   Transformational Algorithms
 
@@ -66,7 +60,7 @@ fct <- same_factor(cats1, cats2,
                    levels = c("R", "Python"))
 ```
 
-Methods available:
+Methods available (e.g., `method = "exact"`):
 
 -   **exact**: Exact matching
 -   **order**: Distances across ordered factor levels
@@ -82,7 +76,7 @@ n2 <- list(1, 2.1, 3.2)
 num <- same_number(n1, n2)
 ```
 
-Methods available:
+Methods available (e.g., `method = "exact"`):
 
 -   **exact**: Exact matching
 -   **percent_diff**: Percentage difference
@@ -106,13 +100,11 @@ num <- same_number(n1, n2,
 
 Nested lists are supported as long as they share the same names and lengths.
 
-## Working with Results
+## Methods
 
 All three functions return `similar` objects that support the following methods:
 
-``` r
-print()
-summary()
-average_similarity()
-pair_averages()
-```
+-   `print()`
+-   `summary()`
+-   `average_similarity()`
+-   `pair_averages()`
