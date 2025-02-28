@@ -29,7 +29,8 @@ S7::method(print, similar_number) <- function(x, ...) {
         "*" = "Mean: {.val {round(summary_stats$mean, 3)}}",
         "*" = "Median: {.val {round(summary_stats$median, 3)}}",
         "*" = "SD: {.val {round(summary_stats$sd, 3)}}",
-        "*" = "Range: [{.val {round(summary_stats$min, 3)}} - {.val {round(summary_stats$max, 3)}}]"
+        "*" = "Range: [{.val {round(summary_stats$min, 3)}} - {.val {round(summary_stats$max, 3)}}]",
+        "*" = "Exact Matches: {.val {sum(x@scores[[method]][[pair_name]] == 1)}} of {.val {length(x@scores[[method]][[pair_name]])}}"
       ))
     })
   })
