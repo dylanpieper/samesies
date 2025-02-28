@@ -2,7 +2,7 @@
 % Please edit documentation in R/1-same-factor.R
 \name{same_factor}
 \alias{same_factor}
-\title{Compare Categorical Data Similarity Across Multiple Lists}
+\title{Compare Factor Similarity Across Lists}
 \usage{
 same_factor(..., method = c("exact", "order"), levels, ordered = FALSE)
 }
@@ -28,5 +28,5 @@ An S7 object of type "similar_factor" containing:
 }
 }
 \description{
-Compare Categorical Data Similarity Across Multiple Lists
+Compare Factor Similarity Across Lists
 }

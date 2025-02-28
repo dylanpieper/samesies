@@ -2,12 +2,13 @@
 % Please edit documentation in R/1-same-number.R
 \name{same_number}
 \alias{same_number}
-\title{Compare Numeric Lists for Similarity}
+\title{Compare Numerical Similarity Across Lists}
 \usage{
 same_number(
   ...,
   method = c("exact", "percent_diff", "normalized", "fuzzy"),
-  epsilon = NULL,
+  epsilon = 0.05,
+  epsilon_pct = 0.02,
   max_diff = NULL
 )
 }
@@ -17,6 +18,8 @@ same_number(
 \item{method}{Character vector specifying similarity methods (default: all)}
 
 \item{epsilon}{Threshold for fuzzy matching (default: NULL for auto-calculation)}
+
+\item{epsilon_pct}{Relative epsilon percentile (default: 0.02 or 2\%). Only used when method is "fuzzy"}
 
 \item{max_diff}{Maximum difference for normalization (default: NULL for auto-calculation)}
 }

@@ -9,7 +9,8 @@ calculate_number_similarity(
   num2,
   method,
   epsilon = 0.05,
-  max_diff = NULL
+  max_diff = NULL,
+  epsilon_pct = 0.02
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ calculate_number_similarity(
 \item{epsilon}{Threshold for fuzzy matching. Only used when method is "fuzzy"}
 
 \item{max_diff}{Maximum difference for normalization. Only used when method is "normalized"}
+
+\item{epsilon_pct}{Relative epsilon percentile (default: 0.02 or 2\%). Only used when method is "fuzzy"}
 }
 \value{
 Numeric similarity score between 0 and 1

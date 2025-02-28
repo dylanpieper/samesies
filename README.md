@@ -80,20 +80,25 @@ Methods available (e.g., `method = "exact"`):
 
 -   **exact**: Exact matching
 -   **percent_diff**: Percentage difference
--   **normalized**: Normalized difference (set `max_diff` or else auto-calculate)
+-   **normalized**: Normalized difference (set `max_diff` or auto-calculate)
 
 ``` r
 num <- same_number(n1, n2, 
                    method = "normalized", 
-                   max_diff = 2)
+                   max_diff = 2.2)
 ```
 
--   **fuzzy**: Fuzzy matching with tolerance (set `epsilon` or else auto-calculate)
+-   **fuzzy**: Fuzzy matching with dual tolerance system:
+    -   Uses both relative and absolute tolerance thresholds
+    -   The fuzzy matching method calculates numeric similarity by using both a relative (default 2%) and absolute (default 0.05) tolerance
+    -   Values within the maximum of these two epsilon thresholds are considered exact matches (score of 1)
+    -   Similarity scores gradually decrease as the difference grows beyond the threshold
 
 ``` r
 num <- same_number(n1, n2, 
                    method = "fuzzy", 
-                   epsilon = 0.1)
+                   epsilon = 0.1,
+                   epsilon_pct = 0.05)
 ```
 
 ## Nested Lists

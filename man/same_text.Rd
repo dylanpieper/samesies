@@ -2,7 +2,7 @@
 % Please edit documentation in R/1-same-text.R
 \name{same_text}
 \alias{same_text}
-\title{Compare Text Similarity Across Multiple Lists}
+\title{Compare Text Similarity Across Lists}
 \usage{
 same_text(
   ...,
@@ -40,7 +40,7 @@ An S7 class object of type "similar_text" containing:
 }
 }
 \description{
-Compare Text Similarity Across Multiple Lists
+Compare Text Similarity Across Lists
 }
 \examples{
 list1 <- list("hello", "world")

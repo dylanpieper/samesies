@@ -4,8 +4,9 @@
 #' @param method Method to use for similarity calculation. One of: "exact", "percent_diff", "normalized", "fuzzy"
 #' @param epsilon Threshold for fuzzy matching. Only used when method is "fuzzy"
 #' @param max_diff Maximum difference for normalization. Only used when method is "normalized"
+#' @param epsilon_pct Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"
 #' @return Numeric similarity score between 0 and 1
-calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_diff = NULL) {
+calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_diff = NULL, epsilon_pct = 0.02) {
   if (is.na(num1) && is.na(num2)) {
     return(1)
   }
@@ -51,7 +52,7 @@ calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_
         return(as.numeric(abs_diff == 0))
       }
 
-      relative_epsilon <- larger_val * 0.02
+      relative_epsilon <- larger_val * epsilon_pct
       absolute_epsilon <- epsilon
 
       effective_epsilon <- max(relative_epsilon, absolute_epsilon)
@@ -72,9 +73,10 @@ calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_
 #' @param method Method to use for similarity calculation. One of: "exact", "percent_diff", "normalized", "fuzzy"
 #' @param epsilon Threshold for fuzzy matching. Only used when method is "fuzzy"
 #' @param max_diff Maximum difference for normalization. Only used when method is "normalized"
+#' @param epsilon_pct Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"
 #' @return Vector of numeric similarity scores between 0 and 1
 #' @keywords internal
-calculate_number_scores <- function(list1, list2, method, epsilon = 0.05, max_diff = NULL) {
+calculate_number_scores <- function(list1, list2, method, epsilon = NULL, max_diff = NULL, epsilon_pct = NULL) {
   if (length(list1) != length(list2)) {
     cli::cli_abort("All lists must have same length")
   }
@@ -92,7 +94,8 @@ calculate_number_scores <- function(list1, list2, method, epsilon = 0.05, max_di
         x, y,
         method = method,
         epsilon = epsilon,
-        max_diff = max_diff
+        max_diff = max_diff,
+        epsilon_pct = epsilon_pct
       )
     }
   )
@@ -176,13 +179,14 @@ validate_number_inputs <- function(...) {
   TRUE
 }
 
-#' Compare Numeric Lists for Similarity
+#' Compare Numerical Similarity Across Lists
 #' @description Computes similarity scores between two or more lists of numeric values using multiple comparison methods.
 #'
 #' @param ... Two or more lists containing numeric values to compare
 #' @param method Character vector specifying similarity methods (default: all)
 #' @param epsilon Threshold for fuzzy matching (default: NULL for auto-calculation)
 #' @param max_diff Maximum difference for normalization (default: NULL for auto-calculation)
+#' @param epsilon_pct Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"
 #'
 #' @return An S7 object containing:
 #'   \itemize{
@@ -199,7 +203,7 @@ validate_number_inputs <- function(...) {
 #' result <- same_number(nums1, nums2)
 #' @export
 same_number <- function(..., method = c("exact", "percent_diff", "normalized", "fuzzy"),
-                        epsilon = NULL, max_diff = NULL) {
+                        epsilon = 0.05, epsilon_pct = 0.02, max_diff = NULL) {
   valid_methods <- c(
     "exact", "percent_diff", "normalized", "fuzzy"
   )
@@ -285,7 +289,8 @@ same_number <- function(..., method = c("exact", "percent_diff", "normalized", "
             key_lists[[idx2]],
             method = m,
             epsilon = key_epsilon,
-            max_diff = key_max_diff
+            max_diff = key_max_diff,
+            epsilon_pct = epsilon_pct
           )
 
           mean_score <- round(mean(pair_result), 3)
@@ -339,7 +344,8 @@ same_number <- function(..., method = c("exact", "percent_diff", "normalized", "
           flattened_inputs[[idx2]],
           method = m,
           epsilon = epsilon,
-          max_diff = max_diff
+          max_diff = max_diff,
+          epsilon_pct = epsilon_pct
         )
 
         mean_score <- round(mean(pair_result), 3)

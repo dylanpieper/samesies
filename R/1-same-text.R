@@ -122,7 +122,7 @@ validate_text_inputs <- function(...) {
   TRUE
 }
 
-#' Compare Text Similarity Across Multiple Lists
+#' Compare Text Similarity Across Lists
 #'
 #' @param ... Lists of character strings to compare
 #' @param method Character vector of similarity methods from `stringdist`. Choose from:

@@ -93,7 +93,7 @@ validate_factor_inputs <- function(..., levels) {
   TRUE
 }
 
-#' Compare Categorical Data Similarity Across Multiple Lists
+#' Compare Factor Similarity Across Lists
 #'
 #' @param ... Lists of categorical values (character or factor) to compare
 #' @param method Character vector of similarity methods. Choose from: "exact",
