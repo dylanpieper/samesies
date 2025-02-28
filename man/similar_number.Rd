@@ -12,6 +12,17 @@ similar_number(
   raw_values = list()
 )
 }
+\arguments{
+\item{scores}{List of similarity scores per method and comparison}
+
+\item{summary}{Summary statistics by method and comparison}
+
+\item{methods}{Character vector of methods used for comparison}
+
+\item{list_names}{Character vector of names for the compared lists}
+
+\item{raw_values}{List of raw numeric values being compared}
+}
 \description{
 \code{similar_number} is an S7 class for numeric similarity comparisons.
 }

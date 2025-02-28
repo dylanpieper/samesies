@@ -11,6 +11,15 @@ similar_text(
   list_names = character(0)
 )
 }
+\arguments{
+\item{scores}{List of similarity scores per method and comparison}
+
+\item{summary}{Summary statistics by method and comparison}
+
+\item{methods}{Character vector of methods used for comparison}
+
+\item{list_names}{Character vector of names for the compared lists}
+}
 \description{
 \code{similar_text} is an S7 class for text similarity comparisons.
 }

@@ -5,6 +5,11 @@
 #' This class defines common properties and validation logic shared among child classes
 #' like `similar_text`, `similar_factor`, and `similar_number`.
 #'
+#' @param scores List of similarity scores per method and comparison
+#' @param summary Summary statistics by method and comparison
+#' @param methods Character vector of methods used for comparison
+#' @param list_names Character vector of names for the compared lists
+#'
 #' @details
 #' This class provides the foundation for all similarity comparison classes.
 #' It includes common properties:
@@ -62,6 +67,11 @@ similar <- S7::new_class("similar",
 #' @description
 #' `similar_text` is an S7 class for text similarity comparisons.
 #'
+#' @param scores List of similarity scores per method and comparison
+#' @param summary Summary statistics by method and comparison
+#' @param methods Character vector of methods used for comparison
+#' @param list_names Character vector of names for the compared lists
+#'
 #' @details
 #' This class extends the abstract `similar` class and implements
 #' text-specific similarity comparison methods.
@@ -94,6 +104,12 @@ similar_text <- S7::new_class("similar_text",
 #' @description
 #' `similar_factor` is an S7 class for categorical/factor similarity comparisons.
 #'
+#' @param scores List of similarity scores per method and comparison
+#' @param summary Summary statistics by method and comparison
+#' @param methods Character vector of methods used for comparison
+#' @param list_names Character vector of names for the compared lists
+#' @param levels Character vector of factor levels
+#'
 #' @details
 #' This class extends the abstract `similar` class and implements
 #' categorical data-specific similarity comparison methods.
@@ -124,6 +140,12 @@ similar_factor <- S7::new_class("similar_factor",
 #'
 #' @description
 #' `similar_number` is an S7 class for numeric similarity comparisons.
+#'
+#' @param scores List of similarity scores per method and comparison
+#' @param summary Summary statistics by method and comparison
+#' @param methods Character vector of methods used for comparison
+#' @param list_names Character vector of names for the compared lists
+#' @param raw_values List of raw numeric values being compared
 #'
 #' @details
 #' This class extends the abstract `similar` class and implements

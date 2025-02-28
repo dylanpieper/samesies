@@ -56,7 +56,7 @@ test_that("same_text handles nested structures", {
 
   expect_true(inherits(result3, "samesies::similar_text"))
   expect_true(inherits(result4, "samesies::similar_text"))
-  
+
   # Check that the scores and methods are present
   expect_true("jw" %in% names(result3@scores))
   expect_true(is.list(result3@scores$jw))
@@ -91,14 +91,14 @@ test_that("same_text utility functions work with multiple methods", {
   expect_type(avg_sim, "double")
   expect_named(avg_sim, c("jw", "lv"))
   expect_true(all(avg_sim >= 0 & avg_sim <= 1))
-  
+
   # Test pair_averages function with all methods
   pairs <- pair_averages(result)
   expect_s3_class(pairs, "data.frame")
   expect_named(pairs, c("method", "pair", "avg_score"))
   expect_true(all(pairs$method %in% c("jw", "lv")))
   expect_true(all(pairs$avg_score >= 0 & pairs$avg_score <= 1))
-  
+
   # Test pair_averages with specific method
   jw_pairs <- pair_averages(result, method = "jw")
   expect_s3_class(jw_pairs, "data.frame")

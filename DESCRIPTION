@@ -4,20 +4,24 @@ Version: 0.0.0.9000
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
 Description: A reliability tool for comparing the similarity of texts, factors, or numbers 
-    across two or more lists. The motivating use case is to quantify the reliability of 
+    across two or more lists. The motivating use case is to evaluate the reliability of 
     Large Language Model (LLM) responses across models, providers, or prompts.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports:
-    R6,
-    stringdist,
-    purrr,
-    ggplot2,
-    ggbeeswarm,
     cli,
-    stats
+    dplyr,
+    ggbeeswarm,
+    ggplot2,
+    purrr,
+    S7,
+    scales,
+    stats,
+    stringdist
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    devtools
 Config/testthat/edition: 3
+URL: https://dylanpieper.github.io/samesies/

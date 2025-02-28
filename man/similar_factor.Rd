@@ -12,6 +12,17 @@ similar_factor(
   levels = character(0)
 )
 }
+\arguments{
+\item{scores}{List of similarity scores per method and comparison}
+
+\item{summary}{Summary statistics by method and comparison}
+
+\item{methods}{Character vector of methods used for comparison}
+
+\item{list_names}{Character vector of names for the compared lists}
+
+\item{levels}{Character vector of factor levels}
+}
 \description{
 \code{similar_factor} is an S7 class for categorical/factor similarity comparisons.
 }
