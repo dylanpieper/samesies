@@ -36,63 +36,6 @@ mean_scores_by_method <- function(scores) {
   round(result, 3)
 }
 
-#' Create a Calculator Factory
-#'
-#' @description
-#' Creates a factory function that returns calculator objects for specific similarity types
-#'
-#' @return A function that creates calculator objects
-#'
-#' @noRd
-create_calculator_factory <- function() {
-  function(type) {
-    switch(type,
-      "text" = TextSimilarityCalculator$new(),
-      "factor" = FactorSimilarityCalculator$new(),
-      "number" = NumberSimilarityCalculator$new(),
-      cli::cli_abort("Unknown calculator type: {type}")
-    )
-  }
-}
-
-#' Create a Formatter Factory
-#'
-#' @description
-#' Creates a factory function that returns formatter objects for specific similarity types
-#'
-#' @return A function that creates formatter objects
-#'
-#' @noRd
-create_formatter_factory <- function() {
-  function(type) {
-    switch(type,
-      "text" = TextSimilarityFormatter$new(),
-      "factor" = FactorSimilarityFormatter$new(), 
-      "number" = NumberSimilarityFormatter$new(),
-      cli::cli_abort("Unknown formatter type: {type}")
-    )
-  }
-}
-
-#' Create a Plotter Factory
-#' 
-#' @description
-#' Creates a factory function that returns plotter objects for specific similarity types
-#'
-#' @return A function that creates plotter objects
-#'
-#' @noRd
-create_plotter_factory <- function() {
-  function(type) {
-    switch(type,
-      "text" = TextSimilarityPlotter$new(),
-      "factor" = FactorSimilarityPlotter$new(),
-      "number" = NumberSimilarityPlotter$new(),
-      cli::cli_abort("Unknown plotter type: {type}")
-    )
-  }
-}
-
 #' Calculate Average Similarity Scores
 #'
 #' @param x A similarity object created by one of the similarity functions
@@ -165,4 +108,21 @@ plot.similar <- function(x, type = "combined", palette = "Set2", ...) {
     return(x$make_plot(type, palette, ...))
   }
   NextMethod()
+}
+
+# This empty method prevents documentation error
+#' @export
+summary.similar_number <- function(object, ...) {
+  overall_avgs <- average_similarity(object)
+  pair_avgs <- pair_averages(object)
+
+  result <- list(
+    methods = object@methods,
+    list_names = object@list_names,
+    overall_averages = overall_avgs,
+    pair_averages = pair_avgs
+  )
+
+  class(result) <- "summary.similar_number"
+  return(result)
 }
