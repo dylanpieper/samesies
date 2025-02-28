@@ -42,7 +42,8 @@
 <span>  <span class="va">num2</span>,</span>
 <span>  <span class="va">method</span>,</span>
 <span>  epsilon <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  max_diff <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  max_diff <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  epsilon_pct <span class="op">=</span> <span class="fl">0.02</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -68,6 +69,10 @@
 
 <dt id="arg-max-diff">max_diff<a class="anchor" aria-label="anchor" href="#arg-max-diff"></a></dt>
 <dd><p>Maximum difference for normalization. Only used when method is "normalized"</p></dd>
+
+
+<dt id="arg-epsilon-pct">epsilon_pct<a class="anchor" aria-label="anchor" href="#arg-epsilon-pct"></a></dt>
+<dd><p>Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"</p></dd>
 
 </dl></div>
     <div class="section level2">

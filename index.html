@@ -147,20 +147,28 @@
 <li>
 <strong>percent_diff</strong>: Percentage difference</li>
 <li>
-<strong>normalized</strong>: Normalized difference (set <code>max_diff</code> or else auto-calculate)</li>
+<strong>normalized</strong>: Normalized difference (set <code>max_diff</code> or auto-calculate)</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/same_number.html">same_number</a></span><span class="op">(</span><span class="va">n1</span>, <span class="va">n2</span>, </span>
 <span>                   method <span class="op">=</span> <span class="st">"normalized"</span>, </span>
-<span>                   max_diff <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<span>                   max_diff <span class="op">=</span> <span class="fl">2.2</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>
-<strong>fuzzy</strong>: Fuzzy matching with tolerance (set <code>epsilon</code> or else auto-calculate)</li>
+<strong>fuzzy</strong>: Fuzzy matching with dual tolerance system:
+<ul>
+<li>Uses both relative and absolute tolerance thresholds</li>
+<li>The fuzzy matching method calculates numeric similarity by using both a relative (default 2%) and absolute (default 0.05) tolerance</li>
+<li>Values within the maximum of these two epsilon thresholds are considered exact matches (score of 1)</li>
+<li>Similarity scores gradually decrease as the difference grows beyond the threshold</li>
+</ul>
+</li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/same_number.html">same_number</a></span><span class="op">(</span><span class="va">n1</span>, <span class="va">n2</span>, </span>
 <span>                   method <span class="op">=</span> <span class="st">"fuzzy"</span>, </span>
-<span>                   epsilon <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
+<span>                   epsilon <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>                   epsilon_pct <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -177,6 +185,23 @@
 <li><code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code></li>
 <li><code><a href="reference/average_similarity.html">average_similarity()</a></code></li>
 <li><code><a href="reference/pair_averages.html">pair_averages()</a></code></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="accessing-object-data">Accessing Object Data<a class="anchor" aria-label="anchor" href="#accessing-object-data"></a>
+</h2>
+<p>The package uses S7 objects, allowing direct access to the underlying data using the <code>@</code> operator:</p>
+<ul>
+<li>
+<code>@scores</code>: A list of similarity scores for each method and comparison pair</li>
+<li>
+<code>@summary</code>: A list of statistical summaries for each method and comparison pair</li>
+<li>
+<code>@methods</code>: The similarity methods used in the analysis</li>
+<li>
+<code>@list_names</code>: Names of the input lists</li>
+<li>
+<code>@raw_values</code>: The original input values</li>
 </ul>
 </div>
 <div class="section level2">
