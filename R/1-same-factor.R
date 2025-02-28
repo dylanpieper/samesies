@@ -2,7 +2,7 @@
 #'
 #' @param cat1 First categorical value to compare
 #' @param cat2 Second categorical value to compare
-#' @param method Method for comparison: "exact", "jaccard", "overlap", "matching"
+#' @param method Method for comparison: "exact", "jaccard", "order"
 #' @param levels Character vector of all possible levels
 #'
 #' @return Normalized similarity score between 0 and 1
@@ -26,30 +26,22 @@ calculate_factor_similarity <- function(cat1, cat2, method, levels) {
       as.numeric(cat1 == cat2)
     },
     "jaccard" = {
-      cat1_idx <- match(cat1, levels)
-      cat2_idx <- match(cat2, levels)
-
       cat1_vec <- numeric(length(levels))
       cat2_vec <- numeric(length(levels))
-
-      cat1_vec[cat1_idx] <- 1
-      cat2_vec[cat2_idx] <- 1
-
+      cat1_vec[match(cat1, levels)] <- 1
+      cat2_vec[match(cat2, levels)] <- 1
       sum(cat1_vec & cat2_vec) / sum(cat1_vec | cat2_vec)
     },
-    "overlap" = {
+    "order" = {
       if (cat1 == cat2) {
         return(1)
       }
-
+      if (length(levels) == 1) {
+        return(1)
+      }
       cat1_idx <- match(cat1, levels)
       cat2_idx <- match(cat2, levels)
-
-      level_distance <- abs(cat1_idx - cat2_idx) / (length(levels) - 1)
-      1 - level_distance
-    },
-    "matching" = {
-      as.numeric(cat1 == cat2)
+      1 - abs(cat1_idx - cat2_idx) / (length(levels) - 1)
     }
   )
 }
@@ -127,8 +119,10 @@ validate_factor_inputs <- function(..., levels) {
 #'
 #' @param ... Lists of categorical values (character or factor) to compare
 #' @param method Character vector of similarity methods. Choose from: "exact",
-#'   "jaccard", "overlap", "matching" (default: "exact")
+#'   "jaccard", "order" (default: all)
 #' @param levels Character vector of all allowed levels for comparison
+#' @param ordered Logical. If TRUE, treat levels as ordered (ordinal). If FALSE,
+#'   the "order" method is skipped.
 #'
 #' @return An S7 object of type "similar_factor" containing:
 #'   - scores: Numeric similarity scores by method and comparison
@@ -137,32 +131,25 @@ validate_factor_inputs <- function(..., levels) {
 #'   - list_names: Names of compared lists
 #'   - levels: Levels used for categorical comparison
 #'
-#' @examples
-#' list1 <- list("apple", "orange", "unknown")
-#' list2 <- list("apple", "orange", "unknown")
-#' list3 <- list("apple", "pineapple", "banana")
-#' result <- same_factor(list1, list2, list3, levels = c("apple", "orange", "banana"))
-#' print(result)
-#'
-#' # Compare with multiple methods
-#' result2 <- same_factor(list1, list2, method = c("exact", "jaccard"))
 #' @export
-same_factor <- function(..., method = "exact", levels) {
-  valid_methods <- c(
-    "exact", "jaccard", "overlap", "matching"
-  )
+same_factor <- function(..., method = c("exact", "jaccard", "order"), levels, ordered = FALSE) {
+  valid_methods <- c("exact", "jaccard", "order")
 
   inputs <- list(...)
-
   validate_factor_inputs(..., levels = levels)
 
   method <- unique(if (length(method) == 1) c(method) else method)
-
   invalid_methods <- method[!method %in% valid_methods]
   if (length(invalid_methods) > 0) {
-    cli::cli_abort(c(
-      "All methods must be one of: {paste(valid_methods, collapse = ', ')}"
-    ))
+    cli::cli_abort(c("All methods must be one of: {paste(valid_methods, collapse = ', ')}"))
+  }
+
+  if ("order" %in% method && !ordered) {
+    cli::cli_alert_info("Skipping 'order' method because levels are not explicitly ordered. Set ordered = TRUE to compute the order method.")
+    method <- method[method != "order"]
+  }
+  if (length(method) == 0) {
+    cli::cli_abort("No valid methods remain after filtering. Please check the methods argument or set ordered = TRUE to include the 'order' method.")
   }
 
   dots <- as.list(substitute(list(...)))[-1]
@@ -182,7 +169,6 @@ same_factor <- function(..., method = "exact", levels) {
 
   scores <- list()
   summaries <- list()
-
   for (m in method) {
     scores[[m]] <- list()
     summaries[[m]] <- list()
@@ -190,34 +176,26 @@ same_factor <- function(..., method = "exact", levels) {
 
   if (has_nested) {
     all_keys <- unique(unlist(lapply(inputs, names)))
-
     for (key in all_keys) {
       key_lists <- lapply(inputs, function(x) {
         if (!is.null(x[[key]])) x[[key]] else list()
       })
-
       key_lists <- key_lists[sapply(key_lists, length) > 0]
       if (length(key_lists) < 2) next
 
       pairs <- get_pairwise_combinations(length(key_lists))
-
       for (m in method) {
-        pair_idx <- 1
         for (i in seq_along(pairs$first)) {
           idx1 <- pairs$first[i]
           idx2 <- pairs$second[i]
-
           pair_name <- paste0(key, "_", list_names[idx1], "_", list_names[idx2])
-
           pair_result <- calculate_factor_scores(
             key_lists[[idx1]],
             key_lists[[idx2]],
             method = m,
             levels = levels
           )
-
           scores[[m]][[pair_name]] <- pair_result
-
           summaries[[m]][[pair_name]] <- list(
             mean = mean(pair_result),
             median = stats::median(pair_result),
@@ -228,11 +206,8 @@ same_factor <- function(..., method = "exact", levels) {
             q3 = stats::quantile(pair_result, 0.75),
             iqr = stats::IQR(pair_result)
           )
-
           mean_score <- round(mean(pair_result), 3)
           cli::cli_alert_success("Computed {.field {m}} scores for {.val {key}} in {.val {list_names[idx1]}}-{.val {list_names[idx2]}} [mean: {.val {mean_score}}]")
-
-          pair_idx <- pair_idx + 1
         }
       }
     }
@@ -243,35 +218,26 @@ same_factor <- function(..., method = "exact", levels) {
       }
       unlist(lapply(x, flatten_list))
     }
-
     flattened_inputs <- lapply(inputs, flatten_list)
-
     lengths <- purrr::map_int(flattened_inputs, length)
     if (length(unique(lengths)) > 1) {
       cli::cli_abort("All lists must have same length after flattening")
     }
-
     pairs <- get_pairwise_combinations(length(flattened_inputs))
-
     for (m in method) {
       for (i in seq_along(pairs$first)) {
         idx1 <- pairs$first[i]
         idx2 <- pairs$second[i]
-
         pair_name <- paste0(list_names[idx1], "_", list_names[idx2])
-
         pair_result <- calculate_factor_scores(
           flattened_inputs[[idx1]],
           flattened_inputs[[idx2]],
           method = m,
           levels = levels
         )
-
         mean_score <- round(mean(pair_result), 3)
         cli::cli_alert_success("Computed {.field {m}} scores for {.val {pair_name}} [mean: {.val {mean_score}}]")
-
         scores[[m]][[pair_name]] <- pair_result
-
         summaries[[m]][[pair_name]] <- list(
           mean = mean(pair_result),
           median = stats::median(pair_result),

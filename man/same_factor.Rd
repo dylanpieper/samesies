@@ -4,15 +4,23 @@
 \alias{same_factor}
 \title{Compare Categorical Data Similarity Across Multiple Lists}
 \usage{
-same_factor(..., method = "exact", levels)
+same_factor(
+  ...,
+  method = c("exact", "jaccard", "order"),
+  levels,
+  ordered = FALSE
+)
 }
 \arguments{
 \item{...}{Lists of categorical values (character or factor) to compare}
 
 \item{method}{Character vector of similarity methods. Choose from: "exact",
-"jaccard", "overlap", "matching" (default: "exact")}
+"jaccard", "order" (default: all)}
 
 \item{levels}{Character vector of all allowed levels for comparison}
+
+\item{ordered}{Logical. If TRUE, treat levels as ordered (ordinal). If FALSE,
+the "order" method is skipped.}
 }
 \value{
 An S7 object of type "similar_factor" containing:
@@ -26,14 +34,4 @@ An S7 object of type "similar_factor" containing:
 }
 \description{
 Compare Categorical Data Similarity Across Multiple Lists
-}
-\examples{
-list1 <- list("apple", "orange", "unknown")
-list2 <- list("apple", "orange", "unknown")
-list3 <- list("apple", "pineapple", "banana")
-result <- same_factor(list1, list2, list3, levels = c("apple", "orange", "banana"))
-print(result)
-
-# Compare with multiple methods
-result2 <- same_factor(list1, list2, method = c("exact", "jaccard"))
 }

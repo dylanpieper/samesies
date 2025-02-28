@@ -23,7 +23,6 @@ S7::method(print, similar_text) <- function(x, ...) {
     purrr::walk(names(x@summary[[method]]), function(pair_name) {
       cli::cli_h3("Comparison: {.val {pair_name}}")
 
-      cli::cli_h3("Summary Statistics")
       summary_stats <- x@summary[[method]][[pair_name]]
 
       cli::cli_bullets(c(

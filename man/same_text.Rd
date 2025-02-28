@@ -6,7 +6,8 @@
 \usage{
 same_text(
   ...,
-  method = "jw",
+  method = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw",
+    "soundex"),
   q = 1,
   p = NULL,
   bt = 0,
@@ -16,9 +17,9 @@ same_text(
 \arguments{
 \item{...}{Lists of character strings to compare}
 
-\item{method}{Character vector of similarity methods. Choose from: "osa",
-"lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"
-(default: "jw")}
+\item{method}{Character vector of similarity methods from \code{stringdist}. Choose from:
+"osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"
+(default: all)}
 
 \item{q}{Size of q-gram for q-gram based methods (default: 1)}
 
@@ -44,13 +45,5 @@ Compare Text Similarity Across Multiple Lists
 \examples{
 list1 <- list("hello", "world")
 list2 <- list("helo", "word")
-result <- same_text(list1, list2, method = "jw")
-print(result)
-
-# Compare with multiple methods
-result2 <- same_text(list1, list2, method = c("jw", "lv"))
-
-# Compare multiple lists
-list3 <- list("hllo", "wrld")
-result3 <- same_text(list1, list2, list3, method = "jw")
+result <- same_text(list1, list2)
 }

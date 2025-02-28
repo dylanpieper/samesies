@@ -195,21 +195,26 @@ validate_number_inputs <- function(...) {
 #' @description Computes similarity scores between two or more lists of numeric values using multiple comparison methods.
 #'
 #' @param ... Two or more lists containing numeric values to compare
-#' @param method Character vector specifying similarity methods. Default c("percent_diff", "fuzzy")
-#' @param epsilon Threshold for fuzzy matching. NULL for auto-calculation
-#' @param max_diff Maximum difference for normalization. NULL for auto-calculation
+#' @param method Character vector specifying similarity methods (default: all)
+#' @param epsilon Threshold for fuzzy matching (default: NULL for auto-calculation)
+#' @param max_diff Maximum difference for normalization (default: NULL for auto-calculation)
 #'
-#' @return An S3 object of class "same_number" that contains an S7 'similar_number' object
-#' and provides methods for average_similarity(), pair_averages(), plot(), print(), and summary().
+#' @return An S7 object containing:
+#'   \itemize{
+#'     \item \code{scores}: A list of similarity scores for each method and list pair
+#'     \item \code{summary}: A list of statistical summaries for each method and list pair
+#'     \item \code{methods}: The similarity methods used
+#'     \item \code{list_names}: Names of the input lists
+#'     \item \code{raw_values}: The original input lists
+#'   }
 #'
 #' @examples
 #' nums1 <- list(1, 2, 3)
 #' nums2 <- list(1, 2.1, 3.2)
 #' result <- same_number(nums1, nums2)
-#' print(result)
-#'
 #' @export
-same_number <- function(..., method = c("percent_diff", "fuzzy"), epsilon = NULL, max_diff = NULL) {
+same_number <- function(..., method = c("exact", "percent_diff", "normalized", "fuzzy"),
+                        epsilon = NULL, max_diff = NULL) {
   valid_methods <- c(
     "exact", "percent_diff", "normalized", "fuzzy"
   )

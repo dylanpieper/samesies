@@ -125,9 +125,9 @@ validate_text_inputs <- function(...) {
 #' Compare Text Similarity Across Multiple Lists
 #'
 #' @param ... Lists of character strings to compare
-#' @param method Character vector of similarity methods. Choose from: "osa",
-#'   "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"
-#'   (default: "jw")
+#' @param method Character vector of similarity methods from `stringdist`. Choose from:
+#'   "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"
+#'   (default: all)
 #' @param q Size of q-gram for q-gram based methods (default: 1)
 #' @param p Winkler scaling factor for "jw" method (default: 0.1)
 #' @param bt Booth matching threshold
@@ -143,17 +143,10 @@ validate_text_inputs <- function(...) {
 #' @examples
 #' list1 <- list("hello", "world")
 #' list2 <- list("helo", "word")
-#' result <- same_text(list1, list2, method = "jw")
-#' print(result)
-#'
-#' # Compare with multiple methods
-#' result2 <- same_text(list1, list2, method = c("jw", "lv"))
-#'
-#' # Compare multiple lists
-#' list3 <- list("hllo", "wrld")
-#' result3 <- same_text(list1, list2, list3, method = "jw")
+#' result <- same_text(list1, list2)
 #' @export
-same_text <- function(..., method = "jw", q = 1, p = NULL, bt = 0,
+same_text <- function(..., method = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"),
+                      q = 1, p = NULL, bt = 0,
                       weight = c(d = 1, i = 1, s = 1, t = 1)) {
   valid_methods <- c(
     "osa", "lv", "dl", "hamming", "lcs", "qgram",
