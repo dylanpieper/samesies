@@ -4,18 +4,13 @@
 \alias{same_factor}
 \title{Compare Categorical Data Similarity Across Multiple Lists}
 \usage{
-same_factor(
-  ...,
-  method = c("exact", "jaccard", "order"),
-  levels,
-  ordered = FALSE
-)
+same_factor(..., method = c("exact", "order"), levels, ordered = FALSE)
 }
 \arguments{
 \item{...}{Lists of categorical values (character or factor) to compare}
 
 \item{method}{Character vector of similarity methods. Choose from: "exact",
-"jaccard", "order" (default: all)}
+"order" (default: all)}
 
 \item{levels}{Character vector of all allowed levels for comparison}
 

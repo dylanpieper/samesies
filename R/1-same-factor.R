@@ -2,7 +2,7 @@
 #'
 #' @param cat1 First categorical value to compare
 #' @param cat2 Second categorical value to compare
-#' @param method Method for comparison: "exact", "jaccard", "order"
+#' @param method Method for comparison: "exact", "order"
 #' @param levels Character vector of all possible levels
 #'
 #' @return Normalized similarity score between 0 and 1
@@ -24,13 +24,6 @@ calculate_factor_similarity <- function(cat1, cat2, method, levels) {
   switch(method,
     "exact" = {
       as.numeric(cat1 == cat2)
-    },
-    "jaccard" = {
-      cat1_vec <- numeric(length(levels))
-      cat2_vec <- numeric(length(levels))
-      cat1_vec[match(cat1, levels)] <- 1
-      cat2_vec[match(cat2, levels)] <- 1
-      sum(cat1_vec & cat2_vec) / sum(cat1_vec | cat2_vec)
     },
     "order" = {
       if (cat1 == cat2) {
@@ -104,7 +97,7 @@ validate_factor_inputs <- function(..., levels) {
 #'
 #' @param ... Lists of categorical values (character or factor) to compare
 #' @param method Character vector of similarity methods. Choose from: "exact",
-#'   "jaccard", "order" (default: all)
+#'   "order" (default: all)
 #' @param levels Character vector of all allowed levels for comparison
 #' @param ordered Logical. If TRUE, treat levels as ordered (ordinal). If FALSE,
 #'   the "order" method is skipped.
@@ -117,8 +110,8 @@ validate_factor_inputs <- function(..., levels) {
 #'   - levels: Levels used for categorical comparison
 #'
 #' @export
-same_factor <- function(..., method = c("exact", "jaccard", "order"), levels, ordered = FALSE) {
-  valid_methods <- c("exact", "jaccard", "order")
+same_factor <- function(..., method = c("exact", "order"), levels, ordered = FALSE) {
+  valid_methods <- c("exact", "order")
 
   inputs <- list(...)
   validate_factor_inputs(..., levels = levels)

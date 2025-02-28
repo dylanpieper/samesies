@@ -105,7 +105,7 @@ similar_factor <- S7::new_class("similar_factor",
     levels = S7::class_character
   ),
   validator = function(self) {
-    valid_methods <- c("exact", "jaccard", "order")
+    valid_methods <- c("exact", "order")
 
     invalid_methods <- self@methods[!self@methods %in% valid_methods]
     if (length(invalid_methods) > 0) {
