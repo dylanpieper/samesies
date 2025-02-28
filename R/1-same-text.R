@@ -1,54 +1,3 @@
-#' Create a Similar Text Object for Comparing Text Similarity
-#'
-#' @param scores List of similarity scores for each method and comparison
-#' @param summary List of summary statistics for each method and comparison
-#' @param methods Character vector of similarity methods used
-#' @param list_names Character vector of input list names
-#'
-#' @returns An S7 class object of type "similar_text" containing:
-#'   - scores: Numeric similarity scores by method and comparison
-#'   - summary: Summary statistics by method and comparison
-#'   - methods: Methods used for comparison
-#'   - list_names: Names of compared lists
-#'
-#' @examples
-#' \dontrun{
-#' list1 <- list("hello", "world")
-#' list2 <- list("helo", "word")
-#' result <- same_text(list1, list2, method = "jw")
-#' }
-similar_text <- S7::new_class("similar_text",
-  properties = list(
-    scores = S7::class_list,
-    summary = S7::class_list,
-    methods = S7::class_character,
-    list_names = S7::class_character
-  ),
-  validator = function(self) {
-    valid_methods <- c(
-      "osa", "lv", "dl", "hamming", "lcs", "qgram",
-      "cosine", "jaccard", "jw", "soundex"
-    )
-
-    if (!all(self@methods %in% valid_methods)) {
-      return(sprintf(
-        "All methods must be one of: %s",
-        paste(valid_methods, collapse = ", ")
-      ))
-    }
-
-    if (!purrr::every(self@scores, ~ purrr::every(.x, is.numeric))) {
-      return("All scores must be numeric")
-    }
-
-    if (!purrr::every(self@scores, ~ purrr::every(.x, ~ all(.x >= 0 & .x <= 1, na.rm = TRUE)))) {
-      return("All scores must be between 0 and 1")
-    }
-
-    NULL
-  }
-)
-
 #' Calculate String Similarity Score
 #'
 #' @param str1 First string to compare
@@ -176,9 +125,9 @@ validate_text_inputs <- function(...) {
 #' Compare Text Similarity Across Multiple Lists
 #'
 #' @param ... Lists of character strings to compare
-#' @param method Character vector of similarity methods. Choose from: "osa",
-#'   "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"
-#'   (default: "jw")
+#' @param method Character vector of similarity methods from `stringdist`. Choose from:
+#'   "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"
+#'   (default: all)
 #' @param q Size of q-gram for q-gram based methods (default: 1)
 #' @param p Winkler scaling factor for "jw" method (default: 0.1)
 #' @param bt Booth matching threshold
@@ -194,17 +143,10 @@ validate_text_inputs <- function(...) {
 #' @examples
 #' list1 <- list("hello", "world")
 #' list2 <- list("helo", "word")
-#' result <- same_text(list1, list2, method = "jw")
-#' print(result)
-#'
-#' # Compare with multiple methods
-#' result2 <- same_text(list1, list2, method = c("jw", "lv"))
-#'
-#' # Compare multiple lists
-#' list3 <- list("hllo", "wrld")
-#' result3 <- same_text(list1, list2, list3, method = "jw")
+#' result <- same_text(list1, list2)
 #' @export
-same_text <- function(..., method = "jw", q = 1, p = NULL, bt = 0,
+same_text <- function(..., method = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"),
+                      q = 1, p = NULL, bt = 0,
                       weight = c(d = 1, i = 1, s = 1, t = 1)) {
   valid_methods <- c(
     "osa", "lv", "dl", "hamming", "lcs", "qgram",
@@ -217,22 +159,7 @@ same_text <- function(..., method = "jw", q = 1, p = NULL, bt = 0,
     cli::cli_abort("At least two inputs required")
   }
 
-  is_valid_element <- function(x) {
-    if (is.list(x)) {
-      return(all(vapply(x, is_valid_element, logical(1))))
-    } else {
-      return(is.character(x) && length(x) == 1)
-    }
-  }
-
-  is_valid_list <- function(x) {
-    if (!is.list(x)) {
-      return(FALSE)
-    }
-    return(all(vapply(x, is_valid_element, logical(1))))
-  }
-
-  invalid_inputs <- which(!vapply(inputs, is_valid_list, logical(1)))
+  invalid_inputs <- which(!vapply(inputs, function(x) is_valid_list(x, "text"), logical(1)))
 
   if (length(invalid_inputs) > 0) {
     cli::cli_abort(c(
@@ -255,13 +182,6 @@ same_text <- function(..., method = "jw", q = 1, p = NULL, bt = 0,
     names(dots)
   } else {
     purrr::map_chr(dots, ~ deparse(.x)[1])
-  }
-
-  flatten_list <- function(x) {
-    if (!is.list(x)) {
-      return(x)
-    }
-    unlist(lapply(x, flatten_list))
   }
 
   flattened_inputs <- lapply(inputs, flatten_list)

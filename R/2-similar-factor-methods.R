@@ -1,0 +1,92 @@
+#' Print method for similar_factor objects
+#'
+#' @param x A similar_factor object
+#' @param ... Additional arguments (not used)
+#'
+#' @return The object invisibly
+#' @noRd
+S7::method(print, similar_factor) <- function(x, ...) {
+  cli::cli_h1("Factor Similarity Analysis")
+  cli::cli_text("Methods used: {.val {paste(x@methods, collapse = ', ')}}")
+  cli::cli_text("Lists compared: {.val {paste(x@list_names, collapse = ', ')}}")
+  cli::cli_text("Levels used: {.val {paste(x@levels, collapse = ', ')}}")
+
+  overall_avgs <- average_similarity(x)
+
+  cli::cli_h2("Overall Method Averages")
+  cli::cli_bullets(purrr::map_chr(names(overall_avgs), function(method) {
+    paste0("* ", method, ": {.val ", round(overall_avgs[method], 3), "}")
+  }))
+
+  purrr::walk(x@methods, function(method) {
+    cli::cli_h2("Method: {.field {method}}")
+
+    purrr::walk(names(x@summary[[method]]), function(pair_name) {
+      cli::cli_h3("Comparison: {.val {pair_name}}")
+
+      summary_stats <- x@summary[[method]][[pair_name]]
+
+      cli::cli_bullets(c(
+        "*" = "Mean: {.val {round(summary_stats$mean, 3)}}",
+        "*" = "Median: {.val {round(summary_stats$median, 3)}}",
+        "*" = "SD: {.val {round(summary_stats$sd, 3)}}",
+        "*" = "Exact Matches: {.val {sum(x@scores[[method]][[pair_name]] == 1)}} of {.val {length(x@scores[[method]][[pair_name]])}}"
+      ))
+    })
+  })
+
+  invisible(x)
+}
+
+#' Summary method for similar_factor objects
+#'
+#' @param object A similar_factor object
+#' @param ... Additional arguments (not used)
+#'
+#' @return A summary.similar_factor object
+#' @noRd
+S7::method(summary, similar_factor) <- function(object, ...) {
+  overall_avgs <- average_similarity(object)
+  pair_avgs <- pair_averages(object)
+
+  result <- list(
+    methods = object@methods,
+    list_names = object@list_names,
+    levels = object@levels,
+    overall_averages = overall_avgs,
+    pair_averages = pair_avgs
+  )
+
+  class(result) <- "summary.similar_factor"
+  return(result)
+}
+
+#' Print method for summary.similar_factor objects
+#'
+#' @param x A summary.similar_factor object
+#' @param ... Additional arguments (not used)
+#'
+#' @return The object invisibly
+#' @noRd
+print.summary.similar_factor <- function(x, ...) {
+  cli::cli_h1("Summary: Categorical Data Similarity Analysis")
+
+  cli::cli_h2("Methods Used")
+  cli::cli_text("{.val {paste(x$methods, collapse = ', ')}}")
+
+  cli::cli_h2("Lists Compared")
+  cli::cli_text("{.val {paste(x$list_names, collapse = ', ')}}")
+
+  cli::cli_h2("Levels")
+  cli::cli_text("{.val {paste(x$levels, collapse = ', ')}}")
+
+  cli::cli_h2("Overall Method Averages")
+  cli::cli_bullets(purrr::map_chr(names(x$overall_averages), function(method) {
+    paste0("* ", method, ": {.val ", round(x$overall_averages[method], 3), "}")
+  }))
+
+  cli::cli_h2("Pair Averages")
+  print(x$pair_averages, row.names = FALSE)
+
+  invisible(x)
+}
