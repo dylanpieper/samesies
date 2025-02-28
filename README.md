@@ -108,3 +108,7 @@ All three functions return `similar` objects that support the following methods:
 -   `summary()`
 -   `average_similarity()`
 -   `pair_averages()`
+
+## Credits
+
+The hex logo image is fan art created by the Reddit user [WistlerR15](https://www.reddit.com/r/Spiderman/comments/k3pcj3/remade_the_spiderman_meme_with_my_favorite/).
