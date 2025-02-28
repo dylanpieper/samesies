@@ -240,7 +240,7 @@ same_number <- function(..., method = c("exact", "percent_diff", "normalized", "
       for (key in all_keys) {
         key_values <- unlist(lapply(inputs, function(x) unlist(x[[key]])))
 
-        if (is.null(epsilon)) {
+        if (is.null(epsilon) && "fuzzy" %in% method) {
           key_epsilons[[key]] <- auto_epsilon(key_values)
           cli_alert_info("Using auto-calculated epsilon for {.val {key}}: {.val {round(key_epsilons[[key]], 5)}}")
         }
@@ -313,7 +313,7 @@ same_number <- function(..., method = c("exact", "percent_diff", "normalized", "
 
     all_values <- unlist(flattened_inputs)
 
-    if (is.null(epsilon)) {
+    if (is.null(epsilon) && "fuzzy" %in% method) {
       epsilon <- auto_epsilon(all_values)
       cli_alert_info("Using auto-calculated epsilon: {.val {round(epsilon, 5)}}")
     }
