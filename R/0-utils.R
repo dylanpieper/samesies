@@ -54,11 +54,6 @@ average_similarity <- function(x, ...) {
   UseMethod("average_similarity")
 }
 
-#' @export
-average_similarity.default <- function(x, ...) {
-  cli::cli_abort("No average_similarity method defined for this class")
-}
-
 #' Calculate Average Similarity Scores By Pairs
 #'
 #' @param x A similarity object created by one of the similarity functions
@@ -80,49 +75,4 @@ pair_averages <- function(x, method = NULL, ...) {
     return(x$calc_pair_averages(method))
   }
   UseMethod("pair_averages")
-}
-
-#' @export
-pair_averages.default <- function(x, method = NULL, ...) {
-  cli::cli_abort("No pair_averages method defined for this class")
-}
-
-#' Visualize Similarity Scores Across Methods
-#'
-#' @param x A similarity object created by one of the similarity functions
-#' @param type Plot type, varies by similarity object but usually includes:
-#'   "combined" (default), "boxplot", "point", or a type-specific visualization
-#' @param palette Color palette to use for the plot (default: "Set2"). Can be any RColorBrewer palette.
-#' @param ... Additional arguments passed to specific methods
-#'
-#' @return A ggplot2 visualization comparing similarity scores across methods
-#'
-#' @description
-#' Creates visualizations to help interpret and compare the different similarity
-#' methods used in the analysis. Plot types vary depending on the specific
-#' similarity object type.
-#'
-#' @export
-plot.similar <- function(x, type = "combined", palette = "Set2", ...) {
-  if (inherits(x, "SimilarityBase")) {
-    return(x$make_plot(type, palette, ...))
-  }
-  NextMethod()
-}
-
-# This empty method prevents documentation error
-#' @export
-summary.similar_number <- function(object, ...) {
-  overall_avgs <- average_similarity(object)
-  pair_avgs <- pair_averages(object)
-
-  result <- list(
-    methods = object@methods,
-    list_names = object@list_names,
-    overall_averages = overall_avgs,
-    pair_averages = pair_avgs
-  )
-
-  class(result) <- "summary.similar_number"
-  return(result)
 }
