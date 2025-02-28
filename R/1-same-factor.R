@@ -172,71 +172,7 @@ same_factor <- function(..., method = "exact", levels) {
     purrr::map_chr(dots, ~ deparse(.x)[1])
   }
 
-  flatten_list <- function(x) {
-    if (!is.list(x)) {
-      return(x)
-    }
-    unlist(lapply(x, flatten_list))
-  }
-
-  flattened_inputs <- lapply(inputs, flatten_list)
-
-  lengths <- purrr::map_int(flattened_inputs, length)
-  if (length(unique(lengths)) > 1) {
-    cli::cli_abort("All lists must have same length after flattening")
-  }
-
-  pairs <- get_pairwise_combinations(length(flattened_inputs))
-
-  scores <- purrr::map(method, function(m) {
-    pair_scores <- purrr::map2(pairs$first, pairs$second, function(idx1, idx2) {
-      pair_name <- paste0(list_names[idx1], "_", list_names[idx2])
-
-      pair_result <- calculate_factor_scores(
-        flattened_inputs[[idx1]],
-        flattened_inputs[[idx2]],
-        method = m,
-        levels = levels
-      )
-
-      mean_score <- round(mean(pair_result), 3)
-      cli::cli_alert_success("Computed {.field {m}} scores for {.val {pair_name}} [mean: {.val {mean_score}}]")
-
-      pair_result
-    })
-
-    names(pair_scores) <- purrr::map2_chr(
-      pairs$first,
-      pairs$second,
-      ~ paste0(list_names[.x], "_", list_names[.y])
-    )
-
-    pair_scores
-  })
-
-  names(scores) <- method
-
-  summaries <- purrr::map(method, function(m) {
-    purrr::map(scores[[m]], function(pair_scores) {
-      list(
-        mean = mean(pair_scores),
-        median = stats::median(pair_scores),
-        sd = stats::sd(pair_scores),
-        min = min(pair_scores),
-        max = max(pair_scores),
-        q1 = stats::quantile(pair_scores, 0.25),
-        q3 = stats::quantile(pair_scores, 0.75),
-        iqr = stats::IQR(pair_scores)
-      )
-    })
-  })
-
-  names(summaries) <- method
-
-  # Check for nested structures and prepare structured scores if needed
-  structured_scores <- scores
   has_nested <- FALSE
-
   for (i in seq_along(inputs)) {
     if (length(names(inputs[[i]])) > 0) {
       has_nested <- TRUE
@@ -244,28 +180,114 @@ same_factor <- function(..., method = "exact", levels) {
     }
   }
 
+  scores <- list()
+  summaries <- list()
+
+  for (m in method) {
+    scores[[m]] <- list()
+    summaries[[m]] <- list()
+  }
+
   if (has_nested) {
-    # Find all unique keys across all nested inputs
     all_keys <- unique(unlist(lapply(inputs, names)))
 
-    # Create structured scores for each key
-    structured_scores <- list()
-
     for (key in all_keys) {
-      structured_scores[[key]] <- list()
+      key_lists <- lapply(inputs, function(x) {
+        if (!is.null(x[[key]])) x[[key]] else list()
+      })
+
+      key_lists <- key_lists[sapply(key_lists, length) > 0]
+      if (length(key_lists) < 2) next
+
+      pairs <- get_pairwise_combinations(length(key_lists))
 
       for (m in method) {
-        structured_scores[[key]][[m]] <- scores[[m]]
+        pair_idx <- 1
+        for (i in seq_along(pairs$first)) {
+          idx1 <- pairs$first[i]
+          idx2 <- pairs$second[i]
+
+          pair_name <- paste0(key, "_", list_names[idx1], "_", list_names[idx2])
+
+          pair_result <- calculate_factor_scores(
+            key_lists[[idx1]],
+            key_lists[[idx2]],
+            method = m,
+            levels = levels
+          )
+
+          scores[[m]][[pair_name]] <- pair_result
+
+          summaries[[m]][[pair_name]] <- list(
+            mean = mean(pair_result),
+            median = stats::median(pair_result),
+            sd = stats::sd(pair_result),
+            min = min(pair_result),
+            max = max(pair_result),
+            q1 = stats::quantile(pair_result, 0.25),
+            q3 = stats::quantile(pair_result, 0.75),
+            iqr = stats::IQR(pair_result)
+          )
+
+          mean_score <- round(mean(pair_result), 3)
+          cli::cli_alert_success("Computed {.field {m}} scores for {.val {key}} in {.val {list_names[idx1]}}-{.val {list_names[idx2]}} [mean: {.val {mean_score}}]")
+
+          pair_idx <- pair_idx + 1
+        }
+      }
+    }
+  } else {
+    flatten_list <- function(x) {
+      if (!is.list(x)) {
+        return(x)
+      }
+      unlist(lapply(x, flatten_list))
+    }
+
+    flattened_inputs <- lapply(inputs, flatten_list)
+
+    lengths <- purrr::map_int(flattened_inputs, length)
+    if (length(unique(lengths)) > 1) {
+      cli::cli_abort("All lists must have same length after flattening")
+    }
+
+    pairs <- get_pairwise_combinations(length(flattened_inputs))
+
+    for (m in method) {
+      for (i in seq_along(pairs$first)) {
+        idx1 <- pairs$first[i]
+        idx2 <- pairs$second[i]
+
+        pair_name <- paste0(list_names[idx1], "_", list_names[idx2])
+
+        pair_result <- calculate_factor_scores(
+          flattened_inputs[[idx1]],
+          flattened_inputs[[idx2]],
+          method = m,
+          levels = levels
+        )
+
+        mean_score <- round(mean(pair_result), 3)
+        cli::cli_alert_success("Computed {.field {m}} scores for {.val {pair_name}} [mean: {.val {mean_score}}]")
+
+        scores[[m]][[pair_name]] <- pair_result
+
+        summaries[[m]][[pair_name]] <- list(
+          mean = mean(pair_result),
+          median = stats::median(pair_result),
+          sd = stats::sd(pair_result),
+          min = min(pair_result),
+          max = max(pair_result),
+          q1 = stats::quantile(pair_result, 0.25),
+          q3 = stats::quantile(pair_result, 0.75),
+          iqr = stats::IQR(pair_result)
+        )
       }
     }
   }
 
-  # If we have structured data, modify the scores to include the structure
-  final_scores <- if (has_nested) structured_scores else scores
-
-  # Return the S7 object directly
   similar_factor(
-    scores = final_scores,
+    scores = scores,
     summary = summaries,
     methods = method,
     list_names = list_names,

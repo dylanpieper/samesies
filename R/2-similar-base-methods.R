@@ -4,6 +4,7 @@
 #' @param ... Additional arguments (not used)
 #'
 #' @return A named numeric vector of mean similarity scores for each method
+#' @noRd
 S7::method(average_similarity, similar) <- function(x, ...) {
   mean_scores_by_method(x@scores)
 }
@@ -15,6 +16,7 @@ S7::method(average_similarity, similar) <- function(x, ...) {
 #' @param ... Additional arguments (not used)
 #'
 #' @return A data frame containing pair-wise average scores
+#' @noRd
 S7::method(pair_averages, similar) <- function(x, method = NULL, ...) {
   # Get methods to use
   methods_list <- x@methods
@@ -53,6 +55,7 @@ S7::method(pair_averages, similar) <- function(x, method = NULL, ...) {
 #' @param ... Additional arguments (not used)
 #'
 #' @return The object invisibly
+#' @noRd
 S7::method(print, similar) <- function(x, ...) {
   cli::cli_h1("Similarity Analysis")
   cli::cli_text("Methods used: {.val {paste(x@methods, collapse = ', ')}}")
@@ -91,6 +94,7 @@ S7::method(print, similar) <- function(x, ...) {
 #' @param ... Additional arguments (not used)
 #'
 #' @return A summary object
+#' @noRd
 S7::method(summary, similar) <- function(object, ...) {
   overall_avgs <- average_similarity(object)
   pair_avgs <- pair_averages(object)
@@ -112,6 +116,7 @@ S7::method(summary, similar) <- function(object, ...) {
 #' @param ... Additional arguments (not used)
 #'
 #' @export
+#' @noRd
 print.summary.similar <- function(x, ...) {
   cli::cli_h1("Summary: Similarity Analysis")
 

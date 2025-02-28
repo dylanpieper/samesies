@@ -4,6 +4,7 @@
 #' @param ... Additional arguments (not used)
 #'
 #' @return The object invisibly
+#' @noRd
 S7::method(print, similar_factor) <- function(x, ...) {
   cli::cli_h1("Factor Similarity Analysis")
   cli::cli_text("Methods used: {.val {paste(x@methods, collapse = ', ')}}")
@@ -44,6 +45,7 @@ S7::method(print, similar_factor) <- function(x, ...) {
 #' @param ... Additional arguments (not used)
 #'
 #' @return A summary.similar_factor object
+#' @noRd
 S7::method(summary, similar_factor) <- function(object, ...) {
   overall_avgs <- average_similarity(object)
   pair_avgs <- pair_averages(object)
@@ -66,7 +68,7 @@ S7::method(summary, similar_factor) <- function(object, ...) {
 #' @param ... Additional arguments (not used)
 #'
 #' @return The object invisibly
-#' @export
+#' @noRd
 print.summary.similar_factor <- function(x, ...) {
   cli::cli_h1("Summary: Categorical Data Similarity Analysis")
 

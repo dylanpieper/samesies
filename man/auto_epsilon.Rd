@@ -12,7 +12,7 @@ auto_epsilon(values, percentile = 0.1)
 \item{percentile}{Percentile used for epsilon calculation (default: 0.1)}
 }
 \value{
-Numeric epsilon value between min_epsilon and max_epsilon
+Numeric epsilon value appropriate for the scale of data
 }
 \description{
 Calculate Epsilon Value for Fuzzy Matching

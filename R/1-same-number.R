@@ -43,11 +43,24 @@ calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_
       similarity
     },
     "fuzzy" = {
-      if (abs(num1 - num2) <= epsilon) {
+      abs_diff <- abs(num1 - num2)
+
+      larger_val <- max(abs(num1), abs(num2))
+
+      if (larger_val == 0) {
+        return(as.numeric(abs_diff == 0))
+      }
+
+      relative_epsilon <- larger_val * 0.02
+      absolute_epsilon <- epsilon
+
+      effective_epsilon <- max(relative_epsilon, absolute_epsilon)
+
+      if (abs_diff <= effective_epsilon) {
         return(1)
       } else {
-        diff <- abs(num1 - num2) - epsilon
-        return(max(0, 1 - diff))
+        scaled_diff <- (abs_diff - effective_epsilon) / larger_val
+        return(max(0, 1 - scaled_diff))
       }
     }
   )
@@ -90,7 +103,7 @@ calculate_number_scores <- function(list1, list2, method, epsilon = 0.05, max_di
 #' Calculate Epsilon Value for Fuzzy Matching
 #' @param values Numeric vector or list of values
 #' @param percentile Percentile used for epsilon calculation (default: 0.1)
-#' @return Numeric epsilon value between min_epsilon and max_epsilon
+#' @return Numeric epsilon value appropriate for the scale of data
 #' @keywords internal
 auto_epsilon <- function(values, percentile = 0.1) {
   values <- unlist(values)
@@ -102,14 +115,21 @@ auto_epsilon <- function(values, percentile = 0.1) {
 
   sd_val <- stats::sd(values)
   mean_val <- mean(abs(values))
+  range_val <- max(values) - min(values)
 
   epsilon <- sd_val * percentile
+  magnitude_component <- mean_val * 0.005
+  range_component <- range_val * 0.01
 
-  if (mean_val > 0) {
-    min_epsilon <- mean_val * 0.001
-    max_epsilon <- mean_val * 0.2
-    epsilon <- max(min_epsilon, min(max_epsilon, epsilon))
-  }
+  epsilon <- (epsilon + magnitude_component + range_component) / 3
+
+  min_epsilon <- mean_val * 0.001
+  max_epsilon <- mean_val * 0.1
+
+  min_range_epsilon <- range_val * 0.01
+  min_epsilon <- max(min_epsilon, min_range_epsilon)
+
+  epsilon <- max(min_epsilon, min(max_epsilon, epsilon))
 
   return(epsilon)
 }
@@ -201,7 +221,7 @@ same_number <- function(..., method = c("percent_diff", "fuzzy"), epsilon = NULL
 
   invalid_methods <- method[!method %in% valid_methods]
   if (length(invalid_methods) > 0) {
-    cli::cli_abort(c(
+    cli_abort(c(
       "All methods must be one of: {paste(valid_methods, collapse = ', ')}"
     ))
   }
@@ -210,68 +230,156 @@ same_number <- function(..., method = c("percent_diff", "fuzzy"), epsilon = NULL
   list_names <- if (!is.null(names(dots)) && all(nzchar(names(dots)))) {
     names(dots)
   } else {
-    purrr::map_chr(dots, ~ deparse(.x)[1])
+    map_chr(dots, ~ deparse(.x)[1])
   }
 
-  flatten_list <- function(x) {
-    if (!is.list(x)) {
-      return(x)
+  has_nested <- FALSE
+  for (i in seq_along(inputs)) {
+    if (length(names(inputs[[i]])) > 0) {
+      has_nested <- TRUE
+      break
     }
-    unlist(lapply(x, flatten_list))
   }
 
-  flattened_inputs <- lapply(inputs, flatten_list)
+  if (has_nested) {
+    all_keys <- unique(unlist(lapply(inputs, names)))
+    key_epsilons <- list()
+    key_max_diffs <- list()
 
-  all_values <- unlist(flattened_inputs)
+    if (is.null(epsilon) || (is.null(max_diff) && "normalized" %in% method)) {
+      for (key in all_keys) {
+        key_values <- unlist(lapply(inputs, function(x) unlist(x[[key]])))
 
-  if (is.null(epsilon)) {
-    epsilon <- auto_epsilon(all_values)
-    cli::cli_alert_info("Using auto-calculated epsilon: {.val {round(epsilon, 5)}}")
-  }
+        if (is.null(epsilon)) {
+          key_epsilons[[key]] <- auto_epsilon(key_values)
+          cli_alert_info("Using auto-calculated epsilon for {.val {key}}: {.val {round(key_epsilons[[key]], 5)}}")
+        }
 
-  if (is.null(max_diff) && "normalized" %in% method) {
-    max_diff <- auto_max_diff(all_values)
-    cli::cli_alert_info("Using auto-calculated max_diff: {.val {round(max_diff, 5)}}")
-  }
+        if (is.null(max_diff) && "normalized" %in% method) {
+          key_max_diffs[[key]] <- auto_max_diff(key_values)
+          cli_alert_info("Using auto-calculated max_diff for {.val {key}}: {.val {round(key_max_diffs[[key]], 5)}}")
+        }
+      }
+    }
 
-  lengths <- purrr::map_int(flattened_inputs, length)
-  if (length(unique(lengths)) > 1) {
-    cli::cli_abort("All lists must have same length after flattening")
-  }
+    scores <- list()
+    summaries <- list()
 
-  pairs <- get_pairwise_combinations(length(flattened_inputs))
+    for (m in method) {
+      scores[[m]] <- list()
+      summaries[[m]] <- list()
+    }
 
-  scores <- purrr::map(method, function(m) {
-    pair_scores <- purrr::map2(pairs$first, pairs$second, function(idx1, idx2) {
-      pair_name <- paste0(list_names[idx1], "_", list_names[idx2])
+    for (key in all_keys) {
+      key_lists <- lapply(inputs, function(x) {
+        if (!is.null(x[[key]])) x[[key]] else list()
+      })
 
-      pair_result <- calculate_number_scores(
-        flattened_inputs[[idx1]],
-        flattened_inputs[[idx2]],
-        method = m,
-        epsilon = epsilon,
-        max_diff = max_diff
+      key_lists <- key_lists[sapply(key_lists, length) > 0]
+      if (length(key_lists) < 2) next
+
+      key_epsilon <- if (!is.null(epsilon)) epsilon else key_epsilons[[key]]
+      key_max_diff <- if (!is.null(max_diff)) max_diff else key_max_diffs[[key]]
+
+      pairs <- get_pairwise_combinations(length(key_lists))
+
+      for (m in method) {
+        for (i in seq_along(pairs$first)) {
+          idx1 <- pairs$first[i]
+          idx2 <- pairs$second[i]
+
+          pair_name <- paste0(key, "_", list_names[idx1], "_", list_names[idx2])
+
+          pair_result <- calculate_number_scores(
+            key_lists[[idx1]],
+            key_lists[[idx2]],
+            method = m,
+            epsilon = key_epsilon,
+            max_diff = key_max_diff
+          )
+
+          mean_score <- round(mean(pair_result), 3)
+          cli_alert_success("Computed {.field {m}} scores for {.val {pair_name}} [mean: {.val {mean_score}}]")
+
+          scores[[m]][[pair_name]] <- pair_result
+
+          summaries[[m]][[pair_name]] <- list(
+            mean = mean(pair_result),
+            median = stats::median(pair_result),
+            sd = stats::sd(pair_result),
+            min = min(pair_result),
+            max = max(pair_result),
+            q1 = stats::quantile(pair_result, 0.25),
+            q3 = stats::quantile(pair_result, 0.75),
+            iqr = stats::IQR(pair_result)
+          )
+        }
+      }
+    }
+
+    raw_values <- inputs
+  } else {
+    flatten_list <- function(x) {
+      if (!is.list(x)) {
+        return(x)
+      }
+      unlist(lapply(x, flatten_list))
+    }
+
+    flattened_inputs <- lapply(inputs, flatten_list)
+
+    all_values <- unlist(flattened_inputs)
+
+    if (is.null(epsilon)) {
+      epsilon <- auto_epsilon(all_values)
+      cli_alert_info("Using auto-calculated epsilon: {.val {round(epsilon, 5)}}")
+    }
+
+    if (is.null(max_diff) && "normalized" %in% method) {
+      max_diff <- auto_max_diff(all_values)
+      cli_alert_info("Using auto-calculated max_diff: {.val {round(max_diff, 5)}}")
+    }
+
+    lengths <- map_int(flattened_inputs, length)
+    if (length(unique(lengths)) > 1) {
+      cli_abort("All lists must have same length after flattening")
+    }
+
+    pairs <- get_pairwise_combinations(length(flattened_inputs))
+
+    scores <- map(method, function(m) {
+      pair_scores <- map2(pairs$first, pairs$second, function(idx1, idx2) {
+        pair_name <- paste0(list_names[idx1], "_", list_names[idx2])
+
+        pair_result <- calculate_number_scores(
+          flattened_inputs[[idx1]],
+          flattened_inputs[[idx2]],
+          method = m,
+          epsilon = epsilon,
+          max_diff = max_diff
+        )
+
+        mean_score <- round(mean(pair_result), 3)
+        cli_alert_success("Computed {.field {m}} scores for {.val {pair_name}} [mean: {.val {mean_score}}]")
+
+        pair_result
+      })
+
+      names(pair_scores) <- map2_chr(
+        pairs$first,
+        pairs$second,
+        ~ paste0(list_names[.x], "_", list_names[.y])
       )
 
-      mean_score <- round(mean(pair_result), 3)
-      cli::cli_alert_success("Computed {.field {m}} scores for {.val {pair_name}} [mean: {.val {mean_score}}]")
-
-      pair_result
+      pair_scores
     })
 
-    names(pair_scores) <- purrr::map2_chr(
-      pairs$first,
-      pairs$second,
-      ~ paste0(list_names[.x], "_", list_names[.y])
-    )
+    names(scores) <- method
+    raw_values <- flattened_inputs
+  }
 
-    pair_scores
-  })
-
-  names(scores) <- method
-
-  summaries <- purrr::map(method, function(m) {
-    purrr::map(scores[[m]], function(pair_scores) {
+  summaries <- map(method, function(m) {
+    map(scores[[m]], function(pair_scores) {
       list(
         mean = mean(pair_scores),
         median = stats::median(pair_scores),
@@ -292,6 +400,6 @@ same_number <- function(..., method = c("percent_diff", "fuzzy"), epsilon = NULL
     summary = summaries,
     methods = method,
     list_names = list_names,
-    raw_values = flattened_inputs
+    raw_values = raw_values
   )
 }
