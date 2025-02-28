@@ -164,22 +164,7 @@ validate_number_inputs <- function(...) {
     cli::cli_abort("At least two inputs required")
   }
 
-  is_valid <- function(x) {
-    if (is.list(x)) {
-      return(all(vapply(x, is_valid, logical(1))))
-    } else {
-      return(is.numeric(x) || is.na(x))
-    }
-  }
-
-  is_valid_list <- function(x) {
-    if (!is.list(x)) {
-      return(FALSE)
-    }
-    return(all(vapply(x, is_valid, logical(1))))
-  }
-
-  invalid_inputs <- which(!vapply(inputs, is_valid_list, logical(1)))
+  invalid_inputs <- which(!vapply(inputs, function(x) is_valid_list(x, "number"), logical(1)))
 
   if (length(invalid_inputs) > 0) {
     cli::cli_abort(c(
@@ -324,13 +309,6 @@ same_number <- function(..., method = c("exact", "percent_diff", "normalized", "
 
     raw_values <- inputs
   } else {
-    flatten_list <- function(x) {
-      if (!is.list(x)) {
-        return(x)
-      }
-      unlist(lapply(x, flatten_list))
-    }
-
     flattened_inputs <- lapply(inputs, flatten_list)
 
     all_values <- unlist(flattened_inputs)

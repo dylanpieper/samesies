@@ -84,22 +84,7 @@ validate_factor_inputs <- function(..., levels) {
     cli::cli_abort("At least two inputs required")
   }
 
-  is_valid <- function(x) {
-    if (is.list(x)) {
-      return(all(vapply(x, is_valid, logical(1))))
-    } else {
-      return(is.character(x) || is.factor(x) || is.na(x))
-    }
-  }
-
-  is_valid_list <- function(x) {
-    if (!is.list(x)) {
-      return(FALSE)
-    }
-    return(all(vapply(x, is_valid, logical(1))))
-  }
-
-  invalid_inputs <- which(!vapply(inputs, is_valid_list, logical(1)))
+  invalid_inputs <- which(!vapply(inputs, function(x) is_valid_list(x, "factor"), logical(1)))
 
   if (length(invalid_inputs) > 0) {
     cli::cli_abort(c(
@@ -212,12 +197,6 @@ same_factor <- function(..., method = c("exact", "jaccard", "order"), levels, or
       }
     }
   } else {
-    flatten_list <- function(x) {
-      if (!is.list(x)) {
-        return(x)
-      }
-      unlist(lapply(x, flatten_list))
-    }
     flattened_inputs <- lapply(inputs, flatten_list)
     lengths <- purrr::map_int(flattened_inputs, length)
     if (length(unique(lengths)) > 1) {

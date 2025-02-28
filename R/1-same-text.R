@@ -159,22 +159,7 @@ same_text <- function(..., method = c("osa", "lv", "dl", "hamming", "lcs", "qgra
     cli::cli_abort("At least two inputs required")
   }
 
-  is_valid_element <- function(x) {
-    if (is.list(x)) {
-      return(all(vapply(x, is_valid_element, logical(1))))
-    } else {
-      return(is.character(x) && length(x) == 1)
-    }
-  }
-
-  is_valid_list <- function(x) {
-    if (!is.list(x)) {
-      return(FALSE)
-    }
-    return(all(vapply(x, is_valid_element, logical(1))))
-  }
-
-  invalid_inputs <- which(!vapply(inputs, is_valid_list, logical(1)))
+  invalid_inputs <- which(!vapply(inputs, function(x) is_valid_list(x, "text"), logical(1)))
 
   if (length(invalid_inputs) > 0) {
     cli::cli_abort(c(
@@ -197,13 +182,6 @@ same_text <- function(..., method = c("osa", "lv", "dl", "hamming", "lcs", "qgra
     names(dots)
   } else {
     purrr::map_chr(dots, ~ deparse(.x)[1])
-  }
-
-  flatten_list <- function(x) {
-    if (!is.list(x)) {
-      return(x)
-    }
-    unlist(lapply(x, flatten_list))
   }
 
   flattened_inputs <- lapply(inputs, flatten_list)
