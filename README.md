@@ -114,6 +114,16 @@ All three functions return `similar` objects that support the following methods:
 -   `average_similarity()`
 -   `pair_averages()`
 
+## Accessing Object Data
+
+The package uses S7 objects, allowing direct access to the underlying data using the `@` operator:
+
+-   `@scores`: A list of similarity scores for each method and comparison pair
+-   `@summary`: A list of statistical summaries for each method and comparison pair
+-   `@methods`: The similarity methods used in the analysis
+-   `@list_names`: Names of the input lists
+-   `@raw_values`: The original input values
+
 ## Credits
 
 The hex logo image is fan art created by the Reddit user [WistlerR15](https://www.reddit.com/r/Spiderman/comments/k3pcj3/remade_the_spiderman_meme_with_my_favorite/).
