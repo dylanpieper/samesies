@@ -4,7 +4,13 @@
 \alias{same_factor}
 \title{Compare Factor Similarity Across Lists}
 \usage{
-same_factor(..., method = c("exact", "order"), levels, ordered = FALSE)
+same_factor(
+  ...,
+  method = c("exact", "order"),
+  levels,
+  ordered = FALSE,
+  digits = 3
+)
 }
 \arguments{
 \item{...}{Lists of categorical values (character or factor) to compare}
@@ -16,6 +22,8 @@ same_factor(..., method = c("exact", "order"), levels, ordered = FALSE)
 
 \item{ordered}{Logical. If TRUE, treat levels as ordered (ordinal). If FALSE,
 the "order" method is skipped.}
+
+\item{digits}{Number of digits to round results (default: 3)}
 }
 \value{
 An S7 object of type "similar_factor" containing:

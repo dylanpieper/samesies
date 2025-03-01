@@ -19,11 +19,12 @@ get_pairwise_combinations <- function(n) {
 #' Calculate Mean Scores for Each Method
 #'
 #' @param scores A named list of scores from similarity methods
+#' @param digits Number of digits to round results (default: 3)
 #'
-#' @return A named numeric vector of mean scores rounded to 3 decimal places
+#' @return A named numeric vector of mean scores rounded to specified digits
 #'
 #' @noRd
-mean_scores_by_method <- function(scores) {
+mean_scores_by_method <- function(scores, digits = 3) {
   result <- purrr::map_dbl(names(scores), function(method) {
     method_scores <- scores[[method]]
     all_scores <- unlist(method_scores)
@@ -31,7 +32,7 @@ mean_scores_by_method <- function(scores) {
   })
 
   names(result) <- names(scores)
-  round(result, 3)
+  round(result, digits)
 }
 
 #' Check if a value is valid

@@ -9,6 +9,7 @@
 #' @param summary Summary statistics by method and comparison
 #' @param methods Character vector of methods used for comparison
 #' @param list_names Character vector of names for the compared lists
+#' @param digits Number of digits to round results (default: 3)
 #'
 #' @details
 #' This class provides the foundation for all similarity comparison classes.
@@ -17,6 +18,7 @@
 #' - summary: Summary statistics by method and comparison
 #' - methods: Character vector of methods used for comparison
 #' - list_names: Character vector of names for the compared lists
+#' - digits: Number of digits to round results in output
 #'
 #' It also implements common validation logic for ensuring scores are numeric
 #' and fall within the valid range of 0 to 1.
@@ -30,7 +32,8 @@ similar <- S7::new_class("similar",
     scores = S7::class_list,
     summary = S7::class_list,
     methods = S7::class_character,
-    list_names = S7::class_character
+    list_names = S7::class_character,
+    digits = S7::class_numeric
   ),
   validator = function(self) {
     for (method_name in names(self@scores)) {

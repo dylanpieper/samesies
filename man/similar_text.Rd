@@ -8,7 +8,8 @@ similar_text(
   scores = list(),
   summary = list(),
   methods = character(0),
-  list_names = character(0)
+  list_names = character(0),
+  digits = integer(0)
 )
 }
 \arguments{

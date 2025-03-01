@@ -8,7 +8,8 @@ similar(
   scores = list(),
   summary = list(),
   methods = character(0),
-  list_names = character(0)
+  list_names = character(0),
+  digits = integer(0)
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ similar(
 \item{methods}{Character vector of methods used for comparison}
 
 \item{list_names}{Character vector of names for the compared lists}
+
+\item{digits}{Number of digits to round results (default: 3)}
 }
 \description{
 \code{similar} is an S7 abstract parent class for all similarity comparison objects.
@@ -33,6 +36,7 @@ It includes common properties:
 \item summary: Summary statistics by method and comparison
 \item methods: Character vector of methods used for comparison
 \item list_names: Character vector of names for the compared lists
+\item digits: Number of digits to round results in output
 }
 
 It also implements common validation logic for ensuring scores are numeric

@@ -97,13 +97,13 @@ num <- same_number(n1, n2,
 ``` r
 num <- same_number(n1, n2, 
                    method = "fuzzy", 
-                   epsilon = 0.1,
-                   epsilon_pct = 0.05)
+                   epsilon = 0.05,
+                   epsilon_pct = 0.02)
 ```
 
 ## More Lists
 
-When you input more than two lists, pairwise comparisons across lists are computed.
+When you input more than two lists, compute pairwise comparisons across lists.
 
 ## Nested Lists
 
@@ -113,10 +113,10 @@ Nested lists are supported as long as they share the same names and lengths.
 
 All three functions return `similar` objects that support the following methods:
 
--   `print(x, digits = 2)`: Displays similarity scores rounded to specified digits
--   `summary(x, digits = 2)`: Provides detailed statistics with customizable precision
--   `average_similarity(x, method = NULL)`: Calculates mean similarity, optionally for specific method
--   `pair_averages(x, method = NULL)`: Returns pairwise average similarities, optionally filtered by method
+-   `print(x)`
+-   `summary(x)`
+-   `average_similarity(x, method = NULL)`
+-   `pair_averages(x, method = NULL)`
 
 ## Accessing Object Data
 
@@ -127,6 +127,7 @@ The package uses S7 objects, allowing direct access to the underlying data using
 -   `@methods`: The similarity methods used in the analysis
 -   `@list_names`: Names of the input lists
 -   `@raw_values`: The original input values
+-   `@digits`: Number of decimal places for rounding results in output
 
 ## Credits
 

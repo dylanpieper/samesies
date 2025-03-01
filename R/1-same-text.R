@@ -9,6 +9,7 @@
 #' @param bt Booth matching threshold
 #' @param weight Vector of weights for operations: deletion (d), insertion (i),
 #'   substitution (s), transposition (t)
+#' @param digits Number of digits to round results (default: 3)
 #'
 #' @return An S7 class object of type "similar_text" containing:
 #'   - scores: Numeric similarity scores by method and comparison
@@ -23,7 +24,8 @@
 #' @export
 same_text <- function(..., method = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"),
                       q = 1, p = NULL, bt = 0,
-                      weight = c(d = 1, i = 1, s = 1, t = 1)) {
+                      weight = c(d = 1, i = 1, s = 1, t = 1),
+                      digits = 3) {
   valid_methods <- c(
     "osa", "lv", "dl", "hamming", "lcs", "qgram",
     "cosine", "jaccard", "jw", "soundex"
@@ -85,7 +87,7 @@ same_text <- function(..., method = c("osa", "lv", "dl", "hamming", "lcs", "qgra
         weight = weight
       )
 
-      mean_score <- round(mean(pair_result), 3)
+      mean_score <- round(mean(pair_result), digits)
       cli::cli_alert_success("Computed {.field {m}} scores for {.val {pair_name}} [mean: {.val {mean_score}}]")
 
       pair_result
@@ -123,6 +125,7 @@ same_text <- function(..., method = c("osa", "lv", "dl", "hamming", "lcs", "qgra
     scores = scores,
     summary = summaries,
     methods = method,
-    list_names = list_names
+    list_names = list_names,
+    digits = digits
   )
 }

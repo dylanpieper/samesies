@@ -6,6 +6,7 @@
 #' @param levels Character vector of all allowed levels for comparison
 #' @param ordered Logical. If TRUE, treat levels as ordered (ordinal). If FALSE,
 #'   the "order" method is skipped.
+#' @param digits Number of digits to round results (default: 3)
 #'
 #' @return An S7 object of type "similar_factor" containing:
 #'   - scores: Numeric similarity scores by method and comparison
@@ -15,7 +16,7 @@
 #'   - levels: Levels used for categorical comparison
 #'
 #' @export
-same_factor <- function(..., method = c("exact", "order"), levels, ordered = FALSE) {
+same_factor <- function(..., method = c("exact", "order"), levels, ordered = FALSE, digits = 3) {
   valid_methods <- c("exact", "order")
 
   inputs <- list(...)
@@ -93,7 +94,7 @@ same_factor <- function(..., method = c("exact", "order"), levels, ordered = FAL
             q3 = stats::quantile(pair_result, 0.75),
             iqr = stats::IQR(pair_result)
           )
-          mean_score <- round(mean(pair_result), 3)
+          mean_score <- round(mean(pair_result), digits)
           cli::cli_alert_success("Computed {.field {m}} scores for {.val {key}} in {.val {list_names[idx1]}}-{.val {list_names[idx2]}} [mean: {.val {mean_score}}]")
         }
       }
@@ -116,7 +117,7 @@ same_factor <- function(..., method = c("exact", "order"), levels, ordered = FAL
           method = m,
           levels = levels
         )
-        mean_score <- round(mean(pair_result), 3)
+        mean_score <- round(mean(pair_result), digits)
         cli::cli_alert_success("Computed {.field {m}} scores for {.val {pair_name}} [mean: {.val {mean_score}}]")
         scores[[m]][[pair_name]] <- pair_result
         summaries[[m]][[pair_name]] <- list(
@@ -138,6 +139,7 @@ same_factor <- function(..., method = c("exact", "order"), levels, ordered = FAL
     summary = summaries,
     methods = method,
     list_names = list_names,
-    levels = levels
+    levels = levels,
+    digits = digits
   )
 }

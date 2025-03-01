@@ -6,7 +6,7 @@
 #' @return A named numeric vector of mean similarity scores for each method
 #' @noRd
 S7::method(average_similarity, similar) <- function(x, ...) {
-  mean_scores_by_method(x@scores)
+  mean_scores_by_method(x@scores, x@digits)
 }
 
 #' Calculate average similarity scores by pairs
@@ -43,7 +43,7 @@ S7::method(pair_averages, similar) <- function(x, method = NULL, ...) {
   })
 
   result <- result[order(result$method, -result$avg_score), ]
-  result$avg_score <- round(result$avg_score, 3)
+  result$avg_score <- round(result$avg_score, x@digits)
 
   rownames(result) <- NULL
   return(result)
@@ -65,7 +65,7 @@ S7::method(print, similar) <- function(x, ...) {
 
   cli::cli_h2("Overall Method Averages")
   cli::cli_bullets(purrr::map_chr(names(overall_avgs), function(method) {
-    paste0("* ", method, ": {.val ", round(overall_avgs[method], 3), "}")
+    paste0("* ", method, ": {.val ", round(overall_avgs[method], x@digits), "}")
   }))
 
   purrr::walk(x@methods, function(method) {
@@ -77,9 +77,9 @@ S7::method(print, similar) <- function(x, ...) {
       summary_stats <- x@summary[[method]][[pair_name]]
 
       cli::cli_bullets(c(
-        "*" = "Mean: {.val {round(summary_stats$mean, 3)}}",
-        "*" = "Median: {.val {round(summary_stats$median, 3)}}",
-        "*" = "SD: {.val {round(summary_stats$sd, 3)}}"
+        "*" = "Mean: {.val {round(summary_stats$mean, x@digits)}}",
+        "*" = "Median: {.val {round(summary_stats$median, x@digits)}}",
+        "*" = "SD: {.val {round(summary_stats$sd, x@digits)}}"
       ))
     })
   })
@@ -104,6 +104,9 @@ S7::method(summary, similar) <- function(object, ...) {
     overall_averages = overall_avgs,
     pair_averages = pair_avgs
   )
+  
+  # Store digits as an attribute to be used by print.summary.similar
+  attr(result, "digits") <- object@digits
 
   class(result) <- "summary.similar"
   return(result)
@@ -126,8 +129,11 @@ print.summary.similar <- function(x, ...) {
   cli::cli_text("{.val {paste(x$list_names, collapse = ', ')}}")
 
   cli::cli_h2("Overall Method Averages")
+  # For the summary object, need to get digits from x itself since it's not stored in the summary
+  # Use default of 3 if not found as backward compatibility
+  digits <- if (!is.null(attr(x, "digits"))) attr(x, "digits") else 3
   cli::cli_bullets(purrr::map_chr(names(x$overall_averages), function(method) {
-    paste0("* ", method, ": {.val ", round(x$overall_averages[method], 3), "}")
+    paste0("* ", method, ": {.val ", round(x$overall_averages[method], digits), "}")
   }))
 
   cli::cli_h2("Pair Averages")

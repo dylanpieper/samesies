@@ -6,6 +6,7 @@
 #' @param epsilon Threshold for fuzzy matching (default: NULL for auto-calculation)
 #' @param max_diff Maximum difference for normalization (default: NULL for auto-calculation)
 #' @param epsilon_pct Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"
+#' @param digits Number of digits to round results (default: 3)
 #'
 #' @return An S7 object containing:
 #'   \itemize{
@@ -22,7 +23,7 @@
 #' result <- same_number(nums1, nums2)
 #' @export
 same_number <- function(..., method = c("exact", "pct_diff", "normalized", "fuzzy"),
-                        epsilon = 0.05, epsilon_pct = 0.02, max_diff = NULL) {
+                        epsilon = 0.05, epsilon_pct = 0.02, max_diff = NULL, digits = 3) {
   valid_methods <- c(
     "exact", "pct_diff", "normalized", "fuzzy"
   )
@@ -114,7 +115,7 @@ same_number <- function(..., method = c("exact", "pct_diff", "normalized", "fuzz
             epsilon_pct = epsilon_pct
           )
 
-          mean_score <- round(mean(pair_result), 3)
+          mean_score <- round(mean(pair_result), digits)
           cli_alert_success("Computed {.field {m}} scores for {.val {pair_name}} [mean: {.val {mean_score}}]")
 
           scores[[m]][[pair_name]] <- pair_result
@@ -169,7 +170,7 @@ same_number <- function(..., method = c("exact", "pct_diff", "normalized", "fuzz
           epsilon_pct = epsilon_pct
         )
 
-        mean_score <- round(mean(pair_result), 3)
+        mean_score <- round(mean(pair_result), digits)
         cli_alert_success("Computed {.field {m}} scores for {.val {pair_name}} [mean: {.val {mean_score}}]")
 
         pair_result
@@ -210,6 +211,7 @@ same_number <- function(..., method = c("exact", "pct_diff", "normalized", "fuzz
     summary = summaries,
     methods = method,
     list_names = list_names,
-    raw_values = raw_values
+    raw_values = raw_values,
+    digits = digits
   )
 }

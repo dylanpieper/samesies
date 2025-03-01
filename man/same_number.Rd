@@ -9,7 +9,8 @@ same_number(
   method = c("exact", "pct_diff", "normalized", "fuzzy"),
   epsilon = 0.05,
   epsilon_pct = 0.02,
-  max_diff = NULL
+  max_diff = NULL,
+  digits = 3
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ same_number(
 \item{epsilon_pct}{Relative epsilon percentile (default: 0.02 or 2\%). Only used when method is "fuzzy"}
 
 \item{max_diff}{Maximum difference for normalization (default: NULL for auto-calculation)}
+
+\item{digits}{Number of digits to round results (default: 3)}
 }
 \value{
 An S7 object containing:

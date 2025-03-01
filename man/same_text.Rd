@@ -11,7 +11,8 @@ same_text(
   q = 1,
   p = NULL,
   bt = 0,
-  weight = c(d = 1, i = 1, s = 1, t = 1)
+  weight = c(d = 1, i = 1, s = 1, t = 1),
+  digits = 3
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ same_text(
 
 \item{weight}{Vector of weights for operations: deletion (d), insertion (i),
 substitution (s), transposition (t)}
+
+\item{digits}{Number of digits to round results (default: 3)}
 }
 \value{
 An S7 class object of type "similar_text" containing:
