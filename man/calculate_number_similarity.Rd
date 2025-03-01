@@ -18,7 +18,7 @@ calculate_number_similarity(
 
 \item{num2}{Second numeric value to compare}
 
-\item{method}{Method to use for similarity calculation. One of: "exact", "percent_diff", "normalized", "fuzzy"}
+\item{method}{Method to use for similarity calculation. One of: "exact", "pct_diff", "normalized", "fuzzy"}
 
 \item{epsilon}{Threshold for fuzzy matching. Only used when method is "fuzzy"}
 

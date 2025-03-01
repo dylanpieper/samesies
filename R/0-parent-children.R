@@ -158,7 +158,7 @@ similar_number <- S7::new_class("similar_number",
     raw_values = S7::class_list
   ),
   validator = function(self) {
-    valid_methods <- c("exact", "percent_diff", "normalized", "fuzzy")
+    valid_methods <- c("exact", "pct_diff", "normalized", "fuzzy")
 
     invalid_methods <- self@methods[!self@methods %in% valid_methods]
     if (length(invalid_methods) > 0) {

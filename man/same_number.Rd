@@ -6,7 +6,7 @@
 \usage{
 same_number(
   ...,
-  method = c("exact", "percent_diff", "normalized", "fuzzy"),
+  method = c("exact", "pct_diff", "normalized", "fuzzy"),
   epsilon = 0.05,
   epsilon_pct = 0.02,
   max_diff = NULL

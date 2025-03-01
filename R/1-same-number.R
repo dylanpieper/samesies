@@ -1,7 +1,7 @@
 #' Calculate Numeric Similarity
 #' @param num1 First numeric value to compare
 #' @param num2 Second numeric value to compare
-#' @param method Method to use for similarity calculation. One of: "exact", "percent_diff", "normalized", "fuzzy"
+#' @param method Method to use for similarity calculation. One of: "exact", "pct_diff", "normalized", "fuzzy"
 #' @param epsilon Threshold for fuzzy matching. Only used when method is "fuzzy"
 #' @param max_diff Maximum difference for normalization. Only used when method is "normalized"
 #' @param epsilon_pct Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"
@@ -21,7 +21,7 @@ calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_
     "exact" = {
       as.numeric(num1 == num2)
     },
-    "percent_diff" = {
+    "pct_diff" = {
       if (num1 == 0 && num2 == 0) {
         return(1)
       }
@@ -70,7 +70,7 @@ calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_
 #' Calculate Similarity Scores Between Two Numeric Lists
 #' @param list1 First list of numeric values
 #' @param list2 Second list of numeric values
-#' @param method Method to use for similarity calculation. One of: "exact", "percent_diff", "normalized", "fuzzy"
+#' @param method Method to use for similarity calculation. One of: "exact", "pct_diff", "normalized", "fuzzy"
 #' @param epsilon Threshold for fuzzy matching. Only used when method is "fuzzy"
 #' @param max_diff Maximum difference for normalization. Only used when method is "normalized"
 #' @param epsilon_pct Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"
@@ -202,10 +202,10 @@ validate_number_inputs <- function(...) {
 #' nums2 <- list(1, 2.1, 3.2)
 #' result <- same_number(nums1, nums2)
 #' @export
-same_number <- function(..., method = c("exact", "percent_diff", "normalized", "fuzzy"),
+same_number <- function(..., method = c("exact", "pct_diff", "normalized", "fuzzy"),
                         epsilon = 0.05, epsilon_pct = 0.02, max_diff = NULL) {
   valid_methods <- c(
-    "exact", "percent_diff", "normalized", "fuzzy"
+    "exact", "pct_diff", "normalized", "fuzzy"
   )
 
   inputs <- list(...)
