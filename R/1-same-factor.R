@@ -24,7 +24,11 @@ same_factor <- function(..., method = c("exact", "order"), levels, ordered = FAL
   method <- unique(if (length(method) == 1) c(method) else method)
   invalid_methods <- method[!method %in% valid_methods]
   if (length(invalid_methods) > 0) {
-    cli::cli_abort(c("All methods must be one of: {paste(valid_methods, collapse = ', ')}"))
+    cli::cli_abort(sprintf(
+      "Invalid methods for factor similarity: %s. Valid methods are: %s.",
+      paste(invalid_methods, collapse = ", "),
+      paste(valid_methods, collapse = ", ")
+    ))
   }
 
   if ("order" %in% method && !ordered) {

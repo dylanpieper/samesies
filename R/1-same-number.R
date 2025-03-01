@@ -34,8 +34,10 @@ same_number <- function(..., method = c("exact", "pct_diff", "normalized", "fuzz
 
   invalid_methods <- method[!method %in% valid_methods]
   if (length(invalid_methods) > 0) {
-    cli_abort(c(
-      "All methods must be one of: {paste(valid_methods, collapse = ', ')}"
+    cli_abort(sprintf(
+      "Invalid methods for numeric similarity: %s. Valid methods are: %s.",
+      paste(invalid_methods, collapse = ", "),
+      paste(valid_methods, collapse = ", ")
     ))
   }
 
