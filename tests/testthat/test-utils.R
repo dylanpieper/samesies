@@ -11,7 +11,6 @@ test_that("average_similarity works with same_text objects", {
   expect_type(avg, "double")
   expect_true(all(avg >= 0 & avg <= 1))
 
-  # Method filtering still returns all methods in current implementation
   avg_jw <- average_similarity(result, method = "jw")
   expect_type(avg_jw, "double")
   expect_true(length(avg_jw) > 0)
