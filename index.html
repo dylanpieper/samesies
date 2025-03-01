@@ -167,14 +167,14 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/same_number.html">same_number</a></span><span class="op">(</span><span class="va">n1</span>, <span class="va">n2</span>, </span>
 <span>                   method <span class="op">=</span> <span class="st">"fuzzy"</span>, </span>
-<span>                   epsilon <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>                   epsilon_pct <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
+<span>                   epsilon <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>                   epsilon_pct <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="more-lists">More Lists<a class="anchor" aria-label="anchor" href="#more-lists"></a>
 </h2>
-<p>When you input more than two lists, pairwise comparisons across lists are computed.</p>
+<p>When you input more than two lists, compute pairwise comparisons across lists.</p>
 </div>
 <div class="section level2">
 <h2 id="nested-lists">Nested Lists<a class="anchor" aria-label="anchor" href="#nested-lists"></a>
@@ -186,14 +186,10 @@
 </h2>
 <p>All three functions return <code>similar</code> objects that support the following methods:</p>
 <ul>
-<li>
-<code>print(x, digits = 2)</code>: Displays similarity scores rounded to specified digits</li>
-<li>
-<code>summary(x, digits = 2)</code>: Provides detailed statistics with customizable precision</li>
-<li>
-<code>average_similarity(x, method = NULL)</code>: Calculates mean similarity, optionally for specific method</li>
-<li>
-<code>pair_averages(x, method = NULL)</code>: Returns pairwise average similarities, optionally filtered by method</li>
+<li><code>print(x)</code></li>
+<li><code>summary(x)</code></li>
+<li><code>average_similarity(x, method = NULL)</code></li>
+<li><code>pair_averages(x, method = NULL)</code></li>
 </ul>
 </div>
 <div class="section level2">
@@ -211,6 +207,8 @@
 <code>@list_names</code>: Names of the input lists</li>
 <li>
 <code>@raw_values</code>: The original input values</li>
+<li>
+<code>@digits</code>: Number of decimal places for rounding results in output</li>
 </ul>
 </div>
 <div class="section level2">

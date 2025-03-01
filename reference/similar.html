@@ -47,7 +47,8 @@ like <code>similar_text</code>, <code>similar_factor</code>, and <code>similar_n
 <span>  scores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  summary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  list_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span>  list_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -70,6 +71,10 @@ like <code>similar_text</code>, <code>similar_factor</code>, and <code>similar_n
 <dt id="arg-list-names">list_names<a class="anchor" aria-label="anchor" href="#arg-list-names"></a></dt>
 <dd><p>Character vector of names for the compared lists</p></dd>
 
+
+<dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
+<dd><p>Number of digits to round results (default: 3)</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -78,6 +83,7 @@ It includes common properties:</p><ul><li><p>scores: List of similarity scores p
 <li><p>summary: Summary statistics by method and comparison</p></li>
 <li><p>methods: Character vector of methods used for comparison</p></li>
 <li><p>list_names: Character vector of names for the compared lists</p></li>
+<li><p>digits: Number of digits to round results in output</p></li>
 </ul><p>It also implements common validation logic for ensuring scores are numeric
 and fall within the valid range of 0 to 1.</p>
 <p>Child classes should inherit from this class and implement their own
