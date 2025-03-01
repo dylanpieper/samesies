@@ -22,6 +22,8 @@ similar_number(
 
 \item{list_names}{Character vector of names for the compared lists}
 
+\item{digits}{Number of digits to round results (default: 3)}
+
 \item{raw_values}{List of raw numeric values being compared}
 }
 \description{

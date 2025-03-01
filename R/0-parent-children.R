@@ -74,6 +74,7 @@ similar <- S7::new_class("similar",
 #' @param summary Summary statistics by method and comparison
 #' @param methods Character vector of methods used for comparison
 #' @param list_names Character vector of names for the compared lists
+#' @param digits Number of digits to round results (default: 3)
 #'
 #' @details
 #' This class extends the abstract `similar` class and implements
@@ -111,6 +112,7 @@ similar_text <- S7::new_class("similar_text",
 #' @param summary Summary statistics by method and comparison
 #' @param methods Character vector of methods used for comparison
 #' @param list_names Character vector of names for the compared lists
+#' @param digits Number of digits to round results (default: 3)
 #' @param levels Character vector of factor levels
 #'
 #' @details
@@ -148,6 +150,7 @@ similar_factor <- S7::new_class("similar_factor",
 #' @param summary Summary statistics by method and comparison
 #' @param methods Character vector of methods used for comparison
 #' @param list_names Character vector of names for the compared lists
+#' @param digits Number of digits to round results (default: 3)
 #' @param raw_values List of raw numeric values being compared
 #'
 #' @details

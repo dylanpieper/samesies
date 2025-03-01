@@ -22,6 +22,8 @@ similar_factor(
 
 \item{list_names}{Character vector of names for the compared lists}
 
+\item{digits}{Number of digits to round results (default: 3)}
+
 \item{levels}{Character vector of factor levels}
 }
 \description{

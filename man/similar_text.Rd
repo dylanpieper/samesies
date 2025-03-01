@@ -20,6 +20,8 @@ similar_text(
 \item{methods}{Character vector of methods used for comparison}
 
 \item{list_names}{Character vector of names for the compared lists}
+
+\item{digits}{Number of digits to round results (default: 3)}
 }
 \description{
 \code{similar_text} is an S7 class for text similarity comparisons.
