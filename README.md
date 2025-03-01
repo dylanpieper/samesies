@@ -1,6 +1,6 @@
 # samesies <img src="man/figures/samesies-hex.png" align="right" width="140"/>
 
-Samesies is a reliability tool for comparing the similarity of texts, factors, or numbers across two or more lists. The motivating use case is to evaluate the reliability of Large Language Model (LLM) responses across models, providers, or prompts.
+Samesies is a reliability tool for comparing lists of texts, factors, or numerical values to measure their similarity. The package's motivating use case is evaluating the consistency of Large Language Model (LLM) responses across models, providers, or prompts.
 
 ## Installation
 
@@ -79,7 +79,7 @@ num <- same_number(n1, n2)
 Methods available (e.g., `method = "exact"`):
 
 -   **exact**: Exact matching
--   **percent_diff**: Percentage difference
+-   **pct_diff**: Percentage difference
 -   **normalized**: Normalized difference (set `max_diff` or auto-calculate)
 
 ``` r
@@ -101,6 +101,10 @@ num <- same_number(n1, n2,
                    epsilon_pct = 0.05)
 ```
 
+## More Lists
+
+When you input more than two lists, pairwise comparisons across lists are computed.
+
 ## Nested Lists
 
 Nested lists are supported as long as they share the same names and lengths.
@@ -109,10 +113,10 @@ Nested lists are supported as long as they share the same names and lengths.
 
 All three functions return `similar` objects that support the following methods:
 
--   `print()`
--   `summary()`
--   `average_similarity()`
--   `pair_averages()`
+-   `print(x, digits = 2)`: Displays similarity scores rounded to specified digits
+-   `summary(x, digits = 2)`: Provides detailed statistics with customizable precision
+-   `average_similarity(x, method = NULL)`: Calculates mean similarity, optionally for specific method
+-   `pair_averages(x, method = NULL)`: Returns pairwise average similarities, optionally filtered by method
 
 ## Accessing Object Data
 
