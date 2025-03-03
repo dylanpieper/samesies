@@ -1,11 +1,13 @@
 Package: samesies
-Title: Measure Similarity Across Text, Factors, or Numbers
+Title: Compare Similarity Across Text, Factors, or Numbers
 Version: 0.1.0
 Authors@R: 
-    person("First", "Last", , "dylanpieper@gmail.com", role = c("aut", "cre"))
-Description: Samesies is a reliability tool for comparing lists of texts, factors, or numerical values 
-    to measure their similarity. The package's motivating use case is evaluating the consistency of 
-    Large Language Model (LLM) responses across models, providers, or prompts.
+    person("Dylan", "Pieper", , "dylanpieper@gmail.com", role = c("aut", "cre"))
+Description: samesies compares lists of texts, factors, or numerical values 
+    to measure their similarity. The package's motivating use case is evaluating 
+    the reliability or consistency of Large Language Model (LLM) responses 
+    across models, providers, or prompts. Approximate string matching is 
+    implemented using 'stringdist'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
