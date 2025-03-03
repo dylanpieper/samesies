@@ -3,11 +3,10 @@ Title: Compare Similarity Across Text, Factors, or Numbers
 Version: 0.1.0
 Authors@R: 
     person("Dylan", "Pieper", , "dylanpieper@gmail.com", role = c("aut", "cre"))
-Description: samesies compares lists of texts, factors, or numerical values 
-    to measure their similarity. The package's motivating use case is evaluating 
-    the similarity of Large Language Model (LLM) responses across models, 
-    providers, or prompts. Approximate string matching is implemented using 
-    'stringdist'.
+Description: Compare lists of texts, factors, or numerical values to measure 
+    their similarity. The motivating use case is evaluating the similarity 
+    of large language model responses across models, providers, or prompts. 
+    Approximate string matching is implemented using 'stringdist'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
