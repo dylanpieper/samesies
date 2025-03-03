@@ -1,6 +1,6 @@
 # samesies <img src="man/figures/samesies-hex.png" align="right" width="140"/>
 
-samesies compares lists of texts, factors, or numerical values to measure their similarity. The package's motivating use case is evaluating the reliability or consistency of Large Language Model (LLM) responses across models, providers, or prompts.
+samesies compares lists of texts, factors, or numerical values to measure their similarity. The package's motivating use case is evaluating the similarity of Large Language Model (LLM) responses across models, providers, or prompts.
 
 ## Installation
 

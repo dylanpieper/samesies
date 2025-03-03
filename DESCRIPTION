@@ -5,9 +5,9 @@ Authors@R:
     person("Dylan", "Pieper", , "dylanpieper@gmail.com", role = c("aut", "cre"))
 Description: samesies compares lists of texts, factors, or numerical values 
     to measure their similarity. The package's motivating use case is evaluating 
-    the reliability or consistency of Large Language Model (LLM) responses 
-    across models, providers, or prompts. Approximate string matching is 
-    implemented using 'stringdist'.
+    the similarity of Large Language Model (LLM) responses across models, 
+    providers, or prompts. Approximate string matching is implemented using 
+    'stringdist'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
