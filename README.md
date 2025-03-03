@@ -120,7 +120,7 @@ All three functions return `similar` objects that support the following methods:
 
 ## Accessing Object Data
 
-The package uses S7 objects, allowing direct access to the underlying data using the `@` operator:
+The package uses [S7](https://rconsortium.github.io/S7/) objects, allowing direct access to the underlying data using the `@` operator:
 
 -   `@scores`: A list of similarity scores for each method and comparison pair
 -   `@summary`: A list of statistical summaries for each method and comparison pair
