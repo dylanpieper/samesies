@@ -5,10 +5,10 @@ test_that("same_number works with simple number lists", {
 
   result_num <- same_number(nums1, nums2, nums3)
 
-  expect_true(inherits(result_num, "samesies::similar_number"))
-  expect_true(inherits(result_num, "samesies::similar"))
-  expect_true(is.list(result_num@scores))
-  expect_true("normalized" %in% result_num@methods)
+  expect_true(inherits(result_num, "similar_number"))
+  expect_true(inherits(result_num, "similar"))
+  expect_true(is.list(result_num$scores))
+  expect_true("normalized" %in% result_num$methods)
 })
 
 test_that("same_number print method works", {
@@ -37,8 +37,8 @@ test_that("same_number works with multiple methods", {
     method = c("normalized", "fuzzy", "pct_diff")
   )
 
-  expect_true(inherits(result, "samesies::similar_number"))
-  expect_true(all(c("normalized", "fuzzy", "pct_diff") %in% result@methods))
+  expect_true(inherits(result, "similar_number"))
+  expect_true(all(c("normalized", "fuzzy", "pct_diff") %in% result$methods))
 })
 
 test_that("same_number handles nested structures", {
@@ -53,9 +53,9 @@ test_that("same_number handles nested structures", {
 
   result <- same_number(nested_nums1, nested_nums2)
 
-  expect_true(inherits(result, "samesies::similar_number"))
-  expect_true("weights_nested_nums1_nested_nums2" %in% names(result@scores$normalized))
-  expect_true("heights_nested_nums1_nested_nums2" %in% names(result@scores$normalized))
+  expect_true(inherits(result, "similar_number"))
+  expect_true("weights_nested_nums1_nested_nums2" %in% names(result$scores$normalized))
+  expect_true("heights_nested_nums1_nested_nums2" %in% names(result$scores$normalized))
 })
 
 test_that("same_number utility functions work", {

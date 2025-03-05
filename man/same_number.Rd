@@ -27,7 +27,7 @@ same_number(
 \item{digits}{Number of digits to round results (default: 3)}
 }
 \value{
-An S7 object containing:
+An S3 object containing:
 \itemize{
 \item \code{scores}: A list of similarity scores for each method and list pair
 \item \code{summary}: A list of statistical summaries for each method and list pair

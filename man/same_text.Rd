@@ -34,7 +34,7 @@ substitution (s), transposition (t)}
 \item{digits}{Number of digits to round results (default: 3)}
 }
 \value{
-An S7 class object of type "similar_text" containing:
+An S3 class object of type "similar_text" containing:
 \itemize{
 \item scores: Numeric similarity scores by method and comparison
 \item summary: Summary statistics by method and comparison

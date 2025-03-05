@@ -4,13 +4,7 @@
 \alias{similar}
 \title{Abstract parent class for similarity comparison}
 \usage{
-similar(
-  scores = list(),
-  summary = list(),
-  methods = character(0),
-  list_names = character(0),
-  digits = integer(0)
-)
+similar(scores, summary, methods, list_names, digits = 3)
 }
 \arguments{
 \item{scores}{List of similarity scores per method and comparison}
@@ -24,8 +18,8 @@ similar(
 \item{digits}{Number of digits to round results (default: 3)}
 }
 \description{
-\code{similar} is an S7 abstract parent class for all similarity comparison objects.
-This class defines common properties and validation logic shared among child classes
+\code{similar} is an S3 class for all similarity comparison objects.
+This class defines common properties shared among child classes
 like \code{similar_text}, \code{similar_factor}, and \code{similar_number}.
 }
 \details{
@@ -38,10 +32,4 @@ It includes common properties:
 \item list_names: Character vector of names for the compared lists
 \item digits: Number of digits to round results in output
 }
-
-It also implements common validation logic for ensuring scores are numeric
-and fall within the valid range of 0 to 1.
-
-Child classes should inherit from this class and implement their own
-specific validation logic for allowed methods and any additional properties.
 }

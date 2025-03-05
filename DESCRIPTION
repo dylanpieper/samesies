@@ -17,7 +17,6 @@ Imports:
     ggbeeswarm,
     ggplot2,
     purrr,
-    S7,
     scales,
     stats,
     stringdist

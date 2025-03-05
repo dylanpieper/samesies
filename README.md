@@ -120,14 +120,14 @@ All three functions return `similar` objects that support the following methods:
 
 ## Accessing Object Data
 
-The package uses [S7](https://rconsortium.github.io/S7/) objects, allowing direct access to the underlying data using the `@` operator:
+The package uses S3 objects, allowing access to the underlying data:
 
--   `@scores`: A list of similarity scores for each method and comparison pair
--   `@summary`: A list of statistical summaries for each method and comparison pair
--   `@methods`: The similarity methods used in the analysis
--   `@list_names`: Names of the input lists
--   `@raw_values`: The original input values
--   `@digits`: Number of decimal places for rounding results in output
+-   `$scores`: A list of similarity scores for each method and comparison pair
+-   `$summary`: A list of statistical summaries for each method and comparison pair
+-   `$methods`: The similarity methods used in the analysis
+-   `$list_names`: Names of the input lists
+-   `$raw_values`: The original input values
+-   `$digits`: Number of decimal places for rounding results in output
 
 ## Credits
 

@@ -7,10 +7,10 @@ test_that("same_factor works with simple factor lists", {
     levels = c("apple", "orange", "banana")
   )
 
-  expect_true(inherits(result_factor, "samesies::similar_factor"))
-  expect_true(inherits(result_factor, "samesies::similar"))
-  expect_true(is.list(result_factor@scores))
-  expect_true("exact" %in% result_factor@methods)
+  expect_true(inherits(result_factor, "similar_factor"))
+  expect_true(inherits(result_factor, "similar"))
+  expect_true(is.list(result_factor$scores))
+  expect_true("exact" %in% result_factor$methods)
 })
 
 test_that("same_factor print method works", {
@@ -45,8 +45,8 @@ test_that("same_factor works with multiple methods", {
     ordered = TRUE
   )
 
-  expect_true(inherits(result, "samesies::similar_factor"))
-  expect_true(all(c("exact", "order") %in% result@methods))
+  expect_true(inherits(result, "similar_factor"))
+  expect_true(all(c("exact", "order") %in% result$methods))
 })
 
 test_that("same_factor handles nested structures", {
@@ -66,9 +66,9 @@ test_that("same_factor handles nested structures", {
     )
   )
 
-  expect_true(inherits(result, "samesies::similar_factor"))
-  expect_true("fruits_nested_cats1_nested_cats2" %in% names(result@scores$exact))
-  expect_true("colors_nested_cats1_nested_cats2" %in% names(result@scores$exact))
+  expect_true(inherits(result, "similar_factor"))
+  expect_true("fruits_nested_cats1_nested_cats2" %in% names(result$scores$exact))
+  expect_true("colors_nested_cats1_nested_cats2" %in% names(result$scores$exact))
 })
 
 

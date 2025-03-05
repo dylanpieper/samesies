@@ -4,14 +4,7 @@
 \alias{similar_factor}
 \title{Factor similarity comparison class}
 \usage{
-similar_factor(
-  scores = list(),
-  summary = list(),
-  methods = character(0),
-  list_names = character(0),
-  digits = integer(0),
-  levels = character(0)
-)
+similar_factor(scores, summary, methods, list_names, levels, digits = 3)
 }
 \arguments{
 \item{scores}{List of similarity scores per method and comparison}
@@ -22,14 +15,14 @@ similar_factor(
 
 \item{list_names}{Character vector of names for the compared lists}
 
-\item{digits}{Number of digits to round results (default: 3)}
-
 \item{levels}{Character vector of factor levels}
+
+\item{digits}{Number of digits to round results (default: 3)}
 }
 \description{
-\code{similar_factor} is an S7 class for categorical/factor similarity comparisons.
+\code{similar_factor} is an S3 class for categorical/factor similarity comparisons.
 }
 \details{
-This class extends the abstract \code{similar} class and implements
+This class extends the \code{similar} class and implements
 categorical data-specific similarity comparison methods.
 }

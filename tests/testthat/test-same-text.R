@@ -6,13 +6,13 @@ test_that("same_text works with simple text lists", {
   result1 <- same_text(fruits1, fruits2, fruits3, method = c("jw", "lv"))
   result2 <- same_text(fruits1, fruits2)
 
-  expect_true(inherits(result1, "samesies::similar_text"))
-  expect_true(inherits(result2, "samesies::similar_text"))
+  expect_true(inherits(result1, "similar_text"))
+  expect_true(inherits(result2, "similar_text"))
 
-  expect_true(inherits(result1, "samesies::similar"))
-  expect_true(is.list(result1@scores))
-  expect_true(all(c("jw", "lv") %in% result1@methods))
-  expect_length(result2@methods, 10) # All methods used by default
+  expect_true(inherits(result1, "similar"))
+  expect_true(is.list(result1$scores))
+  expect_true(all(c("jw", "lv") %in% result1$methods))
+  expect_length(result2$methods, 10) # All methods used by default
 })
 
 test_that("same_text print method works", {
@@ -52,12 +52,12 @@ test_that("same_text handles nested structures", {
     method = c("jw", "lv")
   )
 
-  expect_true(inherits(result3, "samesies::similar_text"))
-  expect_true(inherits(result4, "samesies::similar_text"))
+  expect_true(inherits(result3, "similar_text"))
+  expect_true(inherits(result4, "similar_text"))
 
-  expect_true("jw" %in% names(result3@scores))
-  expect_true(is.list(result3@scores$jw))
-  expect_true(length(result3@scores$jw) > 0)
+  expect_true("jw" %in% names(result3$scores))
+  expect_true(is.list(result3$scores$jw))
+  expect_true(length(result3$scores$jw) > 0)
 })
 
 test_that("same_text works with method filtering", {

@@ -11,7 +11,7 @@
 #'   substitution (s), transposition (t)
 #' @param digits Number of digits to round results (default: 3)
 #'
-#' @return An S7 class object of type "similar_text" containing:
+#' @return An S3 class object of type "similar_text" containing:
 #'   - scores: Numeric similarity scores by method and comparison
 #'   - summary: Summary statistics by method and comparison
 #'   - methods: Methods used for comparison

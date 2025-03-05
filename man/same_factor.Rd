@@ -26,7 +26,7 @@ the "order" method is skipped.}
 \item{digits}{Number of digits to round results (default: 3)}
 }
 \value{
-An S7 object of type "similar_factor" containing:
+An S3 object of type "similar_factor" containing:
 \itemize{
 \item scores: Numeric similarity scores by method and comparison
 \item summary: Summary statistics by method and comparison

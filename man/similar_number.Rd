@@ -4,14 +4,7 @@
 \alias{similar_number}
 \title{Numeric similarity comparison class}
 \usage{
-similar_number(
-  scores = list(),
-  summary = list(),
-  methods = character(0),
-  list_names = character(0),
-  digits = integer(0),
-  raw_values = list()
-)
+similar_number(scores, summary, methods, list_names, raw_values, digits = 3)
 }
 \arguments{
 \item{scores}{List of similarity scores per method and comparison}
@@ -22,14 +15,14 @@ similar_number(
 
 \item{list_names}{Character vector of names for the compared lists}
 
-\item{digits}{Number of digits to round results (default: 3)}
-
 \item{raw_values}{List of raw numeric values being compared}
+
+\item{digits}{Number of digits to round results (default: 3)}
 }
 \description{
-\code{similar_number} is an S7 class for numeric similarity comparisons.
+\code{similar_number} is an S3 class for numeric similarity comparisons.
 }
 \details{
-This class extends the abstract \code{similar} class and implements
+This class extends the \code{similar} class and implements
 numeric data-specific similarity comparison methods.
 }

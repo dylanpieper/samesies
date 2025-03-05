@@ -8,7 +8,7 @@
 #'   the "order" method is skipped.
 #' @param digits Number of digits to round results (default: 3)
 #'
-#' @return An S7 object of type "similar_factor" containing:
+#' @return An S3 object of type "similar_factor" containing:
 #'   - scores: Numeric similarity scores by method and comparison
 #'   - summary: Summary statistics by method and comparison
 #'   - methods: Methods used for comparison

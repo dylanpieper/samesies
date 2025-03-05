@@ -4,13 +4,7 @@
 \alias{similar_text}
 \title{Text similarity comparison class}
 \usage{
-similar_text(
-  scores = list(),
-  summary = list(),
-  methods = character(0),
-  list_names = character(0),
-  digits = integer(0)
-)
+similar_text(scores, summary, methods, list_names, digits = 3)
 }
 \arguments{
 \item{scores}{List of similarity scores per method and comparison}
@@ -24,9 +18,9 @@ similar_text(
 \item{digits}{Number of digits to round results (default: 3)}
 }
 \description{
-\code{similar_text} is an S7 class for text similarity comparisons.
+\code{similar_text} is an S3 class for text similarity comparisons.
 }
 \details{
-This class extends the abstract \code{similar} class and implements
+This class extends the \code{similar} class and implements
 text-specific similarity comparison methods.
 }
