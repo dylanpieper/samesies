@@ -4,19 +4,23 @@ samesies compares lists of texts, factors, or numerical values to measure their 
 
 ## Installation
 
+You can install `samesies` from CRAN with:
+
 ``` r
-devtools::install_github("dylanpieper/samesies")
+install.packages("samesies")
 ```
 
-## Interface
+## Basic Usage
 
-Samesies provides three main functions for similarity analysis:
+Samesies provides three main functions for measuring similarity:
 
 ### `same_text()`
 
 Compare similarity between multiple lists of character strings.
 
 ``` r
+library(samesies)
+
 r1 <- list("R is a statistical computing software", 
            "R enables grammar of graphics using ggplot2", 
            "R supports advanced statistical models")
