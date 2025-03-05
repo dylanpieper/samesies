@@ -19,6 +19,19 @@ similar_factor(scores, summary, methods, list_names, levels, digits = 3)
 
 \item{digits}{Number of digits to round results (default: 3)}
 }
+\value{
+An object of class "similar_factor" (which inherits from "similar") containing:
+\itemize{
+\item scores: List of factor similarity scores per method and comparison
+\item summary: Summary statistics by method and comparison
+\item methods: Character vector of factor comparison methods used (exact, order)
+\item list_names: Character vector of names for the compared factor lists
+\item digits: Number of digits to round results in output
+\item levels: Character vector of factor levels used in the comparison
+}
+The factor similarity scores are normalized values between 0 and 1, where 1 indicates
+identical factors and 0 indicates completely different factors based on the specific method used.
+}
 \description{
 \code{similar_factor} is an S3 class for categorical/factor similarity comparisons.
 }

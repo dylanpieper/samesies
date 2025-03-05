@@ -20,6 +20,17 @@
 #' - list_names: Character vector of names for the compared lists
 #' - digits: Number of digits to round results in output
 #'
+#' @return An object of class "similar" with the following components:
+#' \itemize{
+#'   \item scores: List of similarity scores per method and comparison
+#'   \item summary: Summary statistics by method and comparison
+#'   \item methods: Character vector of methods used for comparison
+#'   \item list_names: Character vector of names for the compared lists
+#'   \item digits: Number of digits to round results in output
+#' }
+#' The similarity scores are normalized values between 0 and 1, where 1 indicates perfect similarity
+#' and 0 indicates no similarity.
+#'
 #' @export
 similar <- function(scores, summary, methods, list_names, digits = 3) {
   # Validation
@@ -74,6 +85,17 @@ similar <- function(scores, summary, methods, list_names, digits = 3) {
 #' This class extends the `similar` class and implements
 #' text-specific similarity comparison methods.
 #'
+#' @return An object of class "similar_text" (which inherits from "similar") containing:
+#' \itemize{
+#'   \item scores: List of text similarity scores per method and comparison
+#'   \item summary: Summary statistics by method and comparison
+#'   \item methods: Character vector of text similarity methods used (osa, lv, dl, etc.)
+#'   \item list_names: Character vector of names for the compared text lists
+#'   \item digits: Number of digits to round results in output
+#' }
+#' The text similarity scores are normalized values between 0 and 1, where 1 indicates 
+#' identical text and 0 indicates completely different text based on the specific method used.
+#'
 #' @export
 similar_text <- function(scores, summary, methods, list_names, digits = 3) {
   valid_methods <- c(
@@ -117,6 +139,18 @@ similar_text <- function(scores, summary, methods, list_names, digits = 3) {
 #' @details
 #' This class extends the `similar` class and implements
 #' categorical data-specific similarity comparison methods.
+#'
+#' @return An object of class "similar_factor" (which inherits from "similar") containing:
+#' \itemize{
+#'   \item scores: List of factor similarity scores per method and comparison
+#'   \item summary: Summary statistics by method and comparison
+#'   \item methods: Character vector of factor comparison methods used (exact, order)
+#'   \item list_names: Character vector of names for the compared factor lists
+#'   \item digits: Number of digits to round results in output
+#'   \item levels: Character vector of factor levels used in the comparison
+#' }
+#' The factor similarity scores are normalized values between 0 and 1, where 1 indicates 
+#' identical factors and 0 indicates completely different factors based on the specific method used.
 #'
 #' @export
 similar_factor <- function(scores, summary, methods, list_names, levels, digits = 3) {
@@ -162,6 +196,18 @@ similar_factor <- function(scores, summary, methods, list_names, levels, digits 
 #' @details
 #' This class extends the `similar` class and implements
 #' numeric data-specific similarity comparison methods.
+#'
+#' @return An object of class "similar_number" (which inherits from "similar") containing:
+#' \itemize{
+#'   \item scores: List of numeric similarity scores per method and comparison
+#'   \item summary: Summary statistics by method and comparison
+#'   \item methods: Character vector of numeric comparison methods used (exact, pct_diff, normalized, fuzzy)
+#'   \item list_names: Character vector of names for the compared numeric lists
+#'   \item digits: Number of digits to round results in output
+#'   \item raw_values: List of raw numeric values that were compared
+#' }
+#' The numeric similarity scores are normalized values between 0 and 1, where 1 indicates 
+#' identical numbers and 0 indicates maximally different numbers based on the specific method used.
 #'
 #' @export
 similar_number <- function(scores, summary, methods, list_names, raw_values, digits = 3) {

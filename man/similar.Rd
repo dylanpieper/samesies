@@ -17,6 +17,18 @@ similar(scores, summary, methods, list_names, digits = 3)
 
 \item{digits}{Number of digits to round results (default: 3)}
 }
+\value{
+An object of class "similar" with the following components:
+\itemize{
+\item scores: List of similarity scores per method and comparison
+\item summary: Summary statistics by method and comparison
+\item methods: Character vector of methods used for comparison
+\item list_names: Character vector of names for the compared lists
+\item digits: Number of digits to round results in output
+}
+The similarity scores are normalized values between 0 and 1, where 1 indicates perfect similarity
+and 0 indicates no similarity.
+}
 \description{
 \code{similar} is an S3 class for all similarity comparison objects.
 This class defines common properties shared among child classes

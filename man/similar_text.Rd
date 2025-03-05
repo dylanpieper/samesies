@@ -17,6 +17,18 @@ similar_text(scores, summary, methods, list_names, digits = 3)
 
 \item{digits}{Number of digits to round results (default: 3)}
 }
+\value{
+An object of class "similar_text" (which inherits from "similar") containing:
+\itemize{
+\item scores: List of text similarity scores per method and comparison
+\item summary: Summary statistics by method and comparison
+\item methods: Character vector of text similarity methods used (osa, lv, dl, etc.)
+\item list_names: Character vector of names for the compared text lists
+\item digits: Number of digits to round results in output
+}
+The text similarity scores are normalized values between 0 and 1, where 1 indicates
+identical text and 0 indicates completely different text based on the specific method used.
+}
 \description{
 \code{similar_text} is an S3 class for text similarity comparisons.
 }

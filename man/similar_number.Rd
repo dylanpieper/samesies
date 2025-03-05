@@ -19,6 +19,19 @@ similar_number(scores, summary, methods, list_names, raw_values, digits = 3)
 
 \item{digits}{Number of digits to round results (default: 3)}
 }
+\value{
+An object of class "similar_number" (which inherits from "similar") containing:
+\itemize{
+\item scores: List of numeric similarity scores per method and comparison
+\item summary: Summary statistics by method and comparison
+\item methods: Character vector of numeric comparison methods used (exact, pct_diff, normalized, fuzzy)
+\item list_names: Character vector of names for the compared numeric lists
+\item digits: Number of digits to round results in output
+\item raw_values: List of raw numeric values that were compared
+}
+The numeric similarity scores are normalized values between 0 and 1, where 1 indicates
+identical numbers and 0 indicates maximally different numbers based on the specific method used.
+}
 \description{
 \code{similar_number} is an S3 class for numeric similarity comparisons.
 }
