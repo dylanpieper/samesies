@@ -8,15 +8,17 @@
 <url><loc>https://dylanpieper.github.io/samesies/reference/auto_epsilon.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/auto_max_diff.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/average_similarity.html</loc></url>
-<url><loc>https://dylanpieper.github.io/samesies/reference/average_similarity.similar.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/calculate_number_scores.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/index.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/pair_averages.html</loc></url>
-<url><loc>https://dylanpieper.github.io/samesies/reference/pair_averages.similar.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/print.similar.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/print.similar_factor.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/print.similar_number.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/print.similar_text.html</loc></url>
+<url><loc>https://dylanpieper.github.io/samesies/reference/print.summary.similar.html</loc></url>
+<url><loc>https://dylanpieper.github.io/samesies/reference/print.summary.similar_factor.html</loc></url>
+<url><loc>https://dylanpieper.github.io/samesies/reference/print.summary.similar_number.html</loc></url>
+<url><loc>https://dylanpieper.github.io/samesies/reference/print.summary.similar_text.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/same_factor.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/same_number.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/same_text.html</loc></url>
@@ -25,6 +27,9 @@
 <url><loc>https://dylanpieper.github.io/samesies/reference/similar_number.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/similar_text.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/summary.similar.html</loc></url>
+<url><loc>https://dylanpieper.github.io/samesies/reference/summary.similar_factor.html</loc></url>
+<url><loc>https://dylanpieper.github.io/samesies/reference/summary.similar_number.html</loc></url>
+<url><loc>https://dylanpieper.github.io/samesies/reference/summary.similar_text.html</loc></url>
 <url><loc>https://dylanpieper.github.io/samesies/reference/validate_number_inputs.html</loc></url>
 </urlset>
 
