@@ -18,7 +18,7 @@ calculate_number_scores(
 
 \item{list2}{Second list of numeric values}
 
-\item{method}{Method to use for similarity calculation. One of: "exact", "pct_diff", "normalized", "fuzzy"}
+\item{method}{Method to use for similarity calculation. One of: "exact", "percent", "normalized", "fuzzy", "exp", "raw"}
 
 \item{epsilon}{Threshold for fuzzy matching. Only used when method is "fuzzy"}
 

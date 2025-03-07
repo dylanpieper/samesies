@@ -55,8 +55,7 @@ summary.similar_number <- function(object, ...) {
     overall_averages = overall_avgs,
     pair_averages = pair_avgs
   )
-  
-  # Store digits as an attribute to be used by print.summary.similar_number
+
   attr(result, "digits") <- object$digits
 
   class(result) <- "summary.similar_number"
@@ -80,8 +79,7 @@ print.summary.similar_number <- function(x, ...) {
   cli::cli_text("{.val {paste(x$list_names, collapse = ', ')}}")
 
   cli::cli_h2("Overall Method Averages")
-  # For the summary object, need to get digits from x itself since it's not stored in the summary
-  # Use default of 3 if not found as backward compatibility
+
   digits <- if (!is.null(attr(x, "digits"))) attr(x, "digits") else 3
   cli::cli_bullets(purrr::map_chr(names(x$overall_averages), function(method) {
     paste0("* ", method, ": {.val ", round(x$overall_averages[method], digits), "}")

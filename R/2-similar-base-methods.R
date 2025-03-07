@@ -127,6 +127,7 @@ summary.similar <- function(object, ...) {
 #' @param x A summary.similar object
 #' @param ... Additional arguments (not used)
 #'
+#' @return The summary object invisibly
 #' @export
 print.summary.similar <- function(x, ...) {
   cli::cli_h1("Summary: Similarity Analysis")

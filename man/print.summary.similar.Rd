@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments (not used)}
 }
+\value{
+The summary object invisibly
+}
 \description{
 Print method for summary.similar objects
 }

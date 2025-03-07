@@ -6,6 +6,7 @@ This is a resubmission. I addressed the reviewer's feedback by taking the follow
   - similar_number.Rd  
   - similar_text.Rd
   - similar.Rd
+  - print.summary.similar.Rd
   
   Each function now has proper documentation explaining the return value structure,
   class information, and meaning of the output.

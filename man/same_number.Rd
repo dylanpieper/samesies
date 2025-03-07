@@ -6,7 +6,7 @@
 \usage{
 same_number(
   ...,
-  method = c("exact", "pct_diff", "normalized", "fuzzy"),
+  method = c("exact", "raw", "exp", "percent", "normalized", "fuzzy"),
   epsilon = 0.05,
   epsilon_pct = 0.02,
   max_diff = NULL,
@@ -38,6 +38,17 @@ An S3 object containing:
 }
 \description{
 Computes similarity scores between two or more lists of numeric values using multiple comparison methods.
+}
+\details{
+The available methods are:
+\itemize{
+\item \code{exact}: Binary similarity (1 if equal, 0 otherwise)
+\item \code{percent}: Percentage difference relative to the larger value
+\item \code{normalized}: Absolute difference normalized by a maximum difference value
+\item \code{fuzzy}: Similarity based on an epsilon threshold
+\item \code{exp}: Exponential decay based on absolute difference (e^-diff)
+\item \code{raw}: Returns the raw absolute difference (|num1 - num2|) instead of a similarity score
+}
 }
 \examples{
 nums1 <- list(1, 2, 3)
