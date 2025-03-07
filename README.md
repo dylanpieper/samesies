@@ -1,6 +1,6 @@
 # samesies <img src="man/figures/samesies-hex.png" align="right" width="140"/>
 
-samesies compares lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model responses across models, providers, or prompts.
+`samesies` compares lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model (LLM) responses across models, providers, or prompts—a strategy often referred to as LLM-as-a-judge .
 
 ## Installation
 
@@ -12,7 +12,7 @@ install.packages("samesies")
 
 ## Basic Usage
 
-Samesies provides three main functions for measuring similarity:
+`samesies` provides three main functions for measuring similarity:
 
 ### `same_text()`
 
@@ -83,6 +83,8 @@ num <- same_number(n1, n2)
 Methods available (e.g., `method = "exact"`):
 
 -   **exact**: Exact matching
+-   **raw**: Absolute difference
+-   **exp**: Exponential decay on the absolute difference
 -   **pct_diff**: Percentage difference
 -   **normalized**: Normalized difference (set `max_diff` or auto-calculate)
 
@@ -135,4 +137,4 @@ The package uses S3 objects, allowing access to the underlying data:
 
 ## Credits
 
-The hex logo image is fan art created by the Reddit user [WistlerR15](https://www.reddit.com/r/Spiderman/comments/k3pcj3/remade_the_spiderman_meme_with_my_favorite/).
+The Spiderman image in the hex logo is fan art created by the Reddit user [WistlerR15](https://www.reddit.com/r/Spiderman/comments/k3pcj3/remade_the_spiderman_meme_with_my_favorite/).

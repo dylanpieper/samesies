@@ -8,6 +8,17 @@
 #' @param epsilon_pct Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"
 #' @param digits Number of digits to round results (default: 3)
 #'
+#' @details
+#' The available methods are:
+#' \itemize{
+#'   \item \code{exact}: Binary similarity (1 if equal, 0 otherwise)
+#'   \item \code{percent}: Percentage difference relative to the larger value
+#'   \item \code{normalized}: Absolute difference normalized by a maximum difference value
+#'   \item \code{fuzzy}: Similarity based on an epsilon threshold
+#'   \item \code{exp}: Exponential decay based on absolute difference (e^-diff)
+#'   \item \code{raw}: Returns the raw absolute difference (|num1 - num2|) instead of a similarity score
+#' }
+#'
 #' @return An S3 object containing:
 #'   \itemize{
 #'     \item \code{scores}: A list of similarity scores for each method and list pair
@@ -22,10 +33,10 @@
 #' nums2 <- list(1, 2.1, 3.2)
 #' result <- same_number(nums1, nums2)
 #' @export
-same_number <- function(..., method = c("exact", "pct_diff", "normalized", "fuzzy"),
+same_number <- function(..., method = c("exact", "raw", "exp", "percent", "normalized", "fuzzy"),
                         epsilon = 0.05, epsilon_pct = 0.02, max_diff = NULL, digits = 3) {
   valid_methods <- c(
-    "exact", "pct_diff", "normalized", "fuzzy"
+    "exact", "raw", "exp", "percent", "normalized", "fuzzy"
   )
 
   inputs <- list(...)

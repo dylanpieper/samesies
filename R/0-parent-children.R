@@ -33,7 +33,6 @@
 #'
 #' @export
 similar <- function(scores, summary, methods, list_names, digits = 3) {
-  # Validation
   for (method_name in names(scores)) {
     for (list_pair in names(scores[[method_name]])) {
       scores_values <- scores[[method_name]][[list_pair]]
@@ -45,7 +44,7 @@ similar <- function(scores, summary, methods, list_names, digits = 3) {
         ))
       }
 
-      if (any(scores_values < 0 | scores_values > 1, na.rm = TRUE)) {
+      if (method_name != "raw" && any(scores_values < 0 | scores_values > 1, na.rm = TRUE)) {
         stop(sprintf(
           "All scores must be between 0 and 1 (inclusive). Found score(s) out of range in %s for %s.",
           method_name, list_pair
@@ -93,7 +92,7 @@ similar <- function(scores, summary, methods, list_names, digits = 3) {
 #'   \item list_names: Character vector of names for the compared text lists
 #'   \item digits: Number of digits to round results in output
 #' }
-#' The text similarity scores are normalized values between 0 and 1, where 1 indicates 
+#' The text similarity scores are normalized values between 0 and 1, where 1 indicates
 #' identical text and 0 indicates completely different text based on the specific method used.
 #'
 #' @export
@@ -149,7 +148,7 @@ similar_text <- function(scores, summary, methods, list_names, digits = 3) {
 #'   \item digits: Number of digits to round results in output
 #'   \item levels: Character vector of factor levels used in the comparison
 #' }
-#' The factor similarity scores are normalized values between 0 and 1, where 1 indicates 
+#' The factor similarity scores are normalized values between 0 and 1, where 1 indicates
 #' identical factors and 0 indicates completely different factors based on the specific method used.
 #'
 #' @export
@@ -172,12 +171,12 @@ similar_factor <- function(scores, summary, methods, list_names, levels, digits 
     list_names = list_names,
     digits = digits
   )
-  
+
   obj <- structure(
     c(similar_obj, list(levels = levels)),
     class = c("similar_factor", "similar")
   )
-  
+
   return(obj)
 }
 
@@ -201,17 +200,18 @@ similar_factor <- function(scores, summary, methods, list_names, levels, digits 
 #' \itemize{
 #'   \item scores: List of numeric similarity scores per method and comparison
 #'   \item summary: Summary statistics by method and comparison
-#'   \item methods: Character vector of numeric comparison methods used (exact, pct_diff, normalized, fuzzy)
+#'   \item methods: Character vector of numeric comparison methods used (exact, percent, normalized, fuzzy, exp, raw)
 #'   \item list_names: Character vector of names for the compared numeric lists
 #'   \item digits: Number of digits to round results in output
 #'   \item raw_values: List of raw numeric values that were compared
 #' }
-#' The numeric similarity scores are normalized values between 0 and 1, where 1 indicates 
+#' The numeric similarity scores are normalized values between 0 and 1, where 1 indicates
 #' identical numbers and 0 indicates maximally different numbers based on the specific method used.
+#' The exception is the "raw" method, which returns the absolute difference between values.
 #'
 #' @export
 similar_number <- function(scores, summary, methods, list_names, raw_values, digits = 3) {
-  valid_methods <- c("exact", "pct_diff", "normalized", "fuzzy")
+  valid_methods <- c("exact", "percent", "normalized", "fuzzy", "exp", "raw")
 
   invalid_methods <- methods[!methods %in% valid_methods]
   if (length(invalid_methods) > 0) {
@@ -229,11 +229,11 @@ similar_number <- function(scores, summary, methods, list_names, raw_values, dig
     list_names = list_names,
     digits = digits
   )
-  
+
   obj <- structure(
     c(similar_obj, list(raw_values = raw_values)),
     class = c("similar_number", "similar")
   )
-  
+
   return(obj)
 }

@@ -339,11 +339,11 @@ validate_number_inputs <- function(...) {
 #' Calculate Numeric Similarity
 #' @param num1 First numeric value to compare
 #' @param num2 Second numeric value to compare
-#' @param method Method to use for similarity calculation. One of: "exact", "pct_diff", "normalized", "fuzzy"
+#' @param method Method to use for similarity calculation. One of: "exact", "raw", "exp", "percent", "normalized", "fuzzy"
 #' @param epsilon Threshold for fuzzy matching. Only used when method is "fuzzy"
 #' @param max_diff Maximum difference for normalization. Only used when method is "normalized"
 #' @param epsilon_pct Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"
-#' @return Numeric similarity score between 0 and 1
+#' @return Numeric similarity score between 0 and 1, or raw difference value if method is "raw"
 #' @noRd
 calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_diff = NULL, epsilon_pct = 0.02) {
   if (is.na(num1) && is.na(num2)) {
@@ -360,7 +360,15 @@ calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_
     "exact" = {
       as.numeric(num1 == num2)
     },
-    "pct_diff" = {
+    "raw" = {
+      abs(num1 - num2)
+    },
+    "exp" = {
+      diff <- abs(num1 - num2)
+      similarity <- exp(-diff)
+      similarity
+    },
+    "percent" = {
       if (num1 == 0 && num2 == 0) {
         return(1)
       }
@@ -409,7 +417,7 @@ calculate_number_similarity <- function(num1, num2, method, epsilon = 0.05, max_
 #' Calculate Similarity Scores Between Two Numeric Lists
 #' @param list1 First list of numeric values
 #' @param list2 Second list of numeric values
-#' @param method Method to use for similarity calculation. One of: "exact", "pct_diff", "normalized", "fuzzy"
+#' @param method Method to use for similarity calculation. One of: "exact", "percent", "normalized", "fuzzy", "exp", "raw"
 #' @param epsilon Threshold for fuzzy matching. Only used when method is "fuzzy"
 #' @param max_diff Maximum difference for normalization. Only used when method is "normalized"
 #' @param epsilon_pct Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"
