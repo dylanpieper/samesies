@@ -73,12 +73,13 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>An object of class "similar_number" (which inherits from "similar") containing:</p><ul><li><p>scores: List of numeric similarity scores per method and comparison</p></li>
 <li><p>summary: Summary statistics by method and comparison</p></li>
-<li><p>methods: Character vector of numeric comparison methods used (exact, pct_diff, normalized, fuzzy)</p></li>
+<li><p>methods: Character vector of numeric comparison methods used (exact, percent, normalized, fuzzy, exp, raw)</p></li>
 <li><p>list_names: Character vector of names for the compared numeric lists</p></li>
 <li><p>digits: Number of digits to round results in output</p></li>
 <li><p>raw_values: List of raw numeric values that were compared</p></li>
 </ul><p>The numeric similarity scores are normalized values between 0 and 1, where 1 indicates
-identical numbers and 0 indicates maximally different numbers based on the specific method used.</p>
+identical numbers and 0 indicates maximally different numbers based on the specific method used.
+The exception is the "raw" method, which returns the absolute difference between values.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

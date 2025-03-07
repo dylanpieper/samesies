@@ -48,7 +48,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="samesies-">samesies <img src="reference/figures/samesies-hex.png" align="right" width="140"><a class="anchor" aria-label="anchor" href="#samesies-"></a>
 </h1></div>
-<p>samesies compares lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model responses across models, providers, or prompts.</p>
+<p><code>samesies</code> compares lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model (LLM) responses across models, providers, or prompts—a strategy often referred to as LLM-as-a-judge .</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -59,7 +59,7 @@
 <div class="section level2">
 <h2 id="basic-usage">Basic Usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
 </h2>
-<p>Samesies provides three main functions for measuring similarity:</p>
+<p><code>samesies</code> provides three main functions for measuring similarity:</p>
 <div class="section level3">
 <h3 id="same_text">
 <code>same_text()</code><a class="anchor" aria-label="anchor" href="#same_text"></a>
@@ -149,9 +149,13 @@
 <li>
 <strong>exact</strong>: Exact matching</li>
 <li>
+<strong>raw</strong>: Absolute difference</li>
+<li>
+<strong>exp</strong>: Exponential decay on the absolute difference</li>
+<li>
 <strong>pct_diff</strong>: Percentage difference</li>
 <li>
-<strong>normalized</strong>: Normalized difference (set <code>max_diff</code> or auto-calculate)</li>
+<strong>normalized</strong>: Normalized difference (<code>max_diff</code> is computed automatically by default)</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/same_number.html">same_number</a></span><span class="op">(</span><span class="va">n1</span>, <span class="va">n2</span>, </span>
@@ -218,7 +222,7 @@
 <div class="section level2">
 <h2 id="credits">Credits<a class="anchor" aria-label="anchor" href="#credits"></a>
 </h2>
-<p>The hex logo image is fan art created by the Reddit user <a href="https://www.reddit.com/r/Spiderman/comments/k3pcj3/remade_the_spiderman_meme_with_my_favorite/" class="external-link">WistlerR15</a>.</p>
+<p>The Spiderman image in the hex logo is fan art created by the Reddit user <a href="https://www.reddit.com/r/Spiderman/comments/k3pcj3/remade_the_spiderman_meme_with_my_favorite/" class="external-link">WistlerR15</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
