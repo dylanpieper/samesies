@@ -86,7 +86,7 @@ Methods available (e.g., `method = "exact"`):
 -   **raw**: Absolute difference
 -   **exp**: Exponential decay on the absolute difference
 -   **pct_diff**: Percentage difference
--   **normalized**: Normalized difference (set `max_diff` or auto-calculate)
+-   **normalized**: Normalized difference (`max_diff` is computed automatically by default)
 
 ``` r
 num <- same_number(n1, n2, 
