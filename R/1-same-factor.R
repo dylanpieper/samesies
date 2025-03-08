@@ -1,6 +1,6 @@
 #' Compare Factor Similarity Across Lists
 #'
-#' @param ... Lists of categorical values (character or factor) to compare
+#' @param ... Lists of categorical values (character or factor) to compare. Can be named (e.g., `"l1" = list1, "l2" = list2`) to control list names.
 #' @param method Character vector of similarity methods. Choose from: "exact",
 #'   "order" (default: all)
 #' @param levels Character vector of all allowed levels for comparison
@@ -15,6 +15,18 @@
 #'   - list_names: Names of compared lists
 #'   - levels: Levels used for categorical comparison
 #'
+#' @examples
+#' list1 <- list("high", "medium", "low")
+#' list2 <- list("high", "low", "medium")
+#'
+#' # Using unnamed lists
+#' result1 <- same_factor(list1, list2, levels = c("low", "medium", "high"))
+#'
+#' # Using named lists for more control
+#' result2 <- same_factor(
+#'   "l1" = list1, "l2" = list2,
+#'   levels = c("low", "medium", "high")
+#' )
 #' @export
 same_factor <- function(..., method = c("exact", "order"), levels, ordered = FALSE, digits = 3) {
   valid_methods <- c("exact", "order")

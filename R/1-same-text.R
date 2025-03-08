@@ -1,6 +1,6 @@
 #' Compare Text Similarity Across Lists
 #'
-#' @param ... Lists of character strings to compare
+#' @param ... Lists of character strings to compare. Can be named (e.g., `"l1" = list1, "l2" = list2`) to control list names.
 #' @param method Character vector of similarity methods from `stringdist`. Choose from:
 #'   "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"
 #'   (default: all)
@@ -20,7 +20,12 @@
 #' @examples
 #' list1 <- list("hello", "world")
 #' list2 <- list("helo", "word")
-#' result <- same_text(list1, list2)
+#'
+#' # Using unnamed lists
+#' result1 <- same_text(list1, list2)
+#'
+#' # Using named lists for more control
+#' result2 <- same_text("l1" = list1, "l2" = list2)
 #' @export
 same_text <- function(..., method = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"),
                       q = 1, p = NULL, bt = 0,

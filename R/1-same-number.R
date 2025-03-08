@@ -1,7 +1,7 @@
 #' Compare Numerical Similarity Across Lists
 #' @description Computes similarity scores between two or more lists of numeric values using multiple comparison methods.
 #'
-#' @param ... Two or more lists containing numeric values to compare
+#' @param ... Two or more lists containing numeric values to compare. Can be named (e.g., `"l1" = list1, "l2" = list2`) to control list names.
 #' @param method Character vector specifying similarity methods (default: all)
 #' @param epsilon Threshold for fuzzy matching (default: NULL for auto-calculation)
 #' @param max_diff Maximum difference for normalization (default: NULL for auto-calculation)
@@ -29,9 +29,14 @@
 #'   }
 #'
 #' @examples
-#' nums1 <- list(1, 2, 3)
-#' nums2 <- list(1, 2.1, 3.2)
-#' result <- same_number(nums1, nums2)
+#' list1 <- list(1, 2, 3)
+#' list2 <- list(1, 2.1, 3.2)
+#'
+#' # Using unnamed lists
+#' result1 <- same_number(list1, list2)
+#'
+#' # Using named lists for more control
+#' result2 <- same_number("n1" = list1, "n2" = list2)
 #' @export
 same_number <- function(..., method = c("exact", "raw", "exp", "percent", "normalized", "fuzzy"),
                         epsilon = 0.05, epsilon_pct = 0.02, max_diff = NULL, digits = 3) {

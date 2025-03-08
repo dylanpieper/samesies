@@ -13,7 +13,7 @@ same_factor(
 )
 }
 \arguments{
-\item{...}{Lists of categorical values (character or factor) to compare}
+\item{...}{Lists of categorical values (character or factor) to compare. Can be named (e.g., \verb{"l1" = list1, "l2" = list2}) to control list names.}
 
 \item{method}{Character vector of similarity methods. Choose from: "exact",
 "order" (default: all)}
@@ -37,4 +37,17 @@ An S3 object of type "similar_factor" containing:
 }
 \description{
 Compare Factor Similarity Across Lists
+}
+\examples{
+list1 <- list("high", "medium", "low")
+list2 <- list("high", "low", "medium")
+
+# Using unnamed lists
+result1 <- same_factor(list1, list2, levels = c("low", "medium", "high"))
+
+# Using named lists for more control
+result2 <- same_factor(
+  "l1" = list1, "l2" = list2,
+  levels = c("low", "medium", "high")
+)
 }

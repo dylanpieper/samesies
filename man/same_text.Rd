@@ -16,7 +16,7 @@ same_text(
 )
 }
 \arguments{
-\item{...}{Lists of character strings to compare}
+\item{...}{Lists of character strings to compare. Can be named (e.g., \verb{"l1" = list1, "l2" = list2}) to control list names.}
 
 \item{method}{Character vector of similarity methods from \code{stringdist}. Choose from:
 "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"
@@ -48,5 +48,10 @@ Compare Text Similarity Across Lists
 \examples{
 list1 <- list("hello", "world")
 list2 <- list("helo", "word")
-result <- same_text(list1, list2)
+
+# Using unnamed lists
+result1 <- same_text(list1, list2)
+
+# Using named lists for more control
+result2 <- same_text("l1" = list1, "l2" = list2)
 }
