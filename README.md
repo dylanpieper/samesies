@@ -1,6 +1,6 @@
 # samesies <img src="man/figures/samesies-hex.png" align="right" width="140"/>
 
-`samesies` compares lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model (LLM) responses across models, providers, or prompts—a strategy I am calling LLM-as-an-independent-rater .
+`samesies` compares lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model (LLM) responses across models, providers, or prompts—a strategy I call LLM-as-an-independent-rater .
 
 ## Installation
 
