@@ -1,4 +1,27 @@
 url: https://dylanpieper.github.io/samesies/
 template:
   bootstrap: 5
+  light-switch: true
 
+reference:
+- title: "Main Functions"
+  desc: >
+    Core functions for comparing similarity between lists
+  contents:
+    - same_text
+    - same_factor
+    - same_number
+
+- title: "Analysis Functions"
+  desc: >
+    Functions for analyzing similarity results
+  contents:
+    - average_similarity
+    - pair_averages
+
+- title: "S3 Methods"
+  desc: >
+    Methods for working with similarity objects
+  contents:
+    - starts_with("print.")
+    - starts_with("summary.")
