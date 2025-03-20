@@ -2,7 +2,6 @@ url: https://dylanpieper.github.io/samesies/
 template:
   bootstrap: 5
   light-switch: true
-
 reference:
 - title: "Main Functions"
   desc: >
@@ -11,14 +10,20 @@ reference:
     - same_text
     - same_factor
     - same_number
-
 - title: "Analysis Functions"
   desc: >
     Functions for analyzing similarity results
   contents:
     - average_similarity
     - pair_averages
-
+- title: "Constructor Functions"
+  desc: >
+    S3 constructor functions for similarity objects
+  contents:
+    - similar
+    - similar_text
+    - similar_factor
+    - similar_number
 - title: "S3 Methods"
   desc: >
     Methods for working with similarity objects
