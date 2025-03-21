@@ -1,6 +1,8 @@
 # samesies <img src="man/figures/samesies-hex.png" align="right" width="140"/>
 
-`samesies` compares lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model (LLM) responses across models, providers, or prompts.
+[![CRAN status](https://www.r-pkg.org/badges/version/samesies)](https://cran.r-pkg.org/package=samesies) [![R-CMD-check](https://github.com/dylanpieper/samesies/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dylanpieper/samesies/actions/workflows/R-CMD-check.yaml)
+
+Compare lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model (LLM) responses across models, providers, or prompts.
 
 ## Installation
 
