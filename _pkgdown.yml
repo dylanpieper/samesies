@@ -1,4 +1,7 @@
 url: https://dylanpieper.github.io/samesies/
+repo:
+  url:
+    home: https://github.com/dylanpieper/samesies
 template:
   bootstrap: 5
   light-switch: true
