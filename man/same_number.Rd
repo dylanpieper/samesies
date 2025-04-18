@@ -14,17 +14,18 @@ same_number(
 )
 }
 \arguments{
-\item{...}{Two or more lists containing numeric values to compare. Can be named (e.g., \verb{"l1" = list1, "l2" = list2}) to control list names.}
+\item{...}{Two or more lists containing numeric values to compare.}
 
-\item{method}{Character vector specifying similarity methods (default: all)}
+\item{method}{Character vector specifying similarity methods
+(default: c("exact", "raw", "exp", "percent", "normalized", "fuzzy")).}
 
-\item{epsilon}{Threshold for fuzzy matching (default: NULL for auto-calculation)}
+\item{epsilon}{Threshold for fuzzy matching (default: NULL for auto-calculation).}
 
-\item{epsilon_pct}{Relative epsilon percentile (default: 0.02 or 2\%). Only used when method is "fuzzy"}
+\item{epsilon_pct}{Relative epsilon percentile for "fuzzy" method (default: 0.02).}
 
-\item{max_diff}{Maximum difference for normalization (default: NULL for auto-calculation)}
+\item{max_diff}{Maximum difference for normalization (default: NULL for auto-calculation).}
 
-\item{digits}{Number of digits to round results (default: 3)}
+\item{digits}{Number of digits to round results (default: 3).}
 }
 \value{
 An S3 object containing:
@@ -37,7 +38,9 @@ An S3 object containing:
 }
 }
 \description{
-Computes similarity scores between two or more lists of numeric values using multiple comparison methods.
+Computes similarity scores between two or more lists of numeric values.
+Applies various mathematical comparison methods including exact matching, percentage differences,
+normalized differences, fuzzy threshold-based matching, and exponential decay metrics.
 }
 \details{
 The available methods are:

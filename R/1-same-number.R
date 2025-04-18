@@ -1,12 +1,15 @@
 #' Compare Numerical Similarity Across Lists
-#' @description Computes similarity scores between two or more lists of numeric values using multiple comparison methods.
+#' @description Computes similarity scores between two or more lists of numeric values.
+#'   Applies various mathematical comparison methods including exact matching, percentage differences,
+#'   normalized differences, fuzzy threshold-based matching, and exponential decay metrics.
 #'
-#' @param ... Two or more lists containing numeric values to compare. Can be named (e.g., `"l1" = list1, "l2" = list2`) to control list names.
-#' @param method Character vector specifying similarity methods (default: all)
-#' @param epsilon Threshold for fuzzy matching (default: NULL for auto-calculation)
-#' @param max_diff Maximum difference for normalization (default: NULL for auto-calculation)
-#' @param epsilon_pct Relative epsilon percentile (default: 0.02 or 2%). Only used when method is "fuzzy"
-#' @param digits Number of digits to round results (default: 3)
+#' @param ... Two or more lists containing numeric values to compare.
+#' @param method Character vector specifying similarity methods
+#'   (default: c("exact", "raw", "exp", "percent", "normalized", "fuzzy")).
+#' @param epsilon Threshold for fuzzy matching (default: NULL for auto-calculation).
+#' @param epsilon_pct Relative epsilon percentile for "fuzzy" method (default: 0.02).
+#' @param max_diff Maximum difference for normalization (default: NULL for auto-calculation).
+#' @param digits Number of digits to round results (default: 3).
 #'
 #' @details
 #' The available methods are:

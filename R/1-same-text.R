@@ -1,15 +1,18 @@
 #' Compare Text Similarity Across Lists
+#' @description Computes similarity scores between two or more lists of character strings.
+#'   Implements multiple string distance algorithms including edit-based methods (OSA, Levenshtein,
+#'   Damerau-Levenshtein, Hamming), sequence-based approaches (LCS), q-gram techniques (qgram, cosine,
+#'   jaccard), phonetic matching (soundex), and hybrid methods (Jaro-Winkler).
 #'
-#' @param ... Lists of character strings to compare. Can be named (e.g., `"l1" = list1, "l2" = list2`) to control list names.
-#' @param method Character vector of similarity methods from `stringdist`. Choose from:
-#'   "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"
-#'   (default: all)
-#' @param q Size of q-gram for q-gram based methods (default: 1)
-#' @param p Winkler scaling factor for "jw" method (default: 0.1)
-#' @param bt Booth matching threshold
+#' @param ... Lists of character strings to compare.
+#' @param method Character vector of similarity methods from `stringdist`
+#'   (default: c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex")).
+#' @param q Size of q-gram for "qgram", "cosine", and "jaccard" methods (default: 1).
+#' @param p Winkler scaling factor for "jw" method (default: 0.1).
+#' @param bt Booth matching threshold for "jw" method (default: 0).
 #' @param weight Vector of weights for operations: deletion (d), insertion (i),
-#'   substitution (s), transposition (t)
-#' @param digits Number of digits to round results (default: 3)
+#'   substitution (s), transposition (t) for "osa", "lv", and "dl" methods.
+#' @param digits Number of digits to round results (default: 3).
 #'
 #' @return An S3 class object of type "similar_text" containing:
 #'   - scores: Numeric similarity scores by method and comparison

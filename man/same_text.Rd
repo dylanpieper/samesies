@@ -16,22 +16,21 @@ same_text(
 )
 }
 \arguments{
-\item{...}{Lists of character strings to compare. Can be named (e.g., \verb{"l1" = list1, "l2" = list2}) to control list names.}
+\item{...}{Lists of character strings to compare.}
 
-\item{method}{Character vector of similarity methods from \code{stringdist}. Choose from:
-"osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"
-(default: all)}
+\item{method}{Character vector of similarity methods from \code{stringdist}
+(default: c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex")).}
 
-\item{q}{Size of q-gram for q-gram based methods (default: 1)}
+\item{q}{Size of q-gram for "qgram", "cosine", and "jaccard" methods (default: 1).}
 
-\item{p}{Winkler scaling factor for "jw" method (default: 0.1)}
+\item{p}{Winkler scaling factor for "jw" method (default: 0.1).}
 
-\item{bt}{Booth matching threshold}
+\item{bt}{Booth matching threshold for "jw" method (default: 0).}
 
 \item{weight}{Vector of weights for operations: deletion (d), insertion (i),
-substitution (s), transposition (t)}
+substitution (s), transposition (t) for "osa", "lv", and "dl" methods.}
 
-\item{digits}{Number of digits to round results (default: 3)}
+\item{digits}{Number of digits to round results (default: 3).}
 }
 \value{
 An S3 class object of type "similar_text" containing:
@@ -43,7 +42,10 @@ An S3 class object of type "similar_text" containing:
 }
 }
 \description{
-Compare Text Similarity Across Lists
+Computes similarity scores between two or more lists of character strings.
+Implements multiple string distance algorithms including edit-based methods (OSA, Levenshtein,
+Damerau-Levenshtein, Hamming), sequence-based approaches (LCS), q-gram techniques (qgram, cosine,
+jaccard), phonetic matching (soundex), and hybrid methods (Jaro-Winkler).
 }
 \examples{
 list1 <- list("hello", "world")
