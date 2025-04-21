@@ -13,9 +13,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports:
     cli,
-    dplyr,
-    ggbeeswarm,
-    ggplot2,
     purrr,
     scales,
     stats,
