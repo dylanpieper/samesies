@@ -1,8 +1,8 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.2
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-04-21T13:58Z
+last_built: 2025-05-02T13:19Z
 urls:
   reference: https://dylanpieper.github.io/samesies/reference
   article: https://dylanpieper.github.io/samesies/articles
