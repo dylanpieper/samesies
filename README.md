@@ -18,7 +18,7 @@ install.packages("samesies")
 
 ### `same_text()`
 
-Compare similarity between multiple lists of character strings.
+Compare similarity between multiple lists of character strings:
 
 ``` r
 library(samesies)
@@ -66,7 +66,7 @@ Methods available via [stringdist](https://github.com/markvanderloo/stringdist) 
 
 ### `same_factor()`
 
-Compare similarity between multiple lists of categorical data.
+Compare similarity between multiple lists of categorical data:
 
 ``` r
 cats1 <- list("R", "R", "Python")
@@ -78,7 +78,7 @@ fct <- same_factor(cats1, cats2,
 #> ✔ Computed exact scores for "cats1_cats2" [mean: 0.333]
 ```
 
-Analyze similarity based on ordered factors:
+Compare similarity based on ordered factors:
 
 ``` r
 edu1 <- list("High School", "Bachelor's", "Master's", "PhD")
@@ -100,7 +100,7 @@ Methods available (e.g., `method = "exact"`):
 
 ### `same_number()`
 
-Compare similarity between multiple lists of numeric values.
+Compare similarity between multiple lists of numeric values:
 
 ``` r
 n1 <- list(1, 2, 3)
