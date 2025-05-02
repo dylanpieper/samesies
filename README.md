@@ -78,6 +78,21 @@ fct <- same_factor(cats1, cats2,
 #> ✔ Computed exact scores for "cats1_cats2" [mean: 0.333]
 ```
 
+Analyze similarity based on ordered factors:
+
+``` r
+edu1 <- list("High School", "Bachelor's", "Master's", "PhD")
+edu2 <- list("Bachelor's", "High School", "PhD", "Master's")
+
+edu_comparison <- same_factor(edu1, edu2, 
+                              levels = c("High School", "Bachelor's", "Master's", "PhD"),
+                              ordered = TRUE)
+
+fct_ordered <- average_similarity(edu_comparison)
+#> ✔ Computed exact scores for "edu1_edu2" [mean: 0]
+#> ✔ Computed order scores for "edu1_edu2" [mean: 0.667]
+```
+
 Methods available (e.g., `method = "exact"`):
 
 -   **exact**: Exact matching
