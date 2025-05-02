@@ -31,6 +31,16 @@ r2 <- list("R is a full-stack programming language",
            "R supports machine learning algorithms")
 
 tex <- same_text(r1, r2)
+#> ✔ Computed osa scores for "r1_r2" [mean: 0.43]
+#> ✔ Computed lv scores for "r1_r2" [mean: 0.43]
+#> ✔ Computed dl scores for "r1_r2" [mean: 0.43]
+#> ✔ Computed hamming scores for "r1_r2" [mean: 0.123]
+#> ✔ Computed lcs scores for "r1_r2" [mean: 0.061]
+#> ✔ Computed qgram scores for "r1_r2" [mean: 0.682]
+#> ✔ Computed cosine scores for "r1_r2" [mean: 0.771]
+#> ✔ Computed jaccard scores for "r1_r2" [mean: 0.735]
+#> ✔ Computed jw scores for "r1_r2" [mean: 0.818]
+#> ✔ Computed soundex scores for "r1_r2" [mean: 0.667]
 ```
 
 Methods available via [stringdist](https://github.com/markvanderloo/stringdist) (e.g., `method = "osa"`):
@@ -64,6 +74,8 @@ cats2 <- list("R", "Python", "R")
 
 fct <- same_factor(cats1, cats2, 
                    levels = c("R", "Python"))
+#> ℹ Skipping 'order' method because levels are not explicitly ordered. Set ordered = TRUE to compute the order method.
+#> ✔ Computed exact scores for "cats1_cats2" [mean: 0.333]
 ```
 
 Methods available (e.g., `method = "exact"`):
@@ -80,6 +92,11 @@ n1 <- list(1, 2, 3)
 n2 <- list(1, 2.1, 3.2)
 
 num <- same_number(n1, n2)
+#> ℹ Using auto-calculated max_diff: 2.2
+#> ✔ Computed exact scores for "n1_n2" [mean: 0.333]
+#> ✔ Computed pct_diff scores for "n1_n2" [mean: 0.963]
+#> ✔ Computed normalized scores for "n1_n2" [mean: 0.955]
+#> ✔ Computed fuzzy scores for "n1_n2" [mean: 0.978]
 ```
 
 Methods available (e.g., `method = "exact"`):
@@ -94,6 +111,7 @@ Methods available (e.g., `method = "exact"`):
 num <- same_number(n1, n2, 
                    method = "normalized", 
                    max_diff = 2.2)
+#> ✔ Computed normalized scores for "n1_n2" [mean: 0.955]
 ```
 
 -   **fuzzy**: Fuzzy matching with dual tolerance system:
@@ -107,6 +125,7 @@ num <- same_number(n1, n2,
                    method = "fuzzy", 
                    epsilon = 0.05,
                    epsilon_pct = 0.02)
+#> ✔ Computed fuzzy scores for "n1_n2" [mean: 0.978]
 ```
 
 ## More Lists
