@@ -74,7 +74,7 @@
 <h3 id="same_text">
 <code>same_text()</code><a class="anchor" aria-label="anchor" href="#same_text"></a>
 </h3>
-<p>Compare similarity between multiple lists of character strings.</p>
+<p>Compare similarity between multiple lists of character strings:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dylanpieper.github.io/samesies/">samesies</a></span><span class="op">)</span></span>
 <span></span>
@@ -139,7 +139,7 @@
 <h3 id="same_factor">
 <code>same_factor()</code><a class="anchor" aria-label="anchor" href="#same_factor"></a>
 </h3>
-<p>Compare similarity between multiple lists of categorical data.</p>
+<p>Compare similarity between multiple lists of categorical data:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cats1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"R"</span>, <span class="st">"R"</span>, <span class="st">"Python"</span><span class="op">)</span></span>
 <span><span class="va">cats2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"R"</span>, <span class="st">"Python"</span>, <span class="st">"R"</span><span class="op">)</span></span>
@@ -148,6 +148,18 @@
 <span>                   levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R"</span>, <span class="st">"Python"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ℹ Skipping 'order' method because levels are not explicitly ordered. Set ordered = TRUE to compute the order method.</span></span>
 <span><span class="co">#&gt; ✔ Computed exact scores for "cats1_cats2" [mean: 0.333]</span></span></code></pre></div>
+<p>Compare similarity based on ordered factors:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">edu1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"High School"</span>, <span class="st">"Bachelor's"</span>, <span class="st">"Master's"</span>, <span class="st">"PhD"</span><span class="op">)</span></span>
+<span><span class="va">edu2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Bachelor's"</span>, <span class="st">"High School"</span>, <span class="st">"PhD"</span>, <span class="st">"Master's"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">edu_comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/same_factor.html">same_factor</a></span><span class="op">(</span><span class="va">edu1</span>, <span class="va">edu2</span>, </span>
+<span>                              levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"High School"</span>, <span class="st">"Bachelor's"</span>, <span class="st">"Master's"</span>, <span class="st">"PhD"</span><span class="op">)</span>,</span>
+<span>                              ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fct_ordered</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/average_similarity.html">average_similarity</a></span><span class="op">(</span><span class="va">edu_comparison</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ✔ Computed exact scores for "edu1_edu2" [mean: 0]</span></span>
+<span><span class="co">#&gt; ✔ Computed order scores for "edu1_edu2" [mean: 0.667]</span></span></code></pre></div>
 <p>Methods available (e.g., <code>method = "exact"</code>):</p>
 <ul>
 <li>
@@ -160,8 +172,8 @@
 <h3 id="same_number">
 <code>same_number()</code><a class="anchor" aria-label="anchor" href="#same_number"></a>
 </h3>
-<p>Compare similarity between multiple lists of numeric values.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>Compare similarity between multiple lists of numeric values:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2.1</span>, <span class="fl">3.2</span><span class="op">)</span></span>
 <span></span>
@@ -184,7 +196,7 @@
 <li>
 <strong>normalized</strong>: Normalized difference (<code>max_diff</code> is computed automatically by default)</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/same_number.html">same_number</a></span><span class="op">(</span><span class="va">n1</span>, <span class="va">n2</span>, </span>
 <span>                   method <span class="op">=</span> <span class="st">"normalized"</span>, </span>
 <span>                   max_diff <span class="op">=</span> <span class="fl">2.2</span><span class="op">)</span></span>
@@ -200,7 +212,7 @@
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/same_number.html">same_number</a></span><span class="op">(</span><span class="va">n1</span>, <span class="va">n2</span>, </span>
 <span>                   method <span class="op">=</span> <span class="st">"fuzzy"</span>, </span>
 <span>                   epsilon <span class="op">=</span> <span class="fl">0.05</span>,</span>
