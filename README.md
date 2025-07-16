@@ -2,7 +2,7 @@
 
 [![CRAN status](https://www.r-pkg.org/badges/version/samesies)](https://cran.r-pkg.org/package=samesies) [![R-CMD-check](https://github.com/dylanpieper/samesies/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dylanpieper/samesies/actions/workflows/R-CMD-check.yaml)
 
-Compare lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model (LLM) responses across models, providers, or prompts.
+Compare lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model responses.
 
 ## Installation
 
@@ -45,24 +45,12 @@ tex <- same_text(r1, r2)
 
 Methods available via [stringdist](https://github.com/markvanderloo/stringdist) (e.g., `method = "osa"`):
 
--   Transformational Algorithms
-
-    -   **osa**: Adjacent transposition edits
-    -   **lv**: Basic edit distance
-    -   **dl**: Comprehensive edit distance with transpositions
-
--   Structural Comparison
-
-    -   **hamming**: Position-wise character differences
-    -   **lcs**: Longest shared subsequence
-    -   **qgram**: Subsequence matching
-    -   **cosine**: Vector-space string similarity
-    -   **jaccard**: Set-based string comparison
-
--   Linguistic Matching
-
-    -   **jw**: Prefix-weighted string matching
-    -   **soundex**: Phonetic encoding
+-   **Edit Distance Methods**
+    -   osa, lv, dl
+-   **Token-Based Similarity**
+    -   hamming, lcs, qgram, cosine, jaccard
+-   **Phonetic Methods**
+    -   jw, soundex
 
 ### `same_factor()`
 
@@ -143,11 +131,13 @@ num <- same_number(n1, n2,
 #> ✔ Computed fuzzy scores for "n1_n2" [mean: 0.978]
 ```
 
-## More Lists
+## List Support
+
+### More Lists
 
 When you input more than two lists, compute pairwise comparisons across lists.
 
-## Nested Lists
+### Nested Lists
 
 Nested lists are supported as long as they share the same names and lengths.
 
@@ -162,14 +152,14 @@ All three functions return `similar` objects that support the following methods:
 
 ## Accessing Object Data
 
-The package uses S3 objects, allowing access to the underlying data:
+The package uses S3 objects, allowing access to the underlying data using `$`:
 
--   `$scores`: A list of similarity scores for each method and comparison pair
--   `$summary`: A list of statistical summaries for each method and comparison pair
--   `$methods`: The similarity methods used in the analysis
--   `$list_names`: Names of the input lists
--   `$raw_values`: The original input values
--   `$digits`: Number of decimal places for rounding results in output
+-   `scores`: A list of similarity scores for each method and comparison pair
+-   `summary`: A list of statistical summaries for each method and comparison pair
+-   `methods`: The similarity methods used in the analysis
+-   `list_names`: Names of the input lists
+-   `raw_values`: The original input values
+-   `digits`: Number of decimal places for rounding results in output
 
 ## Credits
 
