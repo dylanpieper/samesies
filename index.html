@@ -58,7 +58,7 @@
 <div class="page-header"><h1 id="samesies-">samesies <img src="reference/figures/samesies-hex.png" align="right" width="140"><a class="anchor" aria-label="anchor" href="#samesies-"></a>
 </h1></div>
 <p><a href="https://cran.r-pkg.org/package=samesies" class="external-link"><img src="https://www.r-pkg.org/badges/version/samesies" alt="CRAN status"></a> <a href="https://github.com/dylanpieper/samesies/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/dylanpieper/samesies/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></p>
-<p>Compare lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model (LLM) responses across models, providers, or prompts.</p>
+<p>Compare lists of texts, factors, or numerical values to measure their similarity. The motivating use case is evaluating the similarity of large language model responses.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -99,38 +99,21 @@
 <p>Methods available via <a href="https://github.com/markvanderloo/stringdist" class="external-link">stringdist</a> (e.g., <code>method = "osa"</code>):</p>
 <ul>
 <li>
-<p>Transformational Algorithms</p>
+<strong>Edit Distance Methods</strong>
 <ul>
-<li>
-<strong>osa</strong>: Adjacent transposition edits</li>
-<li>
-<strong>lv</strong>: Basic edit distance</li>
-<li>
-<strong>dl</strong>: Comprehensive edit distance with transpositions</li>
+<li>osa, lv, dl</li>
 </ul>
 </li>
 <li>
-<p>Structural Comparison</p>
+<strong>Token-Based Similarity</strong>
 <ul>
-<li>
-<strong>hamming</strong>: Position-wise character differences</li>
-<li>
-<strong>lcs</strong>: Longest shared subsequence</li>
-<li>
-<strong>qgram</strong>: Subsequence matching</li>
-<li>
-<strong>cosine</strong>: Vector-space string similarity</li>
-<li>
-<strong>jaccard</strong>: Set-based string comparison</li>
+<li>hamming, lcs, qgram, cosine, jaccard</li>
 </ul>
 </li>
 <li>
-<p>Linguistic Matching</p>
+<strong>Phonetic Methods</strong>
 <ul>
-<li>
-<strong>jw</strong>: Prefix-weighted string matching</li>
-<li>
-<strong>soundex</strong>: Phonetic encoding</li>
+<li>jw, soundex</li>
 </ul>
 </li>
 </ul>
@@ -221,14 +204,18 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="more-lists">More Lists<a class="anchor" aria-label="anchor" href="#more-lists"></a>
+<h2 id="list-support">List Support<a class="anchor" aria-label="anchor" href="#list-support"></a>
 </h2>
+<div class="section level3">
+<h3 id="more-lists">More Lists<a class="anchor" aria-label="anchor" href="#more-lists"></a>
+</h3>
 <p>When you input more than two lists, compute pairwise comparisons across lists.</p>
 </div>
-<div class="section level2">
-<h2 id="nested-lists">Nested Lists<a class="anchor" aria-label="anchor" href="#nested-lists"></a>
-</h2>
+<div class="section level3">
+<h3 id="nested-lists">Nested Lists<a class="anchor" aria-label="anchor" href="#nested-lists"></a>
+</h3>
 <p>Nested lists are supported as long as they share the same names and lengths.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a>
@@ -244,20 +231,20 @@
 <div class="section level2">
 <h2 id="accessing-object-data">Accessing Object Data<a class="anchor" aria-label="anchor" href="#accessing-object-data"></a>
 </h2>
-<p>The package uses S3 objects, allowing access to the underlying data:</p>
+<p>The package uses S3 objects, allowing access to the underlying data using <code>$</code>:</p>
 <ul>
 <li>
-<code>$scores</code>: A list of similarity scores for each method and comparison pair</li>
+<code>scores</code>: A list of similarity scores for each method and comparison pair</li>
 <li>
-<code>$summary</code>: A list of statistical summaries for each method and comparison pair</li>
+<code>summary</code>: A list of statistical summaries for each method and comparison pair</li>
 <li>
-<code>$methods</code>: The similarity methods used in the analysis</li>
+<code>methods</code>: The similarity methods used in the analysis</li>
 <li>
-<code>$list_names</code>: Names of the input lists</li>
+<code>list_names</code>: Names of the input lists</li>
 <li>
-<code>$raw_values</code>: The original input values</li>
+<code>raw_values</code>: The original input values</li>
 <li>
-<code>$digits</code>: Number of decimal places for rounding results in output</li>
+<code>digits</code>: Number of decimal places for rounding results in output</li>
 </ul>
 </div>
 <div class="section level2">
@@ -308,7 +295,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
