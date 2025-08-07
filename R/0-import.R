@@ -4,5 +4,6 @@
 #' @importFrom stats median sd quantile IQR
 #' @importFrom utils combn
 #' @importFrom scales percent
+#' @import dplyr
 #' @noRd
 "_PACKAGE"
