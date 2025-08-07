@@ -6,10 +6,17 @@ Compare lists of texts, factors, or numerical values to measure their similarity
 
 ## Installation
 
-You can install `samesies` from CRAN with:
+From CRAN:
 
 ``` r
-install.packages("samesies")
+# install.packages("pak")
+pak::pak("samesies")
+```
+
+Development version:
+
+``` r
+pak::pak("dylanpieper/samesies")
 ```
 
 ## Basic Usage
