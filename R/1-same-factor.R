@@ -5,9 +5,7 @@
 #'
 #' @param ... Lists of categorical values (character or factor) to compare.
 #' @param method Character vector of similarity method (default: c("exact", "order")).
-#' @param levels Character vector of all allowed levels for comparison.
-#' @param ordered Logical. If TRUE, treat levels as ordered (ordinal). If FALSE,
-#'   the "order" method is skipped.
+#' @param levels Optional character vector of all allowed levels for comparison. If not provided, only "exact" method will be used.
 #' @param digits Number of digits to round results (default: 3).
 #'
 #' @return An S3 object of type "similar_factor" containing:
@@ -18,24 +16,12 @@
 #'   - levels: Levels used for categorical comparison
 #'
 #' @examples
-#' list1 <- list("high", "medium", "low")
-#' list2 <- list("high", "low", "medium")
+#' f1 <- list("R", "R", "Python")
+#' f2 <- list("R", "Python", "R")
 #'
-#' # Using unnamed lists
-#' result1 <- same_factor(
-#'   list1, list2,
-#'   levels = c("low", "medium", "high"),
-#'   ordered = TRUE
-#' )
-#'
-#' # Using named lists for more control
-#' result2 <- same_factor(
-#'   "l1" = list1, "l2" = list2,
-#'   levels = c("low", "medium", "high"),
-#'   ordered = TRUE
-#' )
+#' result <- same_factor(f1, f2)
 #' @export
-same_factor <- function(..., method = c("exact", "order"), levels, ordered = FALSE, digits = 3) {
+same_factor <- function(..., method = c("exact", "order"), levels = NULL, digits = 3) {
   valid_methods <- c("exact", "order")
 
   inputs <- list(...)
@@ -51,12 +37,13 @@ same_factor <- function(..., method = c("exact", "order"), levels, ordered = FAL
     ))
   }
 
+  ordered <- !is.null(levels)
   if ("order" %in% method && !ordered) {
-    cli::cli_alert_info("Skipping 'order' method because levels are not explicitly ordered. Set ordered = TRUE to compute the order method.")
+    cli::cli_alert_info("Skipping 'order' method as factor levels are not ordered")
     method <- method[method != "order"]
   }
   if (length(method) == 0) {
-    cli::cli_abort("No valid methods remain after filtering. Please check the methods argument or set ordered = TRUE to include the 'order' method.")
+    cli::cli_abort("No valid methods available")
   }
 
   dots <- as.list(substitute(list(...)))[-1]

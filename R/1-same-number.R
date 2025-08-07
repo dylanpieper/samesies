@@ -32,17 +32,13 @@
 #'   }
 #'
 #' @examples
-#' list1 <- list(1, 2, 3)
-#' list2 <- list(1, 2.1, 3.2)
+#' n1 <- list(1, 2, 3)
+#' n2 <- list(1, 2.1, 3.2)
 #'
-#' # Using unnamed lists
-#' result1 <- same_number(list1, list2)
-#'
-#' # Using named lists for more control
-#' result2 <- same_number("n1" = list1, "n2" = list2)
+#' result <- same_number(n1, n2)
 #' @export
 same_number <- function(..., method = c("exact", "raw", "exp", "percent", "normalized", "fuzzy"),
-                        epsilon = 0.05, epsilon_pct = 0.02, max_diff = NULL, digits = 3) {
+                        epsilon = NULL, epsilon_pct = 0.02, max_diff = NULL, digits = 3) {
   valid_methods <- c(
     "exact", "raw", "exp", "percent", "normalized", "fuzzy"
   )
@@ -87,12 +83,10 @@ same_number <- function(..., method = c("exact", "raw", "exp", "percent", "norma
 
         if (is.null(epsilon) && "fuzzy" %in% method) {
           key_epsilons[[key]] <- auto_epsilon(key_values)
-          cli_alert_info("Using auto-calculated epsilon for {.val {key}}: {.val {round(key_epsilons[[key]], 5)}}")
         }
 
         if (is.null(max_diff) && "normalized" %in% method) {
           key_max_diffs[[key]] <- auto_max_diff(key_values)
-          cli_alert_info("Using auto-calculated max_diff for {.val {key}}: {.val {round(key_max_diffs[[key]], 5)}}")
         }
       }
     }
@@ -161,12 +155,10 @@ same_number <- function(..., method = c("exact", "raw", "exp", "percent", "norma
 
     if (is.null(epsilon) && "fuzzy" %in% method) {
       epsilon <- auto_epsilon(all_values)
-      cli_alert_info("Using auto-calculated epsilon: {.val {round(epsilon, 5)}}")
     }
 
     if (is.null(max_diff) && "normalized" %in% method) {
       max_diff <- auto_max_diff(all_values)
-      cli_alert_info("Using auto-calculated max_diff: {.val {round(max_diff, 5)}}")
     }
 
     lengths <- map_int(flattened_inputs, length)

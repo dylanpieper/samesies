@@ -224,7 +224,7 @@ calculate_text_scores <- function(list1, list2, method, ...) {
 #'
 #' @return TRUE if all inputs are valid, error message otherwise
 #' @noRd
-validate_factor_inputs <- function(..., levels) {
+validate_factor_inputs <- function(..., levels = NULL) {
   inputs <- list(...)
 
   if (length(inputs) < 2) {
@@ -238,10 +238,6 @@ validate_factor_inputs <- function(..., levels) {
       "All inputs must be lists containing only character or factor values",
       "x" = "Invalid inputs at position(s): {paste(invalid_inputs, collapse = ', ')}"
     ))
-  }
-
-  if (is.null(levels) || length(levels) == 0) {
-    cli::cli_abort("Must provide non-empty levels parameter")
   }
 
   TRUE
@@ -260,8 +256,10 @@ calculate_factor_similarity <- function(cat1, cat2, method, levels) {
   cat1 <- as.character(cat1)
   cat2 <- as.character(cat2)
 
-  if (!cat1 %in% levels) cat1 <- NA
-  if (!cat2 %in% levels) cat2 <- NA
+  if (!is.null(levels)) {
+    if (!cat1 %in% levels) cat1 <- NA
+    if (!cat2 %in% levels) cat2 <- NA
+  }
 
   if (is.na(cat1) && is.na(cat2)) {
     return(1)

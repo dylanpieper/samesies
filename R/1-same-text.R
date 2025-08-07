@@ -21,14 +21,12 @@
 #'   - list_names: Names of compared lists
 #'
 #' @examples
-#' list1 <- list("hello", "world")
-#' list2 <- list("helo", "word")
+#' r1 <- list("R is a statistical computing software", 
+#'            "R enables grammar of graphics using ggplot2")
+#' r2 <- list("R is a full-stack programming language",
+#'            "R enables advanced data visualizations")
 #'
-#' # Using unnamed lists
-#' result1 <- same_text(list1, list2)
-#'
-#' # Using named lists for more control
-#' result2 <- same_text("l1" = list1, "l2" = list2)
+#' result <- same_text(r1, r2)
 #' @export
 same_text <- function(..., method = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"),
                       q = 1, p = NULL, bt = 0,

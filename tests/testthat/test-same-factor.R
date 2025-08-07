@@ -35,14 +35,13 @@ test_that("same_factor summary method works", {
   expect_error(summary(result), NA)
 })
 
-test_that("same_factor works with multiple methods", {
+test_that("same_factor works with ordered levels", {
   fruits1 <- list("apple", "orange", "unknown")
   fruits2 <- list("apple", "orange", "unknown")
 
   result <- same_factor(fruits1, fruits2,
     method = c("exact", "order"),
-    levels = c("apple", "orange", "banana"),
-    ordered = TRUE
+    levels = c("apple", "orange", "banana")
   )
 
   expect_true(inherits(result, "similar_factor"))
@@ -77,12 +76,13 @@ test_that("average_similarity works for same_factor", {
   fruits2 <- list("apple", "orange", "unknown")
 
   result <- same_factor(fruits1, fruits2,
+    method = "exact",
     levels = c("apple", "orange", "banana")
   )
 
   avgs <- average_similarity(result)
   expect_type(avgs, "double")
-  expect_named(avgs, "exact") 
+  expect_named(avgs, "exact")
   expect_length(avgs, 1)
   expect_true(all(avgs >= 0 & avgs <= 1))
 })
@@ -92,6 +92,7 @@ test_that("pair_averages works for same_factor", {
   fruits2 <- list("apple", "orange", "unknown")
 
   result <- same_factor(fruits1, fruits2,
+    method = "exact",
     levels = c("apple", "orange", "banana")
   )
 
@@ -100,4 +101,17 @@ test_that("pair_averages works for same_factor", {
   expect_named(pairs, c("method", "pair", "avg_score"))
   expect_true(all(pairs$method == "exact"))
   expect_true(all(pairs$avg_score >= 0 & pairs$avg_score <= 1))
+})
+
+test_that("same_factor works without levels argument and skips order method", {
+  fruits1 <- list("apple", "orange", "banana")
+  fruits2 <- list("apple", "orange", "banana")
+
+  result <- same_factor(fruits1, fruits2)
+
+  expect_true(inherits(result, "similar_factor"))
+  expect_equal(result$methods, "exact")
+  expect_false("order" %in% result$methods)
+  expect_true("exact" %in% names(result$scores))
+  expect_false("order" %in% names(result$scores))
 })
