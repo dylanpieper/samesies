@@ -62,9 +62,13 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install <code>samesies</code> from CRAN with:</p>
+<p>From CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"samesies"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"samesies"</span><span class="op">)</span></span></code></pre></div>
+<p>Development version:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"dylanpieper/samesies"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="basic-usage">Basic Usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
@@ -75,7 +79,7 @@
 <a href="https://dylanpieper.github.io/samesies/reference/same_text.html">same_text()</a><a class="anchor" aria-label="anchor" href="#same_text"></a>
 </h3>
 <p>Compare similarity between multiple lists of character strings:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dylanpieper.github.io/samesies/">samesies</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">r1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"R is a statistical computing software"</span>, </span>
@@ -123,7 +127,7 @@
 <a href="https://dylanpieper.github.io/samesies/reference/same_factor.html">same_factor()</a><a class="anchor" aria-label="anchor" href="#same_factor"></a>
 </h3>
 <p>Compare similarity between multiple lists of categorical data:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"R"</span>, <span class="st">"R"</span>, <span class="st">"Python"</span><span class="op">)</span></span>
 <span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"R"</span>, <span class="st">"Python"</span>, <span class="st">"R"</span><span class="op">)</span></span>
 <span></span>
@@ -131,7 +135,7 @@
 <span><span class="co">#&gt; ℹ Skipping 'order' method as factor levels are not ordered</span></span>
 <span><span class="co">#&gt; ✔ Computed exact scores for "f1_f2" [mean: 0.333]</span></span></code></pre></div>
 <p>Compare similarity based on ordered factors:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">of1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"High School"</span>, <span class="st">"Bachelor's"</span>, <span class="st">"Master's"</span>, <span class="st">"PhD"</span><span class="op">)</span></span>
 <span><span class="va">of2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Bachelor's"</span>, <span class="st">"High School"</span>, <span class="st">"PhD"</span>, <span class="st">"Master's"</span><span class="op">)</span></span>
 <span></span>
@@ -154,7 +158,7 @@
 <a href="https://dylanpieper.github.io/samesies/reference/same_number.html">same_number()</a><a class="anchor" aria-label="anchor" href="#same_number"></a>
 </h3>
 <p>Compare similarity between multiple lists of numeric values:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2.1</span>, <span class="fl">3.2</span><span class="op">)</span></span>
 <span></span>
@@ -197,7 +201,7 @@
 <h3 id="named-lists">Named Lists<a class="anchor" aria-label="anchor" href="#named-lists"></a>
 </h3>
 <p>For more control over results, you can use named lists to specify custom labels for comparisons:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_number</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/same_number.html">same_number</a></span><span class="op">(</span><span class="st">"baseline"</span> <span class="op">=</span> <span class="va">n1</span>, <span class="st">"treatment"</span> <span class="op">=</span> <span class="va">n2</span>, method <span class="op">=</span> <span class="st">"fuzzy"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ✔ Computed fuzzy scores for "baseline_treatment" [mean: 0.978]</span></span></code></pre></div>
 </div>
@@ -205,7 +209,7 @@
 <h3 id="more-lists">More Lists<a class="anchor" aria-label="anchor" href="#more-lists"></a>
 </h3>
 <p>When you input more than two lists, samesies computes pairwise comparisons across all lists:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Statistical computing"</span>, <span class="st">"Data visualization"</span>, <span class="st">"Machine learning"</span><span class="op">)</span></span>
 <span><span class="va">r2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Statistical software"</span>, <span class="st">"Data plotting"</span>, <span class="st">"ML algorithms"</span><span class="op">)</span> </span>
 <span><span class="va">r3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Statistical analysis"</span>, <span class="st">"Data graphics"</span>, <span class="st">"AI models"</span><span class="op">)</span></span>
@@ -219,7 +223,7 @@
 <h3 id="nested-lists">Nested Lists<a class="anchor" aria-label="anchor" href="#nested-lists"></a>
 </h3>
 <p>Compare nested lists with identical structure and names:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nest1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  group_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Good"</span>, <span class="st">"Very Good"</span>, <span class="st">"Fair"</span><span class="op">)</span>,</span>
 <span>  group_b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Excellent"</span>, <span class="st">"Good"</span>, <span class="st">"Poor"</span><span class="op">)</span></span>
@@ -238,7 +242,7 @@
 <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a>
 </h2>
 <p>All three functions return <code>similar</code> objects that support the following methods:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/same_text.html">same_text</a></span><span class="op">(</span><span class="va">r1</span>, <span class="va">r2</span>, method <span class="op">=</span> <span class="st">"cosine"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Print detailed results</span></span>
@@ -263,7 +267,7 @@
 <h2 id="accessing-object-data">Accessing Object Data<a class="anchor" aria-label="anchor" href="#accessing-object-data"></a>
 </h2>
 <p>The package uses S3 objects, allowing access to the underlying data using <code>$</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/same_text.html">same_text</a></span><span class="op">(</span><span class="va">r1</span>, <span class="va">r2</span>, method <span class="op">=</span> <span class="st">"cosine"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Access similarity scores</span></span>
