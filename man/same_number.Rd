@@ -7,7 +7,7 @@
 same_number(
   ...,
   method = c("exact", "raw", "exp", "percent", "normalized", "fuzzy"),
-  epsilon = 0.05,
+  epsilon = NULL,
   epsilon_pct = 0.02,
   max_diff = NULL,
   digits = 3
@@ -54,12 +54,8 @@ The available methods are:
 }
 }
 \examples{
-list1 <- list(1, 2, 3)
-list2 <- list(1, 2.1, 3.2)
+n1 <- list(1, 2, 3)
+n2 <- list(1, 2.1, 3.2)
 
-# Using unnamed lists
-result1 <- same_number(list1, list2)
-
-# Using named lists for more control
-result2 <- same_number("n1" = list1, "n2" = list2)
+result <- same_number(n1, n2)
 }

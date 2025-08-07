@@ -4,23 +4,14 @@
 \alias{same_factor}
 \title{Compare Factor Similarity Across Lists}
 \usage{
-same_factor(
-  ...,
-  method = c("exact", "order"),
-  levels,
-  ordered = FALSE,
-  digits = 3
-)
+same_factor(..., method = c("exact", "order"), levels = NULL, digits = 3)
 }
 \arguments{
 \item{...}{Lists of categorical values (character or factor) to compare.}
 
 \item{method}{Character vector of similarity method (default: c("exact", "order")).}
 
-\item{levels}{Character vector of all allowed levels for comparison.}
-
-\item{ordered}{Logical. If TRUE, treat levels as ordered (ordinal). If FALSE,
-the "order" method is skipped.}
+\item{levels}{Optional character vector of all allowed levels for comparison. If not provided, only "exact" method will be used.}
 
 \item{digits}{Number of digits to round results (default: 3).}
 }
@@ -40,20 +31,8 @@ Implements both exact matching methods for precise category equivalence and
 order-preserving comparisons.
 }
 \examples{
-list1 <- list("high", "medium", "low")
-list2 <- list("high", "low", "medium")
+f1 <- list("R", "R", "Python")
+f2 <- list("R", "Python", "R")
 
-# Using unnamed lists
-result1 <- same_factor(
-  list1, list2,
-  levels = c("low", "medium", "high"),
-  ordered = TRUE
-)
-
-# Using named lists for more control
-result2 <- same_factor(
-  "l1" = list1, "l2" = list2,
-  levels = c("low", "medium", "high"),
-  ordered = TRUE
-)
+result <- same_factor(f1, f2)
 }
